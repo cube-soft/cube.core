@@ -15,42 +15,45 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Xui.Behaviors;
-
-using System;
-using System.Diagnostics;
+namespace Cube;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// UriBehavior
+/// ProcessMessage
 ///
 /// <summary>
-/// Represents the behavior when an Uri message is received.
+/// Represents the message to notify a command line.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class UriBehavior : MessageBehavior<UriMessage>
+public class ProcessMessage : CancelMessage<string>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Invoke
+    /// ProcessMessage
     ///
     /// <summary>
-    /// Invokes the action.
+    /// Initializes a new instance of the ProcessMessage class with the
+    /// specified command line.
     /// </summary>
     ///
+    /// <param name="src">Command line.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    protected override void Invoke(UriMessage e)
-    {
-        try
-        {
-            var proc = Process.Start(e.ToString());
-            e.Cancel = proc is null;
-        }
-        catch (Exception err)
-        {
-            typeof(UriBehavior).LogDebug(err.Message);
-            e.Cancel = true;
-        }
-    }
+    public ProcessMessage(string src) : this(src, nameof(ProcessMessage)) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ProcessMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the ProcessMessage class with the
+    /// specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Command line.</param>
+    /// <param name="text">Message text.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public ProcessMessage(string src, string text) : base(text) => Value = src;
 }

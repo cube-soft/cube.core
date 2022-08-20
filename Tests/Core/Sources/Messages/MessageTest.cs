@@ -66,6 +66,6 @@ class MessageTest
         yield return new(new CloseMessage(), nameof(CloseMessage));
         yield return new(new ActivateMessage(), nameof(ActivateMessage));
         yield return new(new ApplyMessage(), nameof(ApplyMessage));
-        yield return new(new UriMessage(new("https://example.com/")), nameof(UriMessage));
+        yield return new(new ProcessMessage("https://example.com/"), nameof(ProcessMessage));
     }
 }

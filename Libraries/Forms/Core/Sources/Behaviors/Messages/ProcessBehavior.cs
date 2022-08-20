@@ -22,37 +22,37 @@ using System.Diagnostics;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// UriBehavior
+/// ProcessBehavior
 ///
 /// <summary>
-/// Represents the behavior when an Uri message is received.
+/// Represents the behavior when a ProcessMessage object is received.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class UriBehavior : MessageBehavior<UriMessage>
+public class ProcessBehavior : MessageBehavior<ProcessMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UriBehavior
+    /// ProcessBehavior
     ///
     /// <summary>
-    /// Initializes a new instance of the UriBehavior class
-    /// with the specified arguments.
+    /// Initializes a new instance of the ProcessBehavior class with the
+    /// specified arguments.
     /// </summary>
     ///
     /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public UriBehavior(IAggregator aggregator) : base(aggregator, e =>
+    public ProcessBehavior(IAggregator aggregator) : base(aggregator, e =>
     {
         try
         {
-            var proc = Process.Start(e.ToString());
+            var proc = Process.Start(e.Value);
             e.Cancel = proc is null;
         }
         catch (Exception err)
         {
-            typeof(UriBehavior).LogDebug(err.Message);
+            typeof(ProcessBehavior).LogDebug(err.Message);
             e.Cancel = true;
         }
     }) { }

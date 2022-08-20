@@ -15,45 +15,42 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube;
+namespace Cube.Xui.Behaviors;
 
 using System;
+using System.Diagnostics;
+
 /* ------------------------------------------------------------------------- */
 ///
-/// MessageBase
+/// ProcessBehavior
 ///
 /// <summary>
-/// Represents the message to notify a URL.
+/// Represents the behavior when a ProcessMessage object is received.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class UriMessage : CancelMessage<Uri>
+public class ProcessBehavior : MessageBehavior<ProcessMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UriMessage
+    /// Invoke
     ///
     /// <summary>
-    /// Initializes a new instance of the UriMessage class.
+    /// Invokes the action.
     /// </summary>
     ///
-    /// <param name="src">Source URL.</param>
-    ///
     /* --------------------------------------------------------------------- */
-    public UriMessage(Uri src) : this(src, nameof(UriMessage)) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// UriMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the UriMessage class with the
-    /// specified URL.
-    /// </summary>
-    ///
-    /// <param name="src">Source URL.</param>
-    /// <param name="text">Message text.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public UriMessage(Uri src, string text) : base(text) => Value = src;
+    protected override void Invoke(ProcessMessage e)
+    {
+        try
+        {
+            var proc = Process.Start(e.Value);
+            e.Cancel = proc is null;
+        }
+        catch (Exception err)
+        {
+            typeof(ProcessBehavior).LogDebug(err.Message);
+            e.Cancel = true;
+        }
+    }
 }
