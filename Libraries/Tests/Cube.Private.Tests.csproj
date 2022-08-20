@@ -26,6 +26,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
+        <ProjectReference Include="..\Forms\Core\Cube.Forms.csproj" />
         <ProjectReference Include="..\NLog\Cube.Logging.NLog.csproj" />
         <PackageReference Include="NUnit" Version="3.13.3" />
         <PackageReference Include="OpenCover" Version="4.7.1221" />
