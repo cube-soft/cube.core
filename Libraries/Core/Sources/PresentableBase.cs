@@ -363,7 +363,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
                 try { action(); }
                 catch (Exception e)
                 {
-                    GetType().LogWarn(e);
+                    Logger.Warn(e);
                     if (OnMessage(e) is DialogMessage msg) Send(msg);
                 }
             }

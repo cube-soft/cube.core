@@ -52,7 +52,7 @@ public class ProcessBehavior : MessageBehavior<ProcessMessage>
         }
         catch (Exception err)
         {
-            typeof(ProcessBehavior).LogDebug(err.Message);
+            Logger.Debug(err.Message);
             e.Cancel = true;
         }
     }) { }

@@ -49,6 +49,6 @@ public class MockDialogBehavior : MessageBehavior<DialogMessage>
         e.Cancel = false;
 
         if (e.Icon == DialogIcon.Error) Assert.Fail(e.Text);
-        else typeof(MockDialogBehavior).LogDebug(e.Icon.ToString(), e.Text);
+        else Logger.Debug($"{e.Icon} {e.Text}");
     }) { }
 }

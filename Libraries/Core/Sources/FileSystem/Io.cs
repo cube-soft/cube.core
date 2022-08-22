@@ -95,7 +95,7 @@ public static class Io
     public static Entity GetOrDefault(string path)
     {
         try { return path.HasValue() ? Get(path) : default; }
-        catch (Exception e) { typeof(Io).LogDebug(e.Message); }
+        catch (Exception e) { Logger.Debug(e.Message); }
         return default;
     }
 
@@ -510,7 +510,7 @@ public static class Io
         try
         {
             MoveFile(src, dest);
-            typeof(Io).LogWarn(() => Delete(tmp.FullName));
+            Logger.Warn(() => Delete(tmp.FullName));
         }
         catch
         {

@@ -113,7 +113,7 @@ public static class XuiExtension
         }
         catch (Exception e)
         {
-            typeof(XuiExtension).LogWarn(e.Message, $"IgnoreColorProfile:{icp}");
+            Logger.Warn($"{e.Message} (IgnoreColorProfile:{icp})");
             dest = default;
             return false;
         }

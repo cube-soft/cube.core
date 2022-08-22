@@ -39,53 +39,35 @@ public static class XuiExtension
     /// ObserveUiException
     ///
     /// <summary>
-    /// Monitors UnhandledException and outputs to the log.
+    /// Observes some exceptions and logs them.
     /// </summary>
     ///
     /// <param name="src">Target object.</param>
     ///
-    /// <returns>Object to dispose.</returns>
-    ///
     /* --------------------------------------------------------------------- */
-    public static IDisposable ObserveUiException(this Application src)
+    public static void ObserveUiException(this Application src)
     {
-        if (src != null) src.DispatcherUnhandledException += WhenDispatcherError;
-        if (AppDomain.CurrentDomain != null) AppDomain.CurrentDomain.UnhandledException += WhenDomainError;
-
-        return Disposable.Create(() =>
+        static void f0(object s, DispatcherUnhandledExceptionEventArgs e) => Logger.Error(e.Exception);
+        if (src != null)
         {
-            if (src != null) src.DispatcherUnhandledException -= WhenDispatcherError;
-            if (AppDomain.CurrentDomain != null) AppDomain.CurrentDomain.UnhandledException -= WhenDomainError;
-        });
+            src.DispatcherUnhandledException += f0;
+            _disposable.Add(Disposable.Create(() => {
+                if (src != null) src.DispatcherUnhandledException -= f0;
+            }));
+        }
+
+        static void f1(object s, UnhandledExceptionEventArgs e) => Logger.Error(e.ExceptionObject as Exception);
+        if (AppDomain.CurrentDomain != null) {
+            AppDomain.CurrentDomain.UnhandledException += f1;
+            _disposable.Add(Disposable.Create(() => {
+                if (AppDomain.CurrentDomain != null) AppDomain.CurrentDomain.UnhandledException -= f1;
+            }));
+        }
     }
 
     #endregion
 
-    #region Implementations
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// WhenDispatcherError
-    ///
-    /// <summary>
-    /// Executes when a DispatcherUnhandledException occurs.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static void WhenDispatcherError(object s, DispatcherUnhandledExceptionEventArgs e) =>
-        s.GetType().LogError(e.Exception);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// WhenDomainError
-    ///
-    /// <summary>
-    /// Executes when an UnhandledException occurs.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static void WhenDomainError(object s, UnhandledExceptionEventArgs e) =>
-        typeof(AppDomain).LogError(e.ExceptionObject as Exception);
-
+    #region Fields
+    private static readonly DisposableContainer _disposable = new();
     #endregion
 }

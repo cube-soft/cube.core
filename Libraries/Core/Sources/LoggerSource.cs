@@ -17,8 +17,6 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube;
 
-using System;
-
 #region ILoggerSource
 
 /* ------------------------------------------------------------------------- */
@@ -40,12 +38,12 @@ public interface ILoggerSource
     /// Writes a log entry.
     /// </summary>
     ///
+    /// <param name="name">Logger name.</param>
     /// <param name="level">Log level.</param>
-    /// <param name="type">Type of requested object.</param>
     /// <param name="message">Logging message.</param>
     ///
     /* --------------------------------------------------------------------- */
-    void Log(LogLevel level, Type type, string message);
+    void Log(string name, LogLevel level, string message);
 }
 
 #endregion
@@ -71,12 +69,12 @@ public sealed class NullLoggerSource : ILoggerSource
     /// Writes a log entry.
     /// </summary>
     ///
+    /// <param name="name">Logger name.</param>
     /// <param name="level">Log level.</param>
-    /// <param name="type">Type of requested object.</param>
     /// <param name="message">Logging message.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Log(LogLevel level, Type type, string message) { }
+    public void Log(string name, LogLevel level, string message) { }
 }
 
 #endregion

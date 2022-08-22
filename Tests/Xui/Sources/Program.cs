@@ -46,12 +46,11 @@ static class Program
     [OneTimeSetUp]
     public static void OneTimeSetup()
     {
-        var src = typeof(Program);
         Logger.Configure(new Logging.NLog.LoggerSource());
         BindingLogger.Setup();
-        _ = Logger.ObserveTaskException();
-        _ = Application.Current.ObserveUiException();
-        src.LogInfo(src.Assembly);
+        Logger.ObserveTaskException();
+        Application.Current.ObserveUiException();
+        Logger.Info(typeof(Program).Assembly);
     }
 
     /* --------------------------------------------------------------------- */

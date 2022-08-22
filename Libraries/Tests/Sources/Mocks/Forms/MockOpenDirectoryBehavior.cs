@@ -49,8 +49,7 @@ public class MockOpenDirectoryBehavior : MessageBehavior<OpenDirectoryMessage>
         e.Value  = value;
         e.Cancel = false;
 
-        var src = typeof(MockOpenDirectoryBehavior);
-        src.LogDebug(e.Text);
-        src.LogDebug(e.Value);
+        Logger.Debug(e.Text);
+        Logger.Debug(e.Value);
     }) { }
 }

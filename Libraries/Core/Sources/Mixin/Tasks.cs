@@ -45,7 +45,7 @@ public static class Extension
     ///
     /* --------------------------------------------------------------------- */
     public static void Forget(this Task src) =>
-        src.ContinueWith(e => e.GetType().LogWarn(e.Exception), TaskContinuationOptions.OnlyOnFaulted);
+        src.ContinueWith(e => Logger.Warn(e.Exception), TaskContinuationOptions.OnlyOnFaulted);
 
     /* --------------------------------------------------------------------- */
     ///

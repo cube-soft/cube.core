@@ -141,7 +141,7 @@ public class TaskbarProgress : ObservableBase
                 try { _core = (ITaskbarList3)new TaskbarListInstance(); }
                 catch (Exception err)
                 {
-                    GetType().LogWarn(err);
+                    Logger.Warn(err);
                     IsSupported = false;
                 }
             }

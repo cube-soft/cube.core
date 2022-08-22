@@ -48,9 +48,8 @@ public class MockSaveFileBehavior : MessageBehavior<SaveFileMessage>
         e.Value  = value;
         e.Cancel = false;
 
-        var src = typeof(MockSaveFileBehavior);
-        src.LogDebug(e.Text);
-        src.LogDebug(e.Value);
-        src.LogDebug(e.GetFilterText(), e.GetFilterIndex().ToString());
+        Logger.Debug(e.Text);
+        Logger.Debug(e.Value);
+        Logger.Debug($"{e.GetFilterIndex()} ({e.GetFilterText()})");
     }) { }
 }

@@ -258,7 +258,7 @@ public class SettingFolder<T> : ObservableBase where T : INotifyPropertyChanged,
     protected override void Dispose(bool disposing)
     {
         if (disposing) _autosaver.Dispose();
-        if (AutoSave) GetType().LogWarn(() => Save());
+        if (AutoSave) Logger.Warn(Save);
     }
 
     /* --------------------------------------------------------------------- */
@@ -300,7 +300,7 @@ public class SettingFolder<T> : ObservableBase where T : INotifyPropertyChanged,
                 _autosaver.Interval = AutoSaveDelay.TotalMilliseconds;
                 _autosaver.Start();
             }
-            else GetType().LogWarn(() => Save());
+            else Logger.Warn(Save);
         }
         finally { OnPropertyChanged(e); }
     }

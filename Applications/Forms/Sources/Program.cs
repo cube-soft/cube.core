@@ -44,11 +44,10 @@ static class Program
     [STAThread]
     static void Main(string[] args)
     {
-        var src = typeof(Program);
         Logger.Configure(new Logging.NLog.LoggerSource());
-        _ = Logger.ObserveTaskException();
-        src.LogInfo(Assembly.GetExecutingAssembly());
-        src.LogInfo($"[ {args.Join(" ")} ]");
+        Logger.ObserveTaskException();
+        Logger.Info(typeof(Program).Assembly);
+        Logger.Info($"[ {args.Join(" ")} ]");
 
         System.Windows.Forms.Application.EnableVisualStyles();
         System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);

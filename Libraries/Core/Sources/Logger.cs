@@ -20,10 +20,13 @@ namespace Cube;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Collections;
+using Cube.Mixin.String;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -36,21 +39,6 @@ using Cube.Mixin.Collections;
 /* ------------------------------------------------------------------------- */
 public static class Logger
 {
-    #region Properties
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Separator
-    ///
-    /// <summary>
-    /// Gets or sets values to separate words.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string Separator { get; set; } = "\t";
-
-    #endregion
-
     #region Configure
 
     /* --------------------------------------------------------------------- */
@@ -72,18 +60,20 @@ public static class Logger
 
     /* --------------------------------------------------------------------- */
     ///
-    /// LogDebug
+    /// Debug
     ///
     /// <summary>
-    /// Outputs log as DEBUG level.
+    /// Logs the specified message as Debug level.
     /// </summary>
     ///
-    /// <param name="type">Target type information.</param>
-    /// <param name="values">User messages.</param>
+    /// <param name="message">Message to be output as log.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void LogDebug(this Type type, params string[] values) =>
-        _source.Log(LogLevel.Debug, type, GetMessage(values));
+    public static void Debug(string message,
+        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        _source.Log(GetLoggerName(path, n), LogLevel.Debug, message);
 
     #endregion
 
@@ -91,36 +81,39 @@ public static class Logger
 
     /* --------------------------------------------------------------------- */
     ///
-    /// LogInfo
+    /// Info
     ///
     /// <summary>
-    /// Outputs log as INFO level.
+    /// Logs the specified message as Information level.
     /// </summary>
     ///
-    /// <param name="type">Target type information.</param>
-    /// <param name="values">User messages.</param>
+    /// <param name="message">Message to be output as log.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void LogInfo(this Type type, params string[] values) =>
-        _source.Log(LogLevel.Information, type, GetMessage(values));
+    public static void Info(string message,
+        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        _source.Log(GetLoggerName(path, n), LogLevel.Information, message);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// LogInfo
+    /// Info
     ///
     /// <summary>
-    /// Outputs system information as INFO level.
+    /// Logs the system information.
     /// </summary>
     ///
-    /// <param name="type">Target type information.</param>
-    /// <param name="assembly">Assembly object.</param>
+    /// <param name="src">Source assembly</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void LogInfo(this Type type, System.Reflection.Assembly assembly)
+    public static void Info(Assembly src, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
     {
-        LogInfo(type, $"{assembly.GetProduct()} {assembly.GetVersionString(4, true)}");
-        LogInfo(type, $"CLR {Environment.Version} ({Environment.OSVersion})");
-        LogInfo(type, $"{Environment.UserName}@{Environment.MachineName} ({CultureInfo.CurrentCulture})");
+        Info($"{src.GetProduct()} {src.GetVersionString(4, true)}", path, n);
+        Info($"CLR {Environment.Version} ({Environment.OSVersion})", path, n);
+        Info($"{Environment.UserName}@{Environment.MachineName} ({CultureInfo.CurrentCulture})", path, n);
     }
 
     #endregion
@@ -129,48 +122,54 @@ public static class Logger
 
     /* --------------------------------------------------------------------- */
     ///
-    /// LogWarn
+    /// Warn
     ///
     /// <summary>
-    /// Outputs log as WARN level.
+    /// Logs the specified message as Warning level.
     /// </summary>
     ///
-    /// <param name="type">Target type information.</param>
-    /// <param name="values">User messages.</param>
+    /// <param name="message">Message to be output as log.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void LogWarn(this Type type, params string[] values) =>
-        _source.Log(LogLevel.Warning, type, GetMessage(values));
+    public static void Warn(string message,
+        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        _source.Log(GetLoggerName(path, n), LogLevel.Warning, message);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// LogWarn
+    /// Warn
     ///
     /// <summary>
-    /// Outputs log as WARN level.
+    /// Logs the specified exception as Warning level.
     /// </summary>
     ///
-    /// <param name="type">Target type information.</param>
     /// <param name="error">Exception object.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void LogWarn(this Type type, Exception error) =>
-        _source.Log(LogLevel.Warning, type, GetErrorMessage(error));
+    public static void Warn(Exception error,
+        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        Warn(GetErrorMessage(error), path, n);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// LogWarn
+    /// Warn
     ///
     /// <summary>
-    /// Outputs log as WARN level when an exception occurs.
+    /// Logs as Warning level when the specified action throws an exception.
     /// </summary>
     ///
-    /// <param name="type">Target type information.</param>
-    /// <param name="action">Function to monitor.</param>
+    /// <param name="action">Action to monitor.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void LogWarn(this Type type, Action action) =>
-        Invoke(action, e => LogWarn(type, e));
+    public static void Warn(Action action,
+        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        Invoke(action, e => Warn(e, path, n));
 
     #endregion
 
@@ -178,48 +177,54 @@ public static class Logger
 
     /* --------------------------------------------------------------------- */
     ///
-    /// LogError
+    /// Error
     ///
     /// <summary>
-    /// Outputs log as ERROR level.
+    /// Logs the specified message as Error level.
     /// </summary>
     ///
-    /// <param name="type">Target type information.</param>
-    /// <param name="values">User messages.</param>
+    /// <param name="message">Message to be output as log.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void LogError(this Type type, params string[] values) =>
-        _source.Log(LogLevel.Error, type, GetMessage(values));
+    public static void Error(string message,
+        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        _source.Log(GetLoggerName(path, n), LogLevel.Error, message);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// LogError
+    /// Error
     ///
     /// <summary>
-    /// Outputs log as ERROR level.
+    /// Logs the specified exception as Error level.
     /// </summary>
     ///
-    /// <param name="type">Target type information.</param>
     /// <param name="error">Exception object.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void LogError(this Type type, Exception error) =>
-        _source.Log(LogLevel.Error, type, GetErrorMessage(error));
+    public static void Error(Exception error,
+        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        Error(GetErrorMessage(error), path, n);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// LogError
+    /// Error
     ///
     /// <summary>
-    /// Outputs log as ERROR level when an exception occurs.
+    /// Logs as Error level when the specified action throws an exception.
     /// </summary>
     ///
-    /// <param name="type">Target type information.</param>
-    /// <param name="action">Function to monitor.</param>
+    /// <param name="action">Action to monitor.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void LogError(this Type type, Action action) =>
-        Invoke(action, e => LogError(type, e));
+    public static void Error(Action action,
+        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        Invoke(action, e => Error(e, path, n));
 
     #endregion
 
@@ -230,18 +235,16 @@ public static class Logger
     /// ObserveTaskException
     ///
     /// <summary>
-    /// Observes UnobservedTaskException exceptions and outputs to the
-    /// log file.
+    /// Observes UnobservedTaskException exceptions and logs them.
     /// </summary>
     ///
-    /// <returns>Disposable object to stop to monitor.</returns>
-    ///
     /* --------------------------------------------------------------------- */
-    public static IDisposable ObserveTaskException()
+    public static void ObserveTaskException()
     {
-        TaskScheduler.UnobservedTaskException -= WhenTaskError;
-        TaskScheduler.UnobservedTaskException += WhenTaskError;
-        return Disposable.Create(() => TaskScheduler.UnobservedTaskException -= WhenTaskError);
+        static void f(object s, UnobservedTaskExceptionEventArgs e) => Error(e.Exception);
+        TaskScheduler.UnobservedTaskException -= f;
+        TaskScheduler.UnobservedTaskException += f;
+        _disposable.Add(Disposable.Create(() => TaskScheduler.UnobservedTaskException -= f));
     }
 
     #endregion
@@ -250,16 +253,22 @@ public static class Logger
 
     /* --------------------------------------------------------------------- */
     ///
-    /// GetMessage
+    /// GetLoggerName
     ///
     /// <summary>
-    /// Gets the message from the specified arguments.
+    /// Gets the logger name with the specified arguments.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static string GetMessage(string[] values) =>
-        values.Length == 1 ? values[0] :
-        values.Length  > 1 ? values.Join(Separator) : string.Empty;
+    private static string GetLoggerName(string path, int n)
+    {
+        if (!path.HasValue()) return $":{n}";
+
+        var p0 = Math.Min(path.LastIndexOfAny(new[] { '/', '\\' }) + 1, path.Length - 1);
+        var p1 = path.LastIndexOf('.');
+        var s = p1 > p0 ? path.Substring(p0, p1 - p0) : path.Substring(p0);
+        return $"{s}:{n}";
+    }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -290,21 +299,10 @@ public static class Logger
         catch (Exception err) { error(err); }
     }
 
-    /* --------------------------------------------------------------------- */
-    ///
-    /// WhenTaskError
-    ///
-    /// <summary>
-    /// Occurs when the UnobservedTaskException is raised.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static void WhenTaskError(object s, UnobservedTaskExceptionEventArgs e) =>
-        typeof(TaskScheduler).LogError(e.Exception);
-
     #endregion
 
     #region Fields
     private static ILoggerSource _source = new NullLoggerSource();
+    private static readonly DisposableContainer _disposable = new();
     #endregion
 }

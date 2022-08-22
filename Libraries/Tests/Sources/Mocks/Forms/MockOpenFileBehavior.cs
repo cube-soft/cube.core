@@ -66,9 +66,8 @@ public class MockOpenFileBehavior : MessageBehavior<OpenFileMessage>
         e.Value  = value;
         e.Cancel = false;
 
-        var src = typeof(MockOpenFileBehavior);
-        src.LogDebug(e.Text);
-        foreach (var s in value) src.LogDebug(s);
-        src.LogDebug(e.GetFilterText(), e.GetFilterIndex().ToString());
+        Logger.Debug(e.Text);
+        foreach (var s in value) Logger.Debug(s);
+        Logger.Debug($"{e.GetFilterIndex()} ({e.GetFilterText()})");
     }) { }
 }

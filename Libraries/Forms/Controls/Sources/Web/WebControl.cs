@@ -321,7 +321,7 @@ public partial class WebControl : WF.WebBrowser
             sb, sb.Capacity, ref size, 0
         );
 
-        if (result != 0) GetType().LogWarn($"UrlMkGetSessionOption:{result}");
+        if (result != 0) Logger.Warn($"UrlMkGetSessionOption:{result}");
         return result == 0 ? sb.ToString() : string.Empty;
     }
 
@@ -342,7 +342,7 @@ public partial class WebControl : WF.WebBrowser
         );
 
         if (result == 0) dest = value;
-        else GetType().LogWarn($"UrlMkSetSessionOption:{result}");
+        else Logger.Warn($"UrlMkSetSessionOption:{result}");
     }
 
     /* --------------------------------------------------------------------- */

@@ -93,7 +93,7 @@ public sealed class NoticeFacade
     /* --------------------------------------------------------------------- */
     public void Invoke(NoticeMessage src, NoticeResult result)
     {
-        try { GetType().LogDebug($"Result:{result}", $"Value:{src.Value}"); }
+        try { Logger.Debug($"Result:{result} Value:{src.Value}"); }
         finally
         {
             if (!_queue.Empty) Consume(true);
