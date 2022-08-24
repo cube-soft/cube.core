@@ -18,36 +18,35 @@
 namespace Cube.Tests;
 
 using Cube.FileSystem;
+using Cube.Mixin.Assembly;
+using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// FileFixture
+/// SourceFileFixture
 ///
 /// <summary>
-/// Provides functionality to load or save files for tests.
+/// Provides functionality to get example files.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public abstract class FileFixture : SourceFileFixture
+public abstract class SourceFileFixture
 {
     #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// FileFixture
+    /// SourceFileFixture
     ///
     /// <summary>
-    /// Initializes a new instance of the FileFixture class.
+    /// Initializes a new instance of the SourceFileFixture class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected FileFixture() : base()
+    protected SourceFileFixture()
     {
-        Name    = GetType().FullName;
-        Results = Io.Combine(Root, nameof(Results), Name);
-
-        Io.CreateDirectory(Results);
-        Delete(Results);
+        Root     = GetType().Assembly.GetDirectoryName();
+        Examples = Io.Combine(Root, nameof(Examples));
     }
 
     #endregion
@@ -56,25 +55,25 @@ public abstract class FileFixture : SourceFileFixture
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Results
+    /// Root
     ///
     /// <summary>
-    /// Gets the path of the directory that test results is saved.
+    /// Gets the path of the root directory that has test resources.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected string Results { get; }
+    protected string Root { get; }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Name
+    /// Examples
     ///
     /// <summary>
-    /// Gets the class name.
+    /// Gets the path of the directory that has example files for tests.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected string Name { get; }
+    protected string Examples { get; }
 
     #endregion
 
@@ -82,11 +81,11 @@ public abstract class FileFixture : SourceFileFixture
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Get
+    /// GetSource
     ///
     /// <summary>
     /// Gets the absolute path with the specified file or directory,
-    /// assuming that it is in the Results directory.
+    /// assuming that it is in the Examples directory.
     /// </summary>
     ///
     /// <param name="paths">
@@ -96,26 +95,19 @@ public abstract class FileFixture : SourceFileFixture
     /// <returns>Combined path.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected string Get(params string[] paths) => Io.Combine(Results, Io.Combine(paths));
-
-    #endregion
-
-    #region Implementations
+    protected string GetSource(params string[] paths) => Io.Combine(Examples, Io.Combine(paths));
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Delete
+    /// Teardown
     ///
     /// <summary>
-    /// Deletes all of files and directories in the specified path.
+    /// Invokes the tear-down operation.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void Delete(string directory)
-    {
-        foreach (var e in Io.GetFiles(directory)) { Io.Delete(e); }
-        foreach (var e in Io.GetDirectories(directory)) { Delete(e); Io.Delete(e); }
-    }
+    [TearDown]
+    protected virtual void Teardown() => Io.Configure(new());
 
     #endregion
 }
