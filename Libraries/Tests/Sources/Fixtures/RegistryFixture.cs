@@ -70,10 +70,10 @@ public abstract class RegistryFixture : FileFixture
 
     /* --------------------------------------------------------------------- */
     ///
-    /// MakeKeyName
+    /// GetKeyName
     ///
     /// <summary>
-    /// Combines the specified names with the RootKeyName value.
+    /// Gets the combined subkey name of the RootKeyName and specified names.
     /// </summary>
     ///
     /// <param name="names">List of subkey names to be combined.</param>
@@ -81,7 +81,7 @@ public abstract class RegistryFixture : FileFixture
     /// <returns>Combined subkey name.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected string MakeKeyName(params string[] names) => Io.Combine(RootKeyName, Io.Combine(names));
+    protected string GetKeyName(params string[] names) => Io.Combine(RootKeyName, Io.Combine(names));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -97,7 +97,7 @@ public abstract class RegistryFixture : FileFixture
     ///
     /* --------------------------------------------------------------------- */
     protected RegistryKey CreateKey(params string[] names) =>
-        Proxy.RootRegistryKey.CreateSubKey(MakeKeyName(names));
+        Proxy.RootRegistryKey.CreateSubKey(GetKeyName(names));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -113,7 +113,7 @@ public abstract class RegistryFixture : FileFixture
     ///
     /* --------------------------------------------------------------------- */
     protected RegistryKey OpenKey(params string[] names) =>
-        Proxy.RootRegistryKey.OpenSubKey(MakeKeyName(names), false);
+        Proxy.RootRegistryKey.OpenSubKey(GetKeyName(names), false);
 
     /* --------------------------------------------------------------------- */
     ///

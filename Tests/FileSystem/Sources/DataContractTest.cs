@@ -73,7 +73,7 @@ class DataContractTest : RegistryFixture
     [Test]
     public void Serialize_Registry()
     {
-        var name = MakeKeyName(nameof(Serialize_Registry));
+        var name = GetKeyName(nameof(Serialize_Registry));
 
         Format.Registry.Serialize(name, DummyFactory.Create());
         Format.Registry.Serialize(name, default(Dummy)); // ignore
@@ -112,7 +112,7 @@ class DataContractTest : RegistryFixture
     [Test]
     public void Serialize_Registry_Remove()
     {
-        var name = MakeKeyName(nameof(Serialize_Registry_Remove));
+        var name = GetKeyName(nameof(Serialize_Registry_Remove));
         var src  = DummyFactory.Create();
 
         Format.Registry.Serialize(name, src);
@@ -135,7 +135,7 @@ class DataContractTest : RegistryFixture
     [Test]
     public void Serialize_Registry_Add()
     {
-        var name = MakeKeyName(nameof(Serialize_Registry_Add));
+        var name = GetKeyName(nameof(Serialize_Registry_Add));
         var src  = DummyFactory.Create();
 
         Format.Registry.Serialize(name, src);
@@ -283,7 +283,7 @@ class DataContractTest : RegistryFixture
     public void Delete_Registry()
     {
         var fmt = Format.Registry;
-        var src = MakeKeyName(nameof(Delete_Registry));
+        var src = GetKeyName(nameof(Delete_Registry));
 
         Assert.That(fmt.Exists(src), Is.False);
         fmt.Serialize(src, DummyFactory.Create());

@@ -50,7 +50,7 @@ sealed class SettingFolderTest : RegistryFixture
     public void Load()
     {
         var fmt  = Format.Registry;
-        var name = MakeKeyName();
+        var name = GetKeyName();
 
         using var src = new SettingFolder<Dummy>(fmt, name, new()) { AutoSave = false };
         src.Load();
@@ -110,7 +110,7 @@ sealed class SettingFolderTest : RegistryFixture
     [Test]
     public void ReLoad()
     {
-        var name = MakeKeyName();
+        var name = GetKeyName();
 
         using var src = new SettingFolder<Dummy>(Format.Registry, name, new());
         src.AutoSave = false;
@@ -134,7 +134,7 @@ sealed class SettingFolderTest : RegistryFixture
     public void AutoSave()
     {
         var key  = nameof(AutoSave);
-        var name = MakeKeyName(key);
+        var name = GetKeyName(key);
         var ts   = TimeSpan.FromMilliseconds(100);
 
         using (var src = new SettingFolder<Dummy>(Format.Registry, name, new()))
@@ -174,7 +174,7 @@ sealed class SettingFolderTest : RegistryFixture
     ///
     /* --------------------------------------------------------------------- */
     [SetUp]
-    public void Setup() => Format.Registry.Serialize(MakeKeyName(), DummyFactory.Create());
+    public void Setup() => Format.Registry.Serialize(GetKeyName(), DummyFactory.Create());
 
     #endregion
 }
