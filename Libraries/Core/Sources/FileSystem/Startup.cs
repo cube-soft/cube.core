@@ -173,6 +173,7 @@ public class Startup : ObservableBase
         }
 
         using var sk = Open(true);
+        if (sk is null) return;
         if (isadd()) sk.SetValue(Name, Command);
         else sk.DeleteValue(Name, false);
     }
