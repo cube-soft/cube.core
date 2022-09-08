@@ -331,8 +331,11 @@ public class BorderlessWindow : Window
     /* --------------------------------------------------------------------- */
     protected virtual void OnNcHitTest(QueryMessage<Point, Position> e)
     {
-        NcHitTest?.Invoke(this, e);
-        if (!e.Cancel) return;
+        if (NcHitTest is not null)
+        {
+            NcHitTest(this, e);
+            if (e.Cancel) return;
+        }
 
         var result = this.HitTest(PointToClient(e.Source), Sizable ? SizeGrip : 0);
         var others = result == Position.NoWhere || result == Position.Client;
@@ -438,6 +441,7 @@ public class BorderlessWindow : Window
     /* --------------------------------------------------------------------- */
     protected override void WndProc(ref Message m)
     {
+        // Phase 1
         switch (m.Msg)
         {
             case 0x0001: // WM_CREATE (see remarks)
@@ -453,11 +457,6 @@ public class BorderlessWindow : Window
             case 0x0083: // WM_NCCALCSIZE
                 m.Result = IntPtr.Zero;
                 return;
-            case 0x0084: // WM_NCHITTEST
-                var e = Query.NewMessage<Point, Position>(CreatePoint(m.LParam));
-                OnNcHitTest(e);
-                if (!e.Cancel) m.Result = (IntPtr)e.Value;
-                break;
             case 0x0085: // WM_NCPAINT
                 m.Result = new IntPtr(1);
                 break;
@@ -478,10 +477,19 @@ public class BorderlessWindow : Window
                 }
                 finally { _fakeMode = false; }
                 return;
-            default:
+        }
+
+        base.WndProc(ref m);
+
+        // Phase 2
+        switch (m.Msg)
+        {
+            case 0x0084: // WM_NCHITTEST
+                var e = Query.NewMessage<Point, Position>(CreatePoint(m.LParam));
+                OnNcHitTest(e);
+                if (!e.Cancel) m.Result = (IntPtr)e.Value;
                 break;
         }
-        base.WndProc(ref m);
     }
 
     #endregion
