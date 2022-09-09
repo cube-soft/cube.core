@@ -20,9 +20,9 @@ namespace Cube.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cube.Mixin.Collections;
-using Cube.Mixin.Generic;
-using Cube.Mixin.String;
+using Cube.Collections.Extensions;
+using Cube.Generics.Extensions;
+using Cube.String.Extensions;
 using Microsoft.Win32;
 
 /* ------------------------------------------------------------------------- */

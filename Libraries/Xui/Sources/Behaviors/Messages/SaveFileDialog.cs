@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Xui.Behaviors;
 
-using Cube.Mixin.String;
+using Cube.String.Extensions;
 using Microsoft.Win32;
 
 /* ------------------------------------------------------------------------- */

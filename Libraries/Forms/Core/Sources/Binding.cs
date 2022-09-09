@@ -25,14 +25,14 @@ using System.Windows.Forms;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Extension
+/// Methods
 ///
 /// <summary>
 /// Provides extended methods about Binding functions.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public static class Extension
+public static class Methods
 {
     #region Bind
 

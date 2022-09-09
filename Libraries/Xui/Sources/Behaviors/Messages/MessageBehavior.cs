@@ -19,7 +19,7 @@ namespace Cube.Xui.Behaviors;
 
 using System;
 using System.Windows;
-using Cube.Mixin.Generic;
+using Cube.Generics.Extensions;
 using Microsoft.Xaml.Behaviors;
 
 /* ------------------------------------------------------------------------- */

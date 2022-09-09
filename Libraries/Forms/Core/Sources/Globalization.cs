@@ -23,14 +23,14 @@ using System.Windows.Forms;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Globalization.Extension
+/// Methods
 ///
 /// <summary>
 /// Provides the extended methods for i18n.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public static class Extension
+public static class Methods
 {
     #region Methods
 

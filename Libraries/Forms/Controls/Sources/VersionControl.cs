@@ -23,8 +23,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
-using Cube.Mixin.Assembly;
-using Cube.Mixin.String;
+using Cube.Reflection.Extensions;
+using Cube.String.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

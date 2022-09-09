@@ -19,7 +19,7 @@ namespace Cube.Forms.Demo;
 
 using System.Linq;
 using System.Threading;
-using Cube.Mixin.Generic;
+using Cube.Generics.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

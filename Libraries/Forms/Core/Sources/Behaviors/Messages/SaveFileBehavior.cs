@@ -18,7 +18,7 @@
 namespace Cube.Forms.Behaviors;
 
 using System.Windows.Forms;
-using Cube.Mixin.String;
+using Cube.String.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

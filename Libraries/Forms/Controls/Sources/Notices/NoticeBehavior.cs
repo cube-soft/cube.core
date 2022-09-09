@@ -20,8 +20,8 @@ namespace Cube.Forms.Behaviors;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Cube.Mixin.Forms;
-using Cube.Mixin.Tasks;
+using Cube.Forms.Extensions;
+using Cube.Tasks.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

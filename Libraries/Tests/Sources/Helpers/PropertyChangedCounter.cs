@@ -19,7 +19,7 @@ namespace Cube.Tests.Forms;
 
 using System.ComponentModel;
 using System.Threading;
-using Cube.Mixin.Observable;
+using Cube.Observable.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

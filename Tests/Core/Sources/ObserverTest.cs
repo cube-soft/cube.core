@@ -18,7 +18,7 @@
 namespace Cube.Tests;
 
 using System;
-using Cube.Mixin.Observable;
+using Cube.Observable.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */

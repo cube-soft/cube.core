@@ -20,7 +20,7 @@ namespace Cube.Tests;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Cube.Mixin.Iteration;
+using Cube.Syntax.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */

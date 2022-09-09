@@ -19,7 +19,7 @@ namespace Cube.FileSystem.Tests;
 
 using System;
 using System.Reflection;
-using Cube.Mixin.String;
+using Cube.String.Extensions;
 using Cube.Tests;
 using NUnit.Framework;
 

@@ -20,7 +20,7 @@ namespace Cube;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Cube.Mixin.Tasks;
+using Cube.Tasks.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

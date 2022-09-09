@@ -24,9 +24,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Cube.Mixin.Assembly;
-using Cube.Mixin.Collections;
-using Cube.Mixin.String;
+using Cube.Reflection.Extensions;
+using Cube.String.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

@@ -18,8 +18,8 @@
 namespace Cube.Xui.Tests.Behaviors;
 
 using System.Windows.Controls;
-using Cube.Mixin.Commands;
 using Cube.Xui.Behaviors;
+using Cube.Xui.Commands.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */

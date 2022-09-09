@@ -19,7 +19,7 @@ namespace Cube.Tests.Forms;
 
 using System.Collections.Generic;
 using Cube.Forms.Behaviors;
-using Cube.Mixin.Generic;
+using Cube.Generics.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

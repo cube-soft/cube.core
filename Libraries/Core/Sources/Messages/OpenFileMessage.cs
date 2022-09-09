@@ -20,7 +20,7 @@ namespace Cube;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.FileSystem;
-using Cube.Mixin.Generic;
+using Cube.Generics.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

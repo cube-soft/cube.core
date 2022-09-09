@@ -18,7 +18,7 @@
 namespace Cube.Xui.Behaviors;
 
 using System.Windows;
-using Cube.Mixin.Generic;
+using Cube.Generics.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

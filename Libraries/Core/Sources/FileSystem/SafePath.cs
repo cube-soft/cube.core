@@ -20,8 +20,8 @@ namespace Cube.FileSystem;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Collections;
-using Cube.Mixin.Collections;
-using Cube.Mixin.String;
+using Cube.Collections.Extensions;
+using Cube.String.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

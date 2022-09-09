@@ -19,7 +19,7 @@ namespace Cube.FileSystem;
 
 using System;
 using System.IO;
-using Cube.Mixin.Generic;
+using Cube.Generics.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

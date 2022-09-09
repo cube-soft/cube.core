@@ -18,8 +18,7 @@
 namespace Cube.Forms.Demo;
 
 using System;
-using System.Reflection;
-using Cube.Mixin.Collections;
+using Cube.Collections.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

@@ -23,7 +23,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Cube.Forms.Controls;
-using Cube.Mixin.Forms.Controls;
+using Cube.Forms.Controls.Extensions;
 using Microsoft.Win32;
 
 /* ------------------------------------------------------------------------- */

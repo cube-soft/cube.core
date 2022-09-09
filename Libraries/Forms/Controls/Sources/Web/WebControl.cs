@@ -20,7 +20,7 @@ namespace Cube.Forms.Controls;
 using System;
 using System.IO;
 using System.Text;
-using Cube.Mixin.String;
+using Cube.String.Extensions;
 using WF = System.Windows.Forms;
 
 /* ------------------------------------------------------------------------- */

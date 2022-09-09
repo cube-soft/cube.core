@@ -21,7 +21,7 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using Cube.Forms.Behaviors;
-using Cube.Mixin.Uri;
+using Cube.Web.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
