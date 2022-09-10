@@ -128,7 +128,7 @@ public class Startup : ObservableBase
     /* --------------------------------------------------------------------- */
     public string Command =>
         Source.HasValue() ?
-        Source.ToEnumerable().Concat(Arguments).Join(" ", e => e.Quote()) :
+        new[] { Source }.Concat(Arguments).Join(" ", e => e.Quote()) :
         string.Empty;
 
     #endregion

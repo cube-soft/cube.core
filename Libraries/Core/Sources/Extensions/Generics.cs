@@ -66,39 +66,4 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static T TryCast<T>(this object src, T error) => src is T dest ? dest : error;
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ToEnumerable(T)
-    ///
-    /// <summary>
-    /// Converts the specified type T object to IEnumerable(T) object.
-    /// </summary>
-    ///
-    /// <param name="src">Source value.</param>
-    ///
-    /// <returns>Collection that has only the specified value.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static IEnumerable<T> ToEnumerable<T>(this T src) { yield return src; }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Concat
-    ///
-    /// <summary>
-    /// Combines the specified items to the end of the specified source.
-    /// </summary>
-    ///
-    /// <param name="src">First item.</param>
-    /// <param name="items">Items to be combined.</param>
-    ///
-    /// <returns>Combined sequence.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static IEnumerable<T> Concat<T>(this T src, params T[] items)
-    {
-        yield return src;
-        foreach (var e in items) yield return e;
-    }
 }

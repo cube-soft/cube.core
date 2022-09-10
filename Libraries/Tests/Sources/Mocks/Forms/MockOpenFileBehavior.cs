@@ -46,7 +46,7 @@ public class MockOpenFileBehavior : MessageBehavior<OpenFileMessage>
     ///
     /* --------------------------------------------------------------------- */
     public MockOpenFileBehavior(string value, IAggregator aggregator) :
-        this(value.ToEnumerable(), aggregator) { }
+        this(new[] { value }, aggregator) { }
 
     /* --------------------------------------------------------------------- */
     ///

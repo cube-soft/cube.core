@@ -266,7 +266,6 @@ class EnumerableTest
         Assert.That(src.Concat(10, 20).Count(), Is.EqualTo(12));
         Assert.That(src.Concat(30).Count(),     Is.EqualTo(11));
         Assert.That(src.Concat().Count(),       Is.EqualTo(10));
-        Assert.That(1.Concat(2, 3, 4).Count(),  Is.EqualTo(4));
     }
 
     #endregion

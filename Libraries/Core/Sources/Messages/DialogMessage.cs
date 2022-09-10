@@ -103,7 +103,7 @@ public class DialogMessage : CancelMessage<DialogStatus>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public IEnumerable<DialogStatus> CancelCandidates { get; set; } = DialogStatus.Cancel.ToEnumerable();
+    public IEnumerable<DialogStatus> CancelCandidates { get; set; } = new[] { DialogStatus.Cancel };
 
     #endregion
 

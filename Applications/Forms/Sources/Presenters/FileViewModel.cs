@@ -82,7 +82,7 @@ public class FileViewModel : PresentableBase
     ///
     /* --------------------------------------------------------------------- */
     public void ShowOpenFileDialog() => Send(
-        new OpenFileMessage() { Value = Value.ToEnumerable() },
+        new OpenFileMessage() { Value = new[] { Value } },
         e => Value = e.First(),
         true
     );

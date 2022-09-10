@@ -81,7 +81,7 @@ class OpenFileMessageTest : FileFixture
     {
         var dest = new OpenFileMessage()
         {
-            Value   = Get(filename).ToEnumerable(),
+            Value   = new[] { Get(filename) },
             Filters = new FileDialogFilter[]
             {
                 new("Texts", ".txt"),
