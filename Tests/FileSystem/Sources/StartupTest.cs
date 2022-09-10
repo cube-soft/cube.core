@@ -116,7 +116,7 @@ class StartupTest : FileFixture
     /* --------------------------------------------------------------------- */
     private bool Exists(string name) => Registry.GetValue(
         @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", name, null
-    ) != null;
+    ) is not null;
 
     #endregion
 }

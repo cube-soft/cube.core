@@ -164,7 +164,7 @@ public abstract class Once<T> where T : class
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public bool Invoked => _value == null;
+    public bool Invoked => _value is null;
 
     #endregion
 
@@ -188,7 +188,7 @@ public abstract class Once<T> where T : class
         if (!Invoked)
         {
             var obj = Interlocked.Exchange(ref _value, null);
-            if (obj != null) { action(obj); return; }
+            if (obj is not null) { action(obj); return; }
         }
 
         if (!IgnoreTwice) throw new TwiceException();

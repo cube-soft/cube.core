@@ -136,7 +136,7 @@ public class PasswordBehavior : Behavior<PasswordBox>
     /* --------------------------------------------------------------------- */
     private void WhenViewPasswordChanged(object s, RoutedEventArgs e)
     {
-        if (AssociatedObject != null) Password = AssociatedObject.Password;
+        if (AssociatedObject is not null) Password = AssociatedObject.Password;
     }
 
     #endregion

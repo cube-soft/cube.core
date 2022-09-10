@@ -79,7 +79,7 @@ public static class Methods
     /* --------------------------------------------------------------------- */
     public static Uri With(this Uri src, IDictionary<string, string> query)
     {
-        if (src == null || query == null || query.Count <= 0) return src;
+        if (src is null || query is null || query.Count <= 0) return src;
 
         var dest = new UriBuilder(src);
         var str  = query.Join("&", e => $"{e.Key}={e.Value}");
@@ -175,7 +175,7 @@ public static class Methods
     /* --------------------------------------------------------------------- */
     public static Uri With(this Uri src, Utm utm)
     {
-        if (utm == null) return src;
+        if (utm is null) return src;
         var query = new Dictionary<string, string>();
         if (utm.Source.HasValue())   query.Add("utm_source", utm.Source);
         if (utm.Medium.HasValue())   query.Add("utm_medium", utm.Medium);

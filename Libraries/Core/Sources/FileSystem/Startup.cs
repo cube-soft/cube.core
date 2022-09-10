@@ -52,7 +52,11 @@ public class Startup : ObservableBase
     /* --------------------------------------------------------------------- */
     public Startup(string name)
     {
-        bool exists(string s) { using var k = Open(false); return k?.GetValue(s) != null; }
+        bool exists(string s)
+        {
+            using var k = Open(false);
+            return k?.GetValue(s) is not null;
+        }
 
         if (!name.HasValue()) throw new ArgumentException(nameof(name));
         Name    = name;

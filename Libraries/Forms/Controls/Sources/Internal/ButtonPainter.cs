@@ -150,7 +150,7 @@ internal class ButtonPainter
     /* --------------------------------------------------------------------- */
     protected virtual void OnPaint(System.Windows.Forms.PaintEventArgs e)
     {
-        if (e == null || e.Graphics == null) return;
+        if (e is null || e.Graphics is null) return;
 
         var gs = e.Graphics;
         var client = Source.ClientRectangle;
@@ -346,7 +346,7 @@ internal class ButtonPainter
 
         if (dest != Color.Empty) return dest;
 
-        for (var c = Source.Parent; c != null; c = c.Parent)
+        for (var c = Source.Parent; c is not null; c = c.Parent)
         {
             if (c.BackColor != Color.Empty) return c.BackColor;
         }

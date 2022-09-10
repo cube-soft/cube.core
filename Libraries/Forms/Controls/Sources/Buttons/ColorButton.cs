@@ -154,12 +154,12 @@ public class ColorButton : Button
             FullOpen       = FullOpen
         };
 
-        if (CustomColors != null) dialog.CustomColors = CustomColors.ToArray();
+        if (CustomColors is not null) dialog.CustomColors = CustomColors.ToArray();
 
         var result = dialog.ShowDialog();
 
         FullOpen = dialog.FullOpen;
-        if (CustomColors != null)
+        if (CustomColors is not null)
         {
             CustomColors.Clear();
             foreach (var color in dialog.CustomColors) CustomColors.Add(color);

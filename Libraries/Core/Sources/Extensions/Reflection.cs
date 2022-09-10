@@ -63,8 +63,7 @@ public static class Methods
     /// <returns>SoftwareVersion object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static SoftwareVersion GetSoftwareVersion(this Assembly src) =>
-        new(src.GetVersion());
+    public static SoftwareVersion GetSoftwareVersion(this Assembly src) => new(src.GetVersion());
 
     /* --------------------------------------------------------------------- */
     ///
@@ -129,7 +128,11 @@ public static class Methods
     /// <returns>Filename value.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string GetFileName(this Assembly src) => Io.Get(src.GetLocation()).Name;
+    public static string GetFileName(this Assembly src)
+    {
+        var path = src.GetLocation();
+        return path.HasValue() ? Io.Get(path).Name : string.Empty;
+    }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -144,7 +147,11 @@ public static class Methods
     /// <returns>Path of the located directory.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string GetDirectoryName(this Assembly src) => Io.Get(src.GetLocation()).DirectoryName;
+    public static string GetDirectoryName(this Assembly src)
+    {
+        var path = src.GetLocation();
+        return path.HasValue() ? Io.Get(path).DirectoryName : string.Empty;
+    }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -310,7 +317,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     private static T Get<T>(this Assembly src) where T : class =>
-        src != null ?
+        src is not null ?
         Attribute.GetCustomAttribute(src, typeof(T)) as T :
         default;
 

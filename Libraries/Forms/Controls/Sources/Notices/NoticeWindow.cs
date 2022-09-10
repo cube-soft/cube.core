@@ -184,24 +184,24 @@ public class NoticeWindow : BorderlessWindow
     /* --------------------------------------------------------------------- */
     public void Set(NoticeStyle src)
     {
-        if (src == null) return;
+        if (src is null) return;
 
-        if (src.Image != null)
+        if (src.Image is not null)
         {
             if (src.Image.Color != Color.Empty) _image.Style.Default.BackColor = src.Image.Color;
-            if (src.Image.Value != null) _image.Style.Default.Image = src.Image.Value;
+            if (src.Image.Value is not null) _image.Style.Default.Image = src.Image.Value;
         }
 
-        if (src.Title != null)
+        if (src.Title is not null)
         {
             if (src.Title.Color != Color.Empty) _title.Style.Default.ContentColor = src.Title.Color;
-            if (src.Title.Font != null) _title.Font = src.Title.Font;
+            if (src.Title.Font is not null) _title.Font = src.Title.Font;
         }
 
-        if (src.Text != null)
+        if (src.Text is not null)
         {
             if (src.Text.Color != Color.Empty) _text.Style.Default.ContentColor = src.Text.Color;
-            if (src.Text.Font != null) _text.Font = src.Text.Font;
+            if (src.Text.Font is not null) _text.Font = src.Text.Font;
         }
 
         if (src.Color != Color.Empty)

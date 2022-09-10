@@ -107,12 +107,12 @@ partial class WebControl
     {
         using var root = OpenFeatureControl();
         using var sk   = root?.OpenSubKey(_RegEmulation, false);
-        if (sk == null) return WebControlVersion.IE7;
+        if (sk is null) return WebControlVersion.IE7;
 
         var module   = Process.GetCurrentProcess().MainModule;
         var filename = Path.GetFileName(module.FileName);
-        var version  = sk.GetValue(filename);
-        return version != null ? (WebControlVersion)version : WebControlVersion.IE7;
+        var obj      = sk.GetValue(filename);
+        return obj is WebControlVersion version ? version : WebControlVersion.IE7;
     }
 
     /* --------------------------------------------------------------------- */
@@ -128,7 +128,7 @@ partial class WebControl
     {
         using var root = OpenFeatureControl(true);
         using var sk   = root?.CreateSubKey(_RegEmulation);
-        if (sk == null) return;
+        if (sk is null) return;
 
         var module   = Process.GetCurrentProcess().MainModule;
         var filename = Path.GetFileName(module.FileName);
@@ -153,12 +153,12 @@ partial class WebControl
     {
         using var root = OpenFeatureControl();
         using var sk   = root?.OpenSubKey(_RegRendering, false);
-        if (sk == null) return false;
+        if (sk is null) return false;
 
         var module   = Process.GetCurrentProcess().MainModule;
         var filename = Path.GetFileName(module.FileName);
         var value    = sk.GetValue(filename);
-        return value != null && (int)value == 1;
+        return value is not null && (int)value == 1;
     }
 
     /* --------------------------------------------------------------------- */
@@ -174,7 +174,7 @@ partial class WebControl
     {
         using var root = OpenFeatureControl(true);
         using var sk   = root?.CreateSubKey(_RegRendering);
-        if (sk == null) return;
+        if (sk is null) return;
 
         var module   = Process.GetCurrentProcess().MainModule;
         var filename = Path.GetFileName(module.FileName);
@@ -201,12 +201,12 @@ partial class WebControl
 
         using var root = OpenFeatureControl();
         using var sk = root?.OpenSubKey(_RegMaxConnections, false);
-        if (sk == null) return default_max_connection;
+        if (sk is null) return default_max_connection;
 
         var module   = Process.GetCurrentProcess().MainModule;
         var filename = Path.GetFileName(module.FileName);
-        var value    = sk.GetValue(filename);
-        return value != null ? (int)value : default_max_connection;
+        var obj      = sk.GetValue(filename);
+        return obj is int value ? value : default_max_connection;
     }
 
     /* ----------------------------------------------------------------- */
@@ -228,8 +228,8 @@ partial class WebControl
 
         var module   = Process.GetCurrentProcess().MainModule;
         var filename = Path.GetFileName(module.FileName);
-        if (sk != null) sk.SetValue(filename, number);
-        if (sk10 != null) sk10.SetValue(filename, number);
+        if (sk is not null) sk.SetValue(filename, number);
+        if (sk10 is not null) sk10.SetValue(filename, number);
     }
 
     #endregion
@@ -301,7 +301,7 @@ partial class WebControl
 
         var value = sk?.GetValue("svcVersion") as string ??
                     sk?.GetValue("Version")    as string;
-        if (value == null) return WebControlVersion.IE7;
+        if (value is null) return WebControlVersion.IE7;
 
         var src = int.Parse(value.Substring(0, value.IndexOf('.')));
         return GetVersionMap().TryGetValue(src, out var dest) ?

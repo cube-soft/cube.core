@@ -90,7 +90,7 @@ public static class Methods
     public static T GetValue<T>(this RegistryKey src, string subkey, string name, T defaultValue)
     {
         using var sk = src.OpenSubKey(subkey, false);
-        return sk != null ?
+        return sk is not null ?
                sk.GetValue(name, defaultValue).TryCast(defaultValue) :
                defaultValue;
     }

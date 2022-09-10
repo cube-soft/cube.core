@@ -106,7 +106,7 @@ public class Window : Form, IBinder
     /* --------------------------------------------------------------------- */
     public void Bind(IBindable src)
     {
-        if (Bindable != null) return;
+        if (Bindable is not null) return;
         Bindable = src;
         OnBind(src);
     }

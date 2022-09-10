@@ -378,7 +378,7 @@ public class BorderlessWindow : Window
     protected override void OnActivated(EventArgs e)
     {
         base.OnActivated(e);
-        if (Caption == null || !CaptionMonitoring) return;
+        if (Caption is null || !CaptionMonitoring) return;
         Caption.Active = true;
     }
 
@@ -394,7 +394,7 @@ public class BorderlessWindow : Window
     protected override void OnDeactivate(EventArgs e)
     {
         base.OnDeactivate(e);
-        if (Caption == null || !CaptionMonitoring) return;
+        if (Caption is null || !CaptionMonitoring) return;
         Caption.Active = false;
     }
 
@@ -643,7 +643,7 @@ public class BorderlessWindow : Window
                       FormWindowState.Maximized :
                       FormWindowState.Normal;
 
-        if (Caption != null) Caption.WindowState = WindowState;
+        if (Caption is not null) Caption.WindowState = WindowState;
     }
 
     /* --------------------------------------------------------------------- */
@@ -660,7 +660,7 @@ public class BorderlessWindow : Window
         var state = FormWindowState.Minimized;
         if (WindowState == state) return;
         WindowState = state;
-        if (Caption != null) Caption.WindowState = WindowState;
+        if (Caption is not null) Caption.WindowState = WindowState;
     }
 
     /* --------------------------------------------------------------------- */
@@ -681,7 +681,7 @@ public class BorderlessWindow : Window
         var grayed  = 0x0001u; // MF_GRAYED
         var normal  = (WindowState == FormWindowState.Normal);
         var sizable = (Sizable && normal) ? enabled : grayed;
-        var movable = (Caption != null && normal) ? enabled : grayed;
+        var movable = (Caption is not null && normal) ? enabled : grayed;
 
         _ = User32.NativeMethods.EnableMenuItem(menu, 0xf000 /* SC_SIZE */, sizable);
         _ = User32.NativeMethods.EnableMenuItem(menu, 0xf010 /* SC_MOVE */, movable);
@@ -704,7 +704,7 @@ public class BorderlessWindow : Window
     /* --------------------------------------------------------------------- */
     private bool IsCaption(Point absolute)
     {
-        if (Caption == null) return false;
+        if (Caption is null) return false;
         var p = Caption.PointToClient(absolute);
         return p.X >= 0 && p.X <= Caption.ClientSize.Width &&
                p.Y >= 0 && p.Y <= Caption.ClientSize.Height;
@@ -739,9 +739,9 @@ public class BorderlessWindow : Window
     /* --------------------------------------------------------------------- */
     private void Attach(CaptionControl caption)
     {
-        if (caption == null) return;
-        if (caption.MaximizeControl != null) caption.MaximizeControl.Enabled = MaximizeBox;
-        if (caption.MinimizeControl != null) caption.MinimizeControl.Enabled = MinimizeBox;
+        if (caption is null) return;
+        if (caption.MaximizeControl is not null) caption.MaximizeControl.Enabled = MaximizeBox;
+        if (caption.MinimizeControl is not null) caption.MinimizeControl.Enabled = MinimizeBox;
         if (CaptionMonitoring)
         {
             caption.MaximizeRequested += WhenMaximizeRequested;
@@ -761,7 +761,7 @@ public class BorderlessWindow : Window
     /* --------------------------------------------------------------------- */
     private void Detach(CaptionControl caption)
     {
-        if (caption == null) return;
+        if (caption is null) return;
 
         caption.MaximizeRequested -= WhenMaximizeRequested;
         caption.MinimizeRequested -= WhenMinimizeRequested;

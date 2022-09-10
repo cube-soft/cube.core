@@ -109,9 +109,9 @@ public class CaptionControl : ControlBase
             if (_maximize == value) return;
 
             void handler(object s, EventArgs e) => OnMaximizeRequested(e);
-            if (_maximize != null) _maximize.Click -= handler;
+            if (_maximize is not null) _maximize.Click -= handler;
             _maximize = value;
-            if (_maximize != null) _maximize.Click += handler;
+            if (_maximize is not null) _maximize.Click += handler;
         }
     }
 
@@ -134,9 +134,9 @@ public class CaptionControl : ControlBase
             if (_minimize == value) return;
 
             void handler(object s, EventArgs e) => OnMinmizeRequested(e);
-            if (_minimize != null) _minimize.Click -= handler;
+            if (_minimize is not null) _minimize.Click -= handler;
             _minimize = value;
-            if (_minimize != null) _minimize.Click += handler;
+            if (_minimize is not null) _minimize.Click += handler;
         }
     }
 
@@ -159,9 +159,9 @@ public class CaptionControl : ControlBase
             if (_close == value) return;
 
             void handler(object s, EventArgs e) => OnCloseRequested(e);
-            if (_close != null) _close.Click -= handler;
+            if (_close is not null) _close.Click -= handler;
             _close = value;
-            if (_close != null) _close.Click += handler;
+            if (_close is not null) _close.Click += handler;
         }
     }
 

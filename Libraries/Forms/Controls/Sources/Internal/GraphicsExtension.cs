@@ -98,7 +98,7 @@ internal static class GraphicsExtension
     public static void DrawImage(this Graphics gs,
         Rectangle bounds, Image image, ContentAlignment align)
     {
-        if (image == null) return;
+        if (image is null) return;
         var rect = GetDrawBounds(bounds, image, align);
         gs.DrawImage(image, rect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
     }
@@ -115,7 +115,7 @@ internal static class GraphicsExtension
     public static void DrawImage(this Graphics gs,
         Rectangle bounds, Image image, ImageLayout layout)
     {
-        if (image == null) return;
+        if (image is null) return;
 
         switch (layout)
         {

@@ -97,7 +97,7 @@ public static class Methods
     {
         var key = GetEventKey(src, name);
         var map = GetEventHandlers(src);
-        return key != null && map?[key] != null;
+        return key is not null && map?[key] is not null;
     }
 
     #endregion
@@ -118,7 +118,7 @@ public static class Methods
         static MethodInfo method(Type t)
         {
             var mi = t.GetMethod("get_Events", GetAllFlags());
-            if (mi == null && t.BaseType != null) mi = method(t.BaseType);
+            if (mi is null && t.BaseType is not null) mi = method(t.BaseType);
             return mi;
         }
         return method(obj.GetType())?.Invoke(obj, new object[0]) as EventHandlerList;
@@ -138,7 +138,7 @@ public static class Methods
         static FieldInfo method(Type t, string n)
         {
             var fi = t.GetField($"Event{n}", GetAllFlags());
-            if (fi == null && t.BaseType != null) fi = method(t.BaseType, n);
+            if (fi is null && t.BaseType is not null) fi = method(t.BaseType, n);
             return fi;
         }
         return method(obj.GetType(), name)?.GetValue(obj);

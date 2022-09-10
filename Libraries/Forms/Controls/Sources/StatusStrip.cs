@@ -99,7 +99,7 @@ public class StatusStrip : System.Windows.Forms.StatusStrip
             _ = User32.NativeMethods.ReleaseCapture();
 
             var form = FindForm();
-            if (form == null) return;
+            if (form is null) return;
 
             _ = User32.NativeMethods.SendMessage(
                 form.Handle,
@@ -173,7 +173,7 @@ public class StatusStrip : System.Windows.Forms.StatusStrip
     private bool IsNormalWindow()
     {
         var form = FindForm();
-        return form != null &&
+        return form is not null &&
                form.WindowState == System.Windows.Forms.FormWindowState.Normal;
     }
 

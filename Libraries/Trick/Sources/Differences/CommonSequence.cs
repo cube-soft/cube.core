@@ -122,7 +122,7 @@ internal class CommonSequence<T>
         var top     = default(CommonSequence<T>);
         var current = this;
 
-        while (current != null)
+        while (current is not null)
         {
             var next = current.Next;
             current.Next = top;
@@ -151,7 +151,7 @@ internal class CommonSequence<T>
         var prev0  = 0;
         var prev1  = 0;
 
-        while (seq != null)
+        while (seq is not null)
         {
             var start0 = swap ? seq.NewerStart : seq.OlderStart;
             var start1 = swap ? seq.OlderStart : seq.NewerStart;

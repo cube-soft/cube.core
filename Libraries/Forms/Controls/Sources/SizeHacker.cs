@@ -150,7 +150,7 @@ public class SizeHacker : DisposableBase
         if (e.Button != MouseButtons.None || s is not Control control) return;
 
         var form = control.FindForm();
-        if (form == null || form.WindowState != FormWindowState.Normal) return;
+        if (form is null || form.WindowState != FormWindowState.Normal) return;
 
         var point  = form.PointToClient(control.PointToScreen(e.Location));
         var cursor = form.HitTest(point, SizeGrip).ToCursor();
@@ -172,7 +172,7 @@ public class SizeHacker : DisposableBase
         if (s is not Control control) return;
 
         var form = control.FindForm();
-        if (form == null || form.WindowState != FormWindowState.Normal) return;
+        if (form is null || form.WindowState != FormWindowState.Normal) return;
 
         var point  = form.PointToClient(control.PointToScreen(e.Location));
         var result = form.HitTest(point, SizeGrip);

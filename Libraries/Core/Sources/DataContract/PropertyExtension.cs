@@ -50,7 +50,7 @@ internal static class PropertyExtension
     ///
     /* --------------------------------------------------------------------- */
     public static object Parse(this Type src, object value) =>
-        value == null ? null :
+        value is null ? null :
         src.IsEnum ? value :
         src == typeof(DateTime) ? DateTime.Parse(value as string).ToLocalTime() :
         Convert.ChangeType(value, src);
@@ -138,7 +138,7 @@ internal static class PropertyExtension
         if (!Attribute.IsDefined(info, typeof(DataMemberAttribute))) return null;
 
         var obj = info.GetCustomAttributes(typeof(DataMemberAttribute), false);
-        if (obj == null || obj.Length == 0) return info.Name;
+        if (obj is null || obj.Length == 0) return info.Name;
 
         var attr = obj[0] as DataMemberAttribute;
         return attr?.Name ?? info.Name;

@@ -106,7 +106,7 @@ public class OnpAlgorithm<T>
     /* --------------------------------------------------------------------- */
     public IEnumerable<Result<T>> Compare(T[] older, T[] newer, Condition mask)
     {
-        if (older == null || older.Length == 0 || newer == null || newer.Length == 0)
+        if (older is null || older.Length == 0 || newer is null || newer.Length == 0)
         {
             return CompareEmpty(older, newer, mask);
         }
@@ -149,7 +149,7 @@ public class OnpAlgorithm<T>
     /* --------------------------------------------------------------------- */
     private IEnumerable<Result<T>> Compare(Condition mask)
     {
-        Debug.Assert(_older != null && _newer != null && _older.Length <= _newer.Length);
+        Debug.Assert(_older is not null && _newer is not null && _older.Length <= _newer.Length);
 
         _fp = new Snake[_older.Length + _newer.Length + 3];
 

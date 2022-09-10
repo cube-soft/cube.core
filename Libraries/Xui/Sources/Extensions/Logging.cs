@@ -48,19 +48,19 @@ public static class Methods
     public static void ObserveUiException(this Application src)
     {
         static void f0(object s, DispatcherUnhandledExceptionEventArgs e) => Logger.Error(e.Exception);
-        if (src != null)
+        if (src is not null)
         {
             src.DispatcherUnhandledException += f0;
             _disposable.Add(Disposable.Create(() => {
-                if (src != null) src.DispatcherUnhandledException -= f0;
+                if (src is not null) src.DispatcherUnhandledException -= f0;
             }));
         }
 
         static void f1(object s, UnhandledExceptionEventArgs e) => Logger.Error(e.ExceptionObject as Exception);
-        if (AppDomain.CurrentDomain != null) {
+        if (AppDomain.CurrentDomain is not null) {
             AppDomain.CurrentDomain.UnhandledException += f1;
             _disposable.Add(Disposable.Create(() => {
-                if (AppDomain.CurrentDomain != null) AppDomain.CurrentDomain.UnhandledException -= f1;
+                if (AppDomain.CurrentDomain is not null) AppDomain.CurrentDomain.UnhandledException -= f1;
             }));
         }
     }

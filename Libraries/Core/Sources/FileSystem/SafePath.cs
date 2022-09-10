@@ -351,7 +351,7 @@ public sealed class SafePath
     /* --------------------------------------------------------------------- */
     private EscapedObject EscapeOnce()
     {
-        if (_obj == null)
+        if (_obj is null)
         {
             var k = !Source.HasValue()                         ? PathKind.Normal :
                     Source.FuzzyStartsWith(InactivationSymbol) ? PathKind.Inactivation :

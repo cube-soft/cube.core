@@ -67,7 +67,7 @@ public static class Methods
     /* --------------------------------------------------------------------- */
     public static BitmapImage ToBitmapImage(this Source src, bool dispose)
     {
-        if (src == null) return default;
+        if (src is null) return default;
         try
         {
             if (TryGetObject(src, true,  out var e0)) return e0;

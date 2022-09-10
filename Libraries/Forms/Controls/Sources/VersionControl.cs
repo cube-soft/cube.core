@@ -82,7 +82,7 @@ public class VersionControl : ControlBase
             if (_image.Image == value) return;
             _image.Image = value;
 
-            var show = (value != null);
+            var show = value is not null;
             _panel.Panel1Collapsed  = !show;
             _panel.SplitterDistance = show ? Math.Max(value.Width, 1) : 1;
             _panel.SplitterWidth    = show ? 8 : 1;
@@ -303,7 +303,7 @@ public class VersionControl : ControlBase
         _copyright.TabIndex = index++;
         _copyright.LinkClicked += (s, e) =>
         {
-            if (Uri == null) return;
+            if (Uri is null) return;
             Logger.Warn(() => Process.Start(Uri.ToString()));
         };
 

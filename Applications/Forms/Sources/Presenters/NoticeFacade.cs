@@ -117,8 +117,8 @@ public sealed class NoticeFacade
     private void Consume(bool continuous)
     {
         if (_queue.Empty) return;
-        if (!continuous && _busy != null) return;
-        if (!continuous && Interlocked.Exchange(ref _busy, new()) != null) return;
+        if (!continuous && _busy is not null) return;
+        if (!continuous && Interlocked.Exchange(ref _busy, new()) is not null) return;
         Notify?.Invoke(_queue.Dequeue());
     }
 

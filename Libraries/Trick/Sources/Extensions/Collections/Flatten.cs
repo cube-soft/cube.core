@@ -63,7 +63,7 @@ public static class FlattenMethods
     /* --------------------------------------------------------------------- */
     private static IEnumerable<T> Flatten<T>(this IEnumerable<T> src, Func<T, IEnumerable<T>, IEnumerable<T>> func) =>
         src.Concat(
-            src.Where(e => func(e, src) != null)
+            src.Where(e => func(e, src) is not null)
                .SelectMany(e => func(e, src).Flatten(func))
         );
 }

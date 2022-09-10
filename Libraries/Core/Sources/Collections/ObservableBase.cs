@@ -103,7 +103,7 @@ public abstract class ObservableBase<T> : EnumerableBase<T>, INotifyCollectionCh
     /* --------------------------------------------------------------------- */
     protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
-        if (CollectionChanged != null) Dispatcher.Invoke(() => CollectionChanged(this, e));
+        if (CollectionChanged is not null) Dispatcher.Invoke(() => CollectionChanged(this, e));
     }
 
     #endregion

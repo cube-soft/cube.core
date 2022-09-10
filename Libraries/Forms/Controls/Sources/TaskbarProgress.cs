@@ -136,7 +136,7 @@ public class TaskbarProgress : ObservableBase
     {
         get
         {
-            if (IsSupported && _core == null)
+            if (IsSupported && _core is null)
             {
                 try { _core = (ITaskbarList3)new TaskbarListInstance(); }
                 catch (Exception err)

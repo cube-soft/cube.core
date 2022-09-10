@@ -58,7 +58,7 @@ public static class FileIcon
 
         var s1 = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950"); // IID_IImageList
         var r1 = Shell32.NativeMethods.SHGetImageList((uint)size, s1, out var images);
-        if (r1 != 0 || images == null) return default;
+        if (r1 != 0 || images is null) return default;
 
         var s2 = IntPtr.Zero;
         var f2 = 0x01; // ILD_TRANSPARENT

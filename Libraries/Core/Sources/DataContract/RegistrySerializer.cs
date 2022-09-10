@@ -65,14 +65,14 @@ internal class RegistrySerializer
     /* --------------------------------------------------------------------- */
     private void Set(Type type, RegistryKey dest, object src)
     {
-        if (dest == null || src == null) return;
+        if (dest is null || src is null) return;
         foreach (var pi in type.GetProperties())
         {
             var key = pi.GetDataMemberName();
             if (!key.HasValue()) continue;
 
             var value = pi.GetValue(src, null);
-            if (value == null) continue;
+            if (value is null) continue;
 
             var pt = pi.GetPropertyType();
             if (pt.IsEnum) dest.SetValue(key, (int)value);
@@ -143,7 +143,7 @@ internal class RegistrySerializer
     private void SetList(Type type, RegistryKey dest, IList src)
     {
         var ga = type.GetGenericArguments();
-        if (ga == null || ga.Length != 1) return;
+        if (ga is null || ga.Length != 1) return;
 
         var n = Digit(src.Count);
 
@@ -182,7 +182,7 @@ internal class RegistrySerializer
     private void Create(RegistryKey dest, string name, Action<RegistryKey> callback)
     {
         using var e = dest.CreateSubKey(name);
-        if (e != null) callback(e);
+        if (e is not null) callback(e);
     }
 
     /* --------------------------------------------------------------------- */

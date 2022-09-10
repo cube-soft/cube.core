@@ -76,7 +76,7 @@ public class PasswordLintBehavior : DisposableBase
         _master.TextChanged  += WhenPasswordChanged;
         _confirm.TextChanged += WhenConfirmChanged;
 
-        if (_show != null)
+        if (_show is not null)
         {
             _master.UseSystemPasswordChar = !_show.Checked;
             _show.CheckedChanged += WhenShowPasswordChanged;
@@ -233,9 +233,9 @@ public class PasswordLintBehavior : DisposableBase
     {
         if (disposing)
         {
-            if (_master  != null) _master.TextChanged  -= WhenPasswordChanged;
-            if (_confirm != null) _confirm.TextChanged -= WhenConfirmChanged;
-            if (_show    != null) _show.CheckedChanged -= WhenShowPasswordChanged;
+            if (_master  is not null) _master.TextChanged  -= WhenPasswordChanged;
+            if (_confirm is not null) _confirm.TextChanged -= WhenConfirmChanged;
+            if (_show    is not null) _show.CheckedChanged -= WhenShowPasswordChanged;
         }
     }
 

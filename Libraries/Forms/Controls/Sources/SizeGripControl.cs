@@ -95,7 +95,7 @@ public class SizeGripControl : System.Windows.Forms.PictureBox
         if (e.Button == MouseButtons.None)
         {
             var form = FindForm();
-            if (form != null && form.WindowState == FormWindowState.Normal) Cursor = Cursors.SizeNWSE;
+            if (form is not null && form.WindowState == FormWindowState.Normal) Cursor = Cursors.SizeNWSE;
         }
         else base.OnMouseMove(e);
     }
@@ -112,7 +112,7 @@ public class SizeGripControl : System.Windows.Forms.PictureBox
     protected override void OnMouseDown(MouseEventArgs e)
     {
         var form = FindForm();
-        if (form != null && form.WindowState == FormWindowState.Normal)
+        if (form is not null && form.WindowState == FormWindowState.Normal)
         {
             _= User32.NativeMethods.ReleaseCapture();
             _= User32.NativeMethods.SendMessage(form.Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)Position.BottomRight, IntPtr.Zero);

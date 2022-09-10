@@ -291,7 +291,7 @@ public partial class WebControl : WF.WebBrowser
     /* --------------------------------------------------------------------- */
     protected override void DetachSink()
     {
-        if (_cookie != null)
+        if (_cookie is not null)
         {
             _cookie.Disconnect();
             _cookie = null;
@@ -357,7 +357,7 @@ public partial class WebControl : WF.WebBrowser
     private void CloseForm()
     {
         var form = FindForm();
-        if (form != null && !form.IsDisposed) form.Close();
+        if (form is not null && !form.IsDisposed) form.Close();
     }
 
     #endregion

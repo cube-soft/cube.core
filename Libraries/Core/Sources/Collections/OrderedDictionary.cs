@@ -63,7 +63,7 @@ public class OrderedDictionary<TKey, TValue> :
     /* --------------------------------------------------------------------- */
     public OrderedDictionary(IDictionary<TKey, TValue> cp)
     {
-        if (cp == null) return;
+        if (cp is null) return;
         foreach (KeyValuePair<TKey, TValue> kv in cp) _core.Add(kv.Key, kv.Value);
     }
 
@@ -323,7 +323,7 @@ public class OrderedDictionary<TKey, TValue> :
     /* --------------------------------------------------------------------- */
     public void CopyTo(KeyValuePair<TKey, TValue>[] dest, int offset)
     {
-        if (dest == null) throw new ArgumentNullException(nameof(dest));
+        if (dest is null) throw new ArgumentNullException(nameof(dest));
         if (offset < 0 || offset >= dest.Length) throw new ArgumentOutOfRangeException();
         if (dest.Length - offset < _core.Count) throw new ArgumentException("too small array");
 

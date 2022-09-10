@@ -130,7 +130,7 @@ public class NoticeBehavior : MessageBehaviorBase<NoticeMessage>
     private async Task ShowAsync(NoticeMessage src)
     {
         var view   = View ?? new NoticeWindow();
-        var shared = View != null;
+        var shared = View is not null;
         var cts    = new CancellationTokenSource();
 
         void handler(object s, ValueEventArgs<NoticeResult> e)
