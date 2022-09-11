@@ -52,21 +52,6 @@ class StringTest
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Unify
-    ///
-    /// <summary>
-    /// Executes the test of the Unify extended method.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [TestCase("Hello", ExpectedResult = "Hello")]
-    [TestCase("こんにちは", ExpectedResult = "こんにちは")]
-    [TestCase("", ExpectedResult = "")]
-    [TestCase(default(string), ExpectedResult = "")]
-    public string Unify(string src) => src.Unify();
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// Quote
     ///
     /// <summary>

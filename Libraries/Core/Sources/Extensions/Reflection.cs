@@ -98,7 +98,7 @@ public static class Methods
     /// <returns>String value of the assembly name.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string GetNameString(this Assembly src) => Unify(src.GetName().Name);
+    public static string GetNameString(this Assembly src) => GetOrEmpty(src.GetName().Name);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -113,7 +113,7 @@ public static class Methods
     /// <returns>Path of the location.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string GetLocation(this Assembly src) => Unify(src.Location);
+    public static string GetLocation(this Assembly src) => GetOrEmpty(src.Location);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -167,7 +167,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static string GetTitle(this Assembly src) =>
-        Unify(src.Get<AssemblyTitleAttribute>()?.Title);
+        GetOrEmpty(src.Get<AssemblyTitleAttribute>()?.Title);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -183,7 +183,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static string GetDescription(this Assembly src) =>
-        Unify(src.Get<AssemblyDescriptionAttribute>()?.Description);
+        GetOrEmpty(src.Get<AssemblyDescriptionAttribute>()?.Description);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -199,7 +199,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static string GetCompany(this Assembly src) =>
-        Unify(src.Get<AssemblyCompanyAttribute>()?.Company);
+        GetOrEmpty(src.Get<AssemblyCompanyAttribute>()?.Company);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -215,7 +215,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static string GetProduct(this Assembly src) =>
-        Unify(src.Get<AssemblyProductAttribute>()?.Product);
+        GetOrEmpty(src.Get<AssemblyProductAttribute>()?.Product);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -231,7 +231,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static string GetCopyright(this Assembly src) =>
-        Unify(src.Get<AssemblyCopyrightAttribute>()?.Copyright);
+        GetOrEmpty(src.Get<AssemblyCopyrightAttribute>()?.Copyright);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -247,7 +247,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static string GetTrademark(this Assembly src) =>
-        Unify(src.Get<AssemblyTrademarkAttribute>()?.Trademark);
+        GetOrEmpty(src.Get<AssemblyTrademarkAttribute>()?.Trademark);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -263,7 +263,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static string GetConfiguration(this Assembly src) =>
-        Unify(src.Get<AssemblyConfigurationAttribute>()?.Configuration);
+        GetOrEmpty(src.Get<AssemblyConfigurationAttribute>()?.Configuration);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -279,7 +279,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static string GetCulture(this Assembly src) =>
-        Unify(src.Get<AssemblyCultureAttribute>()?.Culture);
+        GetOrEmpty(src.Get<AssemblyCultureAttribute>()?.Culture);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -323,14 +323,15 @@ public static class Methods
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Unify
+    /// GetOrEmpty
     ///
     /// <summary>
-    /// Converts a null or empty string to the empty one.
+    /// Returns the specified value itself. If the specified value is null,
+    /// the method will return an empty string.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static string Unify(string src) => src.Unify();
+    private static string GetOrEmpty(string src) => src ?? string.Empty;
 
     #endregion
 }

@@ -48,21 +48,6 @@ public static class Methods
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Unify
-    ///
-    /// <summary>
-    /// Converts a null or empty string to the empty one.
-    /// </summary>
-    ///
-    /// <param name="src">Source string.</param>
-    ///
-    /// <returns>Converted string.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string Unify(this string src) => src ?? string.Empty;
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// Quote
     ///
     /// <summary>

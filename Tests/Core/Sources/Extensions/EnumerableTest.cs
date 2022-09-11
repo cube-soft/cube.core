@@ -38,46 +38,6 @@ class EnumerableTest
 {
     #region Tests
 
-    #region GetOrEmpty
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetOrEmpty
-    ///
-    /// <summary>
-    /// Tests of the GetOrDefault extended method.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void GetOrEmpty()
-    {
-        var sum = 0;
-        var src = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-        src.GetOrEmpty().Each(i => sum += i);
-        Assert.That(sum, Is.EqualTo(55));
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetOrEmpty_Null
-    ///
-    /// <summary>
-    /// Tests of the GetOrDefault extended method with the null object.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void GetOrEmpty_Null()
-    {
-        var sum = 0;
-        var src = default(List<int>);
-        src.GetOrEmpty().Each(i => sum += i);
-        Assert.That(sum, Is.EqualTo(0));
-    }
-
-    #endregion
-
     #region FirstIndexOf
 
     /* --------------------------------------------------------------------- */

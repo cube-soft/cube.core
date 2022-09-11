@@ -36,21 +36,6 @@ public static class Methods
 
     /* --------------------------------------------------------------------- */
     ///
-    /// GetOrEmpty(T)
-    ///
-    /// <summary>
-    /// Returns the specified object or empty IEnumerable(T) object.
-    /// </summary>
-    ///
-    /// <param name="src">Source collection.</param>
-    ///
-    /// <returns>Self or empty collection.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static IEnumerable<T> GetOrEmpty<T>(this IEnumerable<T> src) => src ?? Enumerable.Empty<T>();
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// Concat
     ///
     /// <summary>
