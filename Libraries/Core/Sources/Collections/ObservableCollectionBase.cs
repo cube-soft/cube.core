@@ -21,7 +21,7 @@ using System.Collections.Specialized;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// ObservableBase
+/// ObservableCollectionBase
 ///
 /// <summary>
 /// Represents the base class of a dynamic data collection that
@@ -30,34 +30,34 @@ using System.Collections.Specialized;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public abstract class ObservableBase<T> : EnumerableBase<T>, INotifyCollectionChanged
+public abstract class ObservableCollectionBase<T> : EnumerableBase<T>, INotifyCollectionChanged
 {
     #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ObservableBase
+    /// ObservableCollectionBase
     ///
     /// <summary>
-    /// Initializes a new instance of the ObservableBase class.
+    /// Initializes a new instance of the ObservableCollectionBase class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected ObservableBase() : this(Dispatcher.Vanilla) { }
+    protected ObservableCollectionBase() : this(Dispatcher.Vanilla) { }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ObservableBase
+    /// ObservableCollectionBase
     ///
     /// <summary>
-    /// Initializes a new instance of the ObservableBase class with
-    /// the specified dispatcher.
+    /// Initializes a new instance of the ObservableCollectionBase class
+    /// with the specified dispatcher.
     /// </summary>
     ///
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    protected ObservableBase(Dispatcher dispatcher) => Dispatcher = dispatcher;
+    protected ObservableCollectionBase(Dispatcher dispatcher) => Dispatcher = dispatcher;
 
     #endregion
 
