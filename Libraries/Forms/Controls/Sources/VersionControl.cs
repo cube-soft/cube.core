@@ -23,6 +23,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
+using System.Text;
 using Cube.Reflection.Extensions;
 using Cube.String.Extensions;
 
@@ -195,8 +196,9 @@ public class VersionControl : ControlBase
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
-    public string Platform => string.Format("{0}{1}CLR {2}{3}",
+    public string Platform => string.Format("{0} ({1}){2}CLR {3}{4}",
         Environment.OSVersion,
+        Environment.Is64BitOperatingSystem ? "64bit" : "32bit",
         Environment.NewLine,
         Environment.Version,
         Environment.NewLine

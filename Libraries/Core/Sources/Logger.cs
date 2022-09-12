@@ -110,8 +110,10 @@ public static class Logger
     /* --------------------------------------------------------------------- */
     public static void Info(Assembly src, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
     {
+        var bit = Environment.Is64BitOperatingSystem ? "64bit" : "32bit";
         Info($"{src.GetProduct()} {src.GetVersionString(4, true)}", path, n);
-        Info($"CLR {Environment.Version} ({Environment.OSVersion})", path, n);
+        Info($"{Environment.OSVersion} ({bit})", path, n);
+        Info($"CLR {Environment.Version}", path, n);
         Info($"{Environment.UserName}@{Environment.MachineName} ({CultureInfo.CurrentCulture})", path, n);
     }
 

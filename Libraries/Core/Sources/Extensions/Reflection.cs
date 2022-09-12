@@ -294,14 +294,15 @@ public static class Methods
     /// <returns>32bit or 64bit</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string GetArchitecture(this Assembly src)
+    public static string GetArchitecture(this Assembly src) => src.GetName().ProcessorArchitecture switch
     {
-        var ac = src.GetName().ProcessorArchitecture;
-        return ac == ProcessorArchitecture.X86      ? "32bit" :
-               ac == ProcessorArchitecture.Amd64 ||
-               ac == ProcessorArchitecture.IA64     ? "64bit" :
-               IntPtr.Size == 4                     ? "32bit" : "64bit";
-    }
+        ProcessorArchitecture.X86   => "x86",
+        ProcessorArchitecture.Amd64 => "x64",
+        ProcessorArchitecture.IA64  => "IA64",
+        ProcessorArchitecture.Arm   => "ARM",
+        ProcessorArchitecture.MSIL  => IntPtr.Size == 4 ? "MSIL/32bit" : "MSIL/64bit",
+        _ => IntPtr.Size == 4 ? "32bit" : "64bit",
+    };
 
     #endregion
 
