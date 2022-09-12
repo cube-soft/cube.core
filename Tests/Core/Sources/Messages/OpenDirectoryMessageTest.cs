@@ -18,7 +18,7 @@
 namespace Cube.Tests.Messages;
 
 using Cube.FileSystem;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */

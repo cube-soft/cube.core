@@ -25,7 +25,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Text;
 using Cube.Reflection.Extensions;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

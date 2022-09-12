@@ -25,7 +25,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Cube.Reflection.Extensions;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

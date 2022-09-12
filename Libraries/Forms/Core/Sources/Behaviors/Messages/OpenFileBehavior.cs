@@ -19,7 +19,7 @@ namespace Cube.Forms.Behaviors;
 
 using System.Linq;
 using System.Windows.Forms;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

@@ -19,7 +19,7 @@ namespace Cube.FileSystem;
 
 using System;
 using System.Runtime.InteropServices;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

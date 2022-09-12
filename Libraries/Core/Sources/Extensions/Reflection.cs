@@ -20,7 +20,7 @@ namespace Cube.Reflection.Extensions;
 using System;
 using System.Reflection;
 using Cube.FileSystem;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

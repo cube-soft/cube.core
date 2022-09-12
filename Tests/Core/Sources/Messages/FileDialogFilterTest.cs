@@ -19,7 +19,7 @@ namespace Cube.Tests.Messages;
 
 using System.Collections.Generic;
 using System.Linq;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */

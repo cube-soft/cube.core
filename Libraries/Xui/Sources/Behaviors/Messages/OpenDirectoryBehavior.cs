@@ -18,7 +18,7 @@
 namespace Cube.Xui.Behaviors;
 
 using System.Windows.Forms;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

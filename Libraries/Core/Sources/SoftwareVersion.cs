@@ -22,7 +22,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using Cube.Reflection.Extensions;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

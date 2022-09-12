@@ -19,7 +19,7 @@ namespace Cube.Forms.Extensions;
 
 using System;
 using System.Windows.Forms;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

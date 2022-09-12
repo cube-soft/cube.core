@@ -20,7 +20,7 @@ namespace Cube.DataContract;
 using System;
 using System.Collections;
 using Cube.DataContract.Internal;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 using Microsoft.Win32;
 
 /* ------------------------------------------------------------------------- */

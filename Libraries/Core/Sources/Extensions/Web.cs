@@ -23,7 +23,7 @@ using System.Linq;
 using Cube.Chrono.Extensions;
 using Cube.Collections.Extensions;
 using Cube.Reflection.Extensions;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

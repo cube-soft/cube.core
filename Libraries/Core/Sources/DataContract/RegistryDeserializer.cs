@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cube.DataContract.Internal;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 using Microsoft.Win32;
 
 /* ------------------------------------------------------------------------- */

@@ -20,7 +20,7 @@ namespace Cube.Forms.Behaviors;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

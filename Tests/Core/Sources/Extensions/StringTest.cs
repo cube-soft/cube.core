@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Tests.Extensions;
 
-using Cube.String.Extensions;
+using Cube.Text.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
