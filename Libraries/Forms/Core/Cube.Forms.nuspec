@@ -12,7 +12,7 @@
         <readme>docs\Readme.md</readme>
         <icon>images\Icon.png</icon>
         <license type="expression">Apache-2.0</license>
-        <projectUrl>https://github.com/cube-soft/Cube.Forms</projectUrl>
+        <projectUrl>https://github.com/cube-soft/Cube.Core</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net6.0-windows7.0">

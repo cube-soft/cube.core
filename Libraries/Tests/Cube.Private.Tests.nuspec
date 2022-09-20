@@ -14,18 +14,24 @@
         <projectUrl>https://github.com/cube-soft/Cube.Core</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
-            <group targetFramework="netstandard2.0">
+            <group targetFramework="net6.0-windows7.0">
                 <dependency id="Cube.Core" version="8.0.0" />
+                <dependency id="Cube.Forms" version="8.0.0" />
+                <dependency id="Cube.Logging.NLog" version="8.0.0" />
                 <dependency id="NUnit" version="3.13.3" />
                 <dependency id="OpenCover" version="4.7.1221" />
             </group>
             <group targetFramework="net47">
                 <dependency id="Cube.Core" version="8.0.0" />
+                <dependency id="Cube.Forms" version="8.0.0" />
+                <dependency id="Cube.Logging.NLog" version="8.0.0" />
                 <dependency id="NUnit" version="3.13.3" />
                 <dependency id="OpenCover" version="4.7.1221" />
             </group>
             <group targetFramework="net35">
                 <dependency id="Cube.Core" version="8.0.0" />
+                <dependency id="Cube.Forms" version="8.0.0" />
+                <dependency id="Cube.Logging.NLog" version="8.0.0" />
                 <dependency id="NUnit" version="3.13.3" />
                 <dependency id="OpenCover" version="4.7.1221" />
             </group>
@@ -33,8 +39,8 @@
     </metadata>
     <files>
         <file src="..\..\Icon.png" target="images" />
-        <file src="bin\Any CPU\Release\netstandard2.0\Cube.Tests.*" target="lib\netstandard2.0" />
-        <file src="bin\Any CPU\Release\net47\Cube.Tests.*" target="lib\net47" />
-        <file src="bin\Any CPU\Release\net35\Cube.Tests.*" target="lib\net35" />
+        <file src="bin\Any CPU\Release\net6.0-windows\Cube.Private.Tests.*" target="lib\net6.0-windows7.0" />
+        <file src="bin\Any CPU\Release\net47\Cube.Private.Tests.*" target="lib\net47" />
+        <file src="bin\Any CPU\Release\net35\Cube.Private.Tests.*" target="lib\net35" />
     </files>
 </package>
