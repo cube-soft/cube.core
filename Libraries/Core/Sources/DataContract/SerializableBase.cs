@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using Cube.Mixin.Generic;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -39,55 +38,6 @@ using Cube.Mixin.Generic;
 [DataContract]
 public abstract class SerializableBase : INotifyPropertyChanged
 {
-    #region Constructor
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SerializableBase
-    ///
-    /// <summary>
-    /// Initializes a new instance of the ObservableBase class.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected SerializableBase() : this(Dispatcher.Vanilla) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SerializableBase
-    ///
-    /// <summary>
-    /// Initializes a new instance of the ObservableBase class with
-    /// the specified dispatcher.
-    /// </summary>
-    ///
-    /// <param name="dispatcher">Dispatcher object.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected SerializableBase(Dispatcher dispatcher) => Reset(dispatcher);
-
-    #endregion
-
-    #region Properties
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Dispatcher
-    ///
-    /// <summary>
-    /// Gets or sets the dispatcher object.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [IgnoreDataMember]
-    public Dispatcher Dispatcher
-    {
-        get => _dispatcher;
-        set => _dispatcher = value;
-    }
-
-    #endregion
-
     #region Events
 
     /* --------------------------------------------------------------------- */
@@ -112,11 +62,8 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /// <param name="e">Arguments of the event being raised.</param>
     ///
     /* --------------------------------------------------------------------- */
-    protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        if (PropertyChanged == null) return;
-        Dispatcher.Invoke(() => PropertyChanged(this, e));
-    }
+    protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) =>
+        PropertyChanged?.Invoke(this, e);
 
     #endregion
 
@@ -219,7 +166,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     protected bool Set<T>(T value, IEqualityComparer<T> compare, [CallerMemberName] string name = null)
     {
         var src = Get<T>(name);
-        var set = compare.Set(ref src, value);
+        var set = SetCore(ref src, value, compare);
         if (set)
         {
             lock (_fields.SyncRoot) _fields[name] = src;
@@ -267,7 +214,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     protected bool Set<T>(ref T field, T value, IEqualityComparer<T> compare,
         [CallerMemberName] string name = null)
     {
-        var set = compare.Set(ref field, value);
+        var set = SetCore(ref field, value, compare);
         if (set) Refresh(name);
         return set;
     }
@@ -286,27 +233,32 @@ public abstract class SerializableBase : INotifyPropertyChanged
     ///
     /* --------------------------------------------------------------------- */
     [OnDeserializing]
-    private void OnDeserializing(StreamingContext context) => Reset(Dispatcher.Vanilla);
+    private void OnDeserializing(StreamingContext context)
+    {
+        if (_fields is null) _fields = new();
+        else _fields.Clear();
+    }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Reset
+    /// SetCore
     ///
     /// <summary>
-    /// Resets properties and fields.
+    /// Sets the specified value to the specified field if they are
+    /// not equal.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void Reset(Dispatcher dispatcher)
+    private bool SetCore<T>(ref T field, T value, IEqualityComparer<T> compare)
     {
-        _dispatcher = dispatcher;
-        _fields     = new();
+        if (compare.Equals(field, value)) return false;
+        field = value;
+        return true;
     }
 
     #endregion
 
     #region Fields
-    [NonSerialized] private Dispatcher _dispatcher;
-    private Hashtable _fields;
+    private Hashtable _fields = new();
     #endregion
 }

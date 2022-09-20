@@ -20,7 +20,7 @@ namespace Cube;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Cube.Mixin.Tasks;
+using Cube.Tasks.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -363,7 +363,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
                 try { action(); }
                 catch (Exception e)
                 {
-                    GetType().LogWarn(e);
+                    Logger.Warn(e);
                     if (OnMessage(e) is DialogMessage msg) Send(msg);
                 }
             }

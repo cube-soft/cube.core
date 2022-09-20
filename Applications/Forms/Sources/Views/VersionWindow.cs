@@ -162,6 +162,7 @@ public class VersionWindow : Window
     /* --------------------------------------------------------------------- */
     private void InitializeLayout()
     {
+        AutoScaleMode = AutoScaleMode.None;
         Size = new Size(400, 240);
         SuspendLayout();
 
@@ -187,6 +188,7 @@ public class VersionWindow : Window
         _panel.Controls.Add(_control, 0, 0);
         _panel.Controls.Add(_button, 0, 1);
 
+        Font = new("Meiryo UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
         FormBorderStyle = FormBorderStyle.FixedSingle;
         MaximizeBox = false;
         MinimizeBox = false;

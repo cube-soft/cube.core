@@ -99,7 +99,7 @@ class ObservableCollectionTest
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private class TestCollection<T> : ObservableBase<T>
+    private class TestCollection<T> : ObservableCollectionBase<T>
     {
         public TestCollection() => _inner.CollectionChanged += (s, e) => OnCollectionChanged(e);
         public void Set(Dispatcher dispatcher) => Dispatcher = dispatcher;

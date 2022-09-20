@@ -39,10 +39,9 @@ public static class Message
     /// <returns>DialogMessage object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static DialogMessage ForConfirm() => new()
+    public static DialogMessage ForConfirm() => new("Closing window... Do you want to continue?")
     {
-        Text = "Closing window... Do you want to continue?",
-        Icon = DialogIcon.Information,
+        Icon    = DialogIcon.Information,
         Buttons = DialogButtons.OkCancel,
     };
 }

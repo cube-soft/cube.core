@@ -5,11 +5,11 @@ Cube.Forms
 [![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
 [![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
-The Cube.Forms package provides GUI components, behaviors, binding support, and other components to provide support the MVVM pattern in WinForms applications. The package is available for .NET Framework 3.5, 4.5, .NET Core 3.1, or later. Note that basic functionality for the MVVM pattern is implemented in the [Cube.Core](https://www.nuget.org/packages/cube.core/) package, and the WPF part is in the [Cube.Xui](https://www.nuget.org/packages/cube.xui/) package.
+The Cube.Forms and Cube.Forms.Controls packages provide GUI components, behaviors, binding support, and other components to provide support the MVVM pattern in WinForms applications. These packages are available for .NET Framework 3.5, 4.7, .NET 6, or later. Note that basic components to practice the MVVM pattern is implemented in the [Cube.Core](https://www.nuget.org/packages/cube.core/) package, and the WPF part is in the [Cube.Xui](https://www.nuget.org/packages/cube.xui/) package.
 
 ## Installation
 
-You can install the library through the NuGet package. Add dependencies in your project file or select it from the NuGet packages UI on Visual Studio. For more information, see the [NuGet](https://www.nuget.org/packages/cube.core/) page.
+You can install the library through the NuGet package. Add dependencies in your project file or select it from the NuGet packages UI on Visual Studio. For more information, see the [NuGet](https://www.nuget.org/packages/cube.forms/) page.
 
 ## Contributing
 

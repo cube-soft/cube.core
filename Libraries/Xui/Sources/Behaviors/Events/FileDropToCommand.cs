@@ -18,7 +18,7 @@
 namespace Cube.Xui.Behaviors;
 
 using System.Windows;
-using Cube.Mixin.Generic;
+using Cube.Generics.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -82,7 +82,7 @@ public class FileDropToCommand<T> : CommandBehavior<T> where T : FrameworkElemen
     private void WhenDrop(object s, DragEventArgs e)
     {
         var dest = GetData(e.Data);
-        e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
+        e.Handled = (dest is not null) && (Command?.CanExecute(dest) ?? false);
         if (e.Handled) Command.Execute(dest);
     }
 
@@ -98,7 +98,7 @@ public class FileDropToCommand<T> : CommandBehavior<T> where T : FrameworkElemen
     private void WhenDragOver(object s, DragEventArgs e)
     {
         var dest = GetData(e.Data);
-        e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
+        e.Handled = (dest is not null) && (Command?.CanExecute(dest) ?? false);
         e.Effects = e.Handled ? DragDropEffects.Copy : DragDropEffects.None;
     }
 

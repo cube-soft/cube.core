@@ -20,8 +20,8 @@ namespace Cube.FileSystem;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Collections;
-using Cube.Mixin.Collections;
-using Cube.Mixin.String;
+using Cube.Collections.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -351,7 +351,7 @@ public sealed class SafePath
     /* --------------------------------------------------------------------- */
     private EscapedObject EscapeOnce()
     {
-        if (_obj == null)
+        if (_obj is null)
         {
             var k = !Source.HasValue()                         ? PathKind.Normal :
                     Source.FuzzyStartsWith(InactivationSymbol) ? PathKind.Inactivation :

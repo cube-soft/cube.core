@@ -18,7 +18,6 @@
 namespace Cube;
 
 using Cube.FileSystem;
-using Cube.Mixin.String;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -42,7 +41,7 @@ public class OpenDirectoryMessage : CancelMessage<string>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public OpenDirectoryMessage() : this(string.Empty) { }
+    public OpenDirectoryMessage() : this(nameof(OpenDirectoryMessage)) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -50,30 +49,13 @@ public class OpenDirectoryMessage : CancelMessage<string>
     ///
     /// <summary>
     /// Initializes a new instance of the OpenDirectoryMessage class
-    /// with the specified path.
+    /// with the specified text.
     /// </summary>
     ///
-    /// <param name="src">Initial path.</param>
+    /// <param name="text">Message text.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public OpenDirectoryMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// OpenDirectoryMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the OpenDirectoryMessage class
-    /// with the specified path.
-    /// </summary>
-    ///
-    /// <param name="src">Entity of the initial path.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public OpenDirectoryMessage(Entity src) => Value =
-        src is null     ? string.Empty :
-        src.IsDirectory ? src.FullName :
-        src.DirectoryName;
+    public OpenDirectoryMessage(string text) : base(text) => Value = string.Empty;
 
     #endregion
 
@@ -90,6 +72,27 @@ public class OpenDirectoryMessage : CancelMessage<string>
     ///
     /* --------------------------------------------------------------------- */
     public bool NewButton { get; set; } = true;
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Set
+    ///
+    /// <summary>
+    /// Sets a directory path to the Value property using the specified
+    /// object.
+    /// </summary>
+    ///
+    /// <param name="src">File or directory path information.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Set(Entity src) => Value =
+        src is null     ? string.Empty :
+        src.IsDirectory ? src.FullName :
+                          src.DirectoryName;
 
     #endregion
 }

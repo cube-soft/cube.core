@@ -19,7 +19,7 @@ namespace Cube.Tests.Events;
 
 using System.Collections.Generic;
 using System.Linq;
-using Cube.Mixin.Iteration;
+using Cube.Syntax.Extensions;
 using NUnit.Framework;
 
 /* --------------------------------------------------------------------- */

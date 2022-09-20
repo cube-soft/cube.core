@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Xui.Tests;
 
-using Cube.Mixin.Observing;
+using Cube.Observable.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */

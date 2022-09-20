@@ -18,7 +18,7 @@
 namespace Cube.Tests;
 
 using System;
-using Cube.Mixin.Assembly;
+using Cube.Reflection.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */

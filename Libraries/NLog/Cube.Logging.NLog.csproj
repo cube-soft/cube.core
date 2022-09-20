@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Version>8.0.0</Version>
+        <Authors>clown;cube-soft</Authors>
+        <Company>CubeSoft</Company>
+        <Description>Wraps the NLog package compatible with the Cube.ILoggerSource interface.</Description>
+        <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
+        <PackageTags>Cube;NLog</PackageTags>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageReadmeFile>docs\Readme.md</PackageReadmeFile>
+        <PackageIcon>images\Icon.png</PackageIcon>
+        <PackageProjectUrl>https://github.com/cube-soft/Cube.Core</PackageProjectUrl>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Optimize>true</Optimize>
+        <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+        <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">DEBUG;TRACE</DefineConstants>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\..\Cube.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+        <OutputPath>bin\Any CPU\$(Configuration)\</OutputPath>
+        <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Core\Cube.Core.csproj" />
+        <PackageReference Include="NLog" Version="5.0.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Readme.md" Pack="true" PackagePath="docs" />
+        <None Include="..\..\Icon.png" Pack="true" PackagePath="images" />
+    </ItemGroup>
+</Project>

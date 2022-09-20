@@ -20,8 +20,6 @@ namespace Cube.FileSystem;
 using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Cube.Mixin.String;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -199,39 +197,6 @@ public static class IoEx
         Io.Exists(src) ?
         Enumerable.Range(1, int.MaxValue).Select(e => converter(src, e)).First(e => !Io.Exists(e)) :
         src;
-
-    #endregion
-
-    #region GetTypeName
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetTypeName
-    ///
-    /// <summary>
-    /// Gets a value that represents type of the specified file.
-    /// </summary>
-    ///
-    /// <param name="src">Path of the source file.</param>
-    ///
-    /// <returns>Type name of the file.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string GetTypeName(string src)
-    {
-        if (!src.HasValue()) return string.Empty;
-
-        var dest   = new ShFileIinfo();
-        var status = Shell32.NativeMethods.SHGetFileInfo(
-            src,
-            0x0080, // FILE_ATTRIBUTE_NORMAL
-            ref dest,
-            (uint)Marshal.SizeOf(dest),
-            0x0410 // SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES
-        );
-
-        return (status != IntPtr.Zero) ? dest.szTypeName : string.Empty;
-    }
 
     #endregion
 

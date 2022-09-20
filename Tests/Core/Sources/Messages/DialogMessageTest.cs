@@ -47,7 +47,7 @@ class DialogMessageTest
     [Test]
     public void Init()
     {
-        var dest = new DialogMessage();
+        var dest = new DialogMessage("");
         Assert.That(dest.Text,    Is.Empty);
         Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
         Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));

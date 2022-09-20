@@ -84,7 +84,7 @@ public abstract class ObserverBase : DisposableBase, IObservePropertyChanged
     /* --------------------------------------------------------------------- */
     public void Observe(INotifyPropertyChanged src, params string[] names)
     {
-        if (src == null) return;
+        if (src is null) return;
 
         var set = new HashSet<string>(names);
         void handler(object s, PropertyChangedEventArgs e) {

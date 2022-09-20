@@ -20,8 +20,7 @@ namespace Cube;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.FileSystem;
-using Cube.Mixin.Collections.Generic;
-using Cube.Mixin.String;
+using Cube.Generics.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -45,39 +44,24 @@ public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public OpenFileMessage() : this(string.Empty) { }
+    public OpenFileMessage() : this(nameof(OpenFileMessage)) { }
 
     /* --------------------------------------------------------------------- */
     ///
     /// OpenFileMessage
     ///
     /// <summary>
-    /// Initializes a new instance of the OpenFileMessage class with
-    /// the specified arguments.
+    /// Initializes a new instance of the OpenFileMessage class with the
+    /// specified text.
     /// </summary>
     ///
-    /// <param name="src">Initial path.</param>
+    /// <param name="text">Message text.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public OpenFileMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// OpenFileMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the OpenFileMessage class with
-    /// the specified arguments.
-    /// </summary>
-    ///
-    /// <param name="src">Entity for the initial path.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public OpenFileMessage(Entity src) : base(src)
+    public OpenFileMessage(string text) : base(text)
     {
+        Value = Enumerable.Empty<string>();
         CheckPathExists = true;
-        var empty = src?.IsDirectory ?? true;
-        Value = empty ? Enumerable.Empty<string>() : src.Name.ToEnumerable();
     }
 
     #endregion
@@ -99,6 +83,25 @@ public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>>
     #endregion
 
     #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Set
+    ///
+    /// <summary>
+    /// Sets values to the Value and InitialDirectory properties using the
+    /// specified object.
+    /// </summary>
+    ///
+    /// <param name="src">File or directory path information.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Set(Entity src)
+    {
+        if (src is null) return;
+        Value = src.IsDirectory ? Enumerable.Empty<string>() : new[] { src.Name };
+        InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
+    }
 
     /* --------------------------------------------------------------------- */
     ///

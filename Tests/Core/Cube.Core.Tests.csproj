@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>7.0.0</Version>
+        <Version>8.0.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft, Inc.</Company>
         <Product>Cube.Tests</Product>
@@ -28,7 +28,8 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\Core\Cube.Core.csproj" />
-        <ProjectReference Include="..\..\Libraries\Tests\Cube.Tests.csproj" />
+        <ProjectReference Include="..\..\Libraries\Trick\Cube.Trick.csproj" />
+        <ProjectReference Include="..\..\Libraries\Tests\Cube.Private.Tests.csproj" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />
         <PackageReference Include="NUnit3TestAdapter" Version="*" />
         <PackageReference Include="Appveyor.TestLogger" Version="*" />

@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cube.DataContract.Internal;
-using Cube.Mixin.String;
+using Cube.Text.Extensions;
 using Microsoft.Win32;
 
 /* ------------------------------------------------------------------------- */
@@ -69,14 +69,14 @@ internal class RegistryDeserializer
     private object Get(Type type, RegistryKey src)
     {
         var dest = Activator.CreateInstance(type);
-        if (src == null) return dest;
+        if (src is null) return dest;
 
         foreach (var pi in type.GetProperties())
         {
             var name = pi.GetDataMemberName();
             if (!name.HasValue()) continue;
             var obj = Get(pi.GetPropertyType(), src, name);
-            if (obj != null) pi.SetValue(dest, obj, null);
+            if (obj is not null) pi.SetValue(dest, obj, null);
         }
         return dest;
     }
@@ -133,7 +133,7 @@ internal class RegistryDeserializer
     private IList GetList(Type type, RegistryKey src)
     {
         var ga = type.GetGenericArguments();
-        return (ga != null && ga.Length == 1) ? GetListCore(ga[0], src) : null;
+        return (ga is not null && ga.Length == 1) ? GetListCore(ga[0], src) : null;
     }
 
     /* --------------------------------------------------------------------- */
@@ -154,7 +154,7 @@ internal class RegistryDeserializer
         foreach (var name in src.GetSubKeyNames())
         {
             var obj = OpenGet(src, name, e => GetListElement(elementType, e));
-            if (obj != null) _ = dest.Add(obj);
+            if (obj is not null) _ = dest.Add(obj);
         }
 
         return dest;
@@ -185,11 +185,8 @@ internal class RegistryDeserializer
     /* --------------------------------------------------------------------- */
     private object OpenGet(RegistryKey src, string name, Func<RegistryKey, object> action)
     {
-        using (var e = src.OpenSubKey(name, false))
-        {
-            if (e != null) return action(e);
-        }
-        return null;
+        using var e = src.OpenSubKey(name, false);
+        return e is not null ? action(e) : null;
     }
 
     #endregion

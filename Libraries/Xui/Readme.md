@@ -5,16 +5,16 @@ Cube.Xui
 [![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
 [![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
-The Cube.Xui package has bindings, converters, commands, behaviors, and other components to provide support the MVVM pattern in WPF applications. The package is available for .NET Framework 3.5, 4.5, .NET Core 3.1, or later. Note that basic functionality for the MVVM pattern is implemented in the [Cube.Core](https://www.nuget.org/packages/cube.core/) package, and the WinForms part is in the [Cube.Forms](https://www.nuget.org/packages/cube.forms/) package.
+The Cube.Xui package has bindings, converters, commands, behaviors, and other components to provide support the MVVM pattern in WPF applications. The package is available for .NET Framework 3.5, 4.7, .NET 6.0, or later. Note that basic components to practice the MVVM pattern is implemented in the [Cube.Core](https://www.nuget.org/packages/cube.core/) package, and the WinForms part is in the [Cube.Forms](https://www.nuget.org/packages/cube.forms/) package.
 
-The Cube.Xui package depends on the [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf/) package. However, in the case of .NET Framework 3.5, it depends on the old [Microsoft Expression Blend SDK](https://www.microsoft.com/ja-jp/download/details.aspx?id=10801) instead of that. Note that the packages implements some features by referring to some of the code in the following projects.
+The Cube.Xui package depends on the [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf/) package. However, in the case of .NET Framework 3.5, it depends on the old [Microsoft Expression Blend SDK](https://www.microsoft.com/ja-jp/download/details.aspx?id=10801) instead of that. In addtion, the packages implements some features by referring to some of the code in the following projects.
 
 * [MVVM Light Toolkit](https://github.com/lbugnion/mvvmlight)
 * [Prism](https://github.com/PrismLibrary/Prism)
 
 ## Installation
 
-You can install the library through the NuGet package. Add dependencies in your project file or select it from the NuGet packages UI on Visual Studio. For more information, see the [NuGet](https://www.nuget.org/packages/cube.core/) page.
+You can install the library through the NuGet package. Add dependencies in your project file or select it from the NuGet packages UI on Visual Studio. For more information, see the [NuGet](https://www.nuget.org/packages/cube.xui/) page.
 
 ## Contributing
 

@@ -22,7 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Collections;
-using Cube.Mixin.Generic;
+using Cube.Generics.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */

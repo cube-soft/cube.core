@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Tests.Messages;
 
+using System.Collections.Generic;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
@@ -36,15 +37,35 @@ class MessageTest
     /// Test
     ///
     /// <summary>
-    /// Tests to create messages that have no properties.
+    /// Confirms the message text with the ToString method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Test]
-    public void Test()
+    [TestCaseSource(nameof(TestCases))]
+    public void Test(MessageBase src, string expected) =>
+        Assert.That(src.ToString(), Is.EqualTo(expected));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TestCases
+    ///
+    /// <summary>
+    /// Gets test cases of the Test method.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    static IEnumerable<TestCaseData> TestCases()
     {
-        Assert.That(new CloseMessage(),    Is.Not.Null);
-        Assert.That(new ActivateMessage(), Is.Not.Null);
-        Assert.That(new ApplyMessage(),    Is.Not.Null);
+        yield return new(new Message<object>(), "Object Message");
+        yield return new(new CancelMessage<object>(), "Object CancelMessage");
+        yield return new(new QueryMessage<string, object>("Source"), "String and Object QueryMessage");
+        yield return new(new DialogMessage("Dialog message sample"), "Dialog message sample");
+        yield return new(new OpenDirectoryMessage(), nameof(OpenDirectoryMessage));
+        yield return new(new OpenFileMessage(), nameof(OpenFileMessage));
+        yield return new(new SaveFileMessage(), nameof(SaveFileMessage));
+        yield return new(new CloseMessage(), nameof(CloseMessage));
+        yield return new(new ActivateMessage(), nameof(ActivateMessage));
+        yield return new(new ApplyMessage(), nameof(ApplyMessage));
+        yield return new(new ProcessMessage("https://example.com/"), nameof(ProcessMessage));
     }
 }

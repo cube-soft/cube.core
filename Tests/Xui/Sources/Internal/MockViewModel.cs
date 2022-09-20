@@ -63,7 +63,7 @@ class MockViewModel : PresentableBase<Person>
     ///
     /* --------------------------------------------------------------------- */
     public ICommand Detect { get; } = new DelegateCommand(
-        () => typeof(MockViewModel).LogDebug("Event is fired"),
+        () => Logger.Debug("Event is fired"),
         () => true
     );
 
