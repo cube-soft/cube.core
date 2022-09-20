@@ -18,7 +18,7 @@
 namespace Cube.Xui.Tests;
 
 using System.Windows.Input;
-using Cube.Mixin.Commands;
+using Cube.Xui.Commands.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */

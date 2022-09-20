@@ -18,7 +18,7 @@ The package is available for .NET Framework 3.5, 4.5, or later.
 
 ## Installation
 
-You can install the library through the NuGet package. Add dependencies in your project file or select it from the NuGet packages UI on Visual Studio. For more information, see the [NuGet](https://www.nuget.org/packages/cube.core/) page.
+You can install the library through the NuGet package. Add dependencies in your project file or select it from the NuGet packages UI on Visual Studio. For more information, see the [NuGet](https://www.nuget.org/packages/cube.filesystem.alphafs/) page.
 
 ## Contributing
 

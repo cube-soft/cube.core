@@ -17,8 +17,9 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube;
 
+using System.Linq;
 using Cube.FileSystem;
-using Cube.Mixin.String;
+using Cube.Generics.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -42,7 +43,7 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public SaveFileMessage() : this(string.Empty) { }
+    public SaveFileMessage() : this(nameof(SaveFileMessage)) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -50,31 +51,13 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     ///
     /// <summary>
     /// Initializes a new instance of the SaveFileMessage class with
-    /// the specified arguments.
+    /// the specified text.
     /// </summary>
     ///
-    /// <param name="src">Initial path.</param>
+    /// <param name="text">Message text.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public SaveFileMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SaveFileMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the SaveFileMessage class with
-    /// the specified arguments.
-    /// </summary>
-    ///
-    /// <param name="src">Entity for the initial path.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public SaveFileMessage(Entity src) : base(src)
-    {
-        var empty = src?.IsDirectory ?? true;
-        Value = empty ? string.Empty : src.Name;
-    }
+    public SaveFileMessage(string text) : base(text) => Value = string.Empty;
 
     #endregion
 
@@ -96,6 +79,25 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     #endregion
 
     #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Set
+    ///
+    /// <summary>
+    /// Sets values to the Value and InitialDirectory properties using the
+    /// specified object.
+    /// </summary>
+    ///
+    /// <param name="src">File or directory path information.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Set(Entity src)
+    {
+        if (src is null) return;
+        Value = src.IsDirectory ? string.Empty : src.Name;
+        InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
+    }
 
     /* --------------------------------------------------------------------- */
     ///

@@ -93,7 +93,7 @@ public sealed class NoticeFacade
     /* --------------------------------------------------------------------- */
     public void Invoke(NoticeMessage src, NoticeResult result)
     {
-        try { GetType().LogDebug($"Result:{result}", $"Value:{src.Value}"); }
+        try { Logger.Debug($"Result:{result} Value:{src.Value}"); }
         finally
         {
             if (!_queue.Empty) Consume(true);
@@ -117,8 +117,8 @@ public sealed class NoticeFacade
     private void Consume(bool continuous)
     {
         if (_queue.Empty) return;
-        if (!continuous && _busy != null) return;
-        if (!continuous && Interlocked.Exchange(ref _busy, new()) != null) return;
+        if (!continuous && _busy is not null) return;
+        if (!continuous && Interlocked.Exchange(ref _busy, new()) is not null) return;
         Notify?.Invoke(_queue.Dequeue());
     }
 
@@ -131,10 +131,9 @@ public sealed class NoticeFacade
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private NoticeMessage Create(NoticeCallback callback) => new()
+    private NoticeMessage Create(NoticeCallback callback) => new($"This is a sample message ({++_count})")
     {
         Title        = "Notice Demo",
-        Text         = $"This is a sample message ({++_count})",
         Value        = "DummyData",
         DisplayTime  = TimeSpan.FromSeconds(60),
         InitialDelay = TimeSpan.FromSeconds(1),

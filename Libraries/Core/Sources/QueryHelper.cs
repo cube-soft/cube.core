@@ -86,11 +86,7 @@ public static class Query
     /// <returns>QueryMessage(T, U) object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static QueryMessage<T, U> NewMessage<T, U>(T src, U value) => new()
-    {
-        Source = src,
-        Value  = value,
-    };
+    public static QueryMessage<T, U> NewMessage<T, U>(T src, U value) => new(src) { Value = value };
 
     #endregion
 }

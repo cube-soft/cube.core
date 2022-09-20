@@ -19,7 +19,7 @@ namespace Cube.Xui.Behaviors;
 
 using System;
 using System.Windows;
-using Cube.Mixin.Commands;
+using Cube.Xui.Commands.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

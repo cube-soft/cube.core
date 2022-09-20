@@ -19,8 +19,8 @@ namespace Cube.Xui.Behaviors;
 
 using System.Threading;
 using System.Windows;
-using Cube.Mixin.Commands;
-using Cube.Mixin.String;
+using Cube.Text.Extensions;
+using Cube.Xui.Commands.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

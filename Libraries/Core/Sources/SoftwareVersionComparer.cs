@@ -98,8 +98,8 @@ public class SoftwareVersionComparer :
     public int Compare(object x, object y)
     {
         if (x == y) return 0;
-        if (x == null) return -1;
-        if (y == null) return 1;
+        if (x is null) return -1;
+        if (y is null) return 1;
         if (x is SoftwareVersion vx && y is SoftwareVersion vy) return Compare(vx, vy);
         if (x is string sx && y is string sy) return Compare(new(sx), new(sy));
         if (x is IComparable cx) return cx.CompareTo(y);
@@ -143,7 +143,7 @@ public class SoftwareVersionComparer :
     public new bool Equals(object x, object y)
     {
         if (x == y) return true;
-        if (x == null || y == null) return false;
+        if (x is null || y is null) return false;
         if (x is SoftwareVersion vx && y is SoftwareVersion vy) return Equals(vx, vy);
         if (x is string sx && y is string sy) return Equals(new(sx), new(sy));
         return x.Equals(y);

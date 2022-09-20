@@ -17,8 +17,8 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Xui.Behaviors;
 
-using Cube.Mixin.String;
-using Forms = System.Windows.Forms;
+using System.Windows.Forms;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -42,12 +42,12 @@ public class OpenDirectoryBehavior : MessageBehavior<OpenDirectoryMessage>
     /* --------------------------------------------------------------------- */
     protected override void Invoke(OpenDirectoryMessage e)
     {
-        var view = new Forms.FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
+        var view = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
 
-        if (e.Text.HasValue()) view.Description = e.Text;
+        if (e.Text.HasValue() && e.Text != nameof(OpenDirectoryMessage)) view.Description = e.Text;
         if (e.Value.HasValue()) view.SelectedPath = e.Value;
 
-        e.Cancel = view.ShowDialog() != Forms.DialogResult.OK;
+        e.Cancel = view.ShowDialog() != DialogResult.OK;
         if (!e.Cancel) e.Value = view.SelectedPath;
     }
 }

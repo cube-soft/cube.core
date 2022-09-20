@@ -20,9 +20,9 @@ namespace Cube.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cube.Mixin.Collections;
-using Cube.Mixin.Collections.Generic;
-using Cube.Mixin.String;
+using Cube.Collections.Extensions;
+using Cube.Generics.Extensions;
+using Cube.Text.Extensions;
 using Microsoft.Win32;
 
 /* ------------------------------------------------------------------------- */
@@ -52,7 +52,11 @@ public class Startup : ObservableBase
     /* --------------------------------------------------------------------- */
     public Startup(string name)
     {
-        bool exists(string s) { using var k = Open(false); return k?.GetValue(s) != null; }
+        bool exists(string s)
+        {
+            using var k = Open(false);
+            return k?.GetValue(s) is not null;
+        }
 
         if (!name.HasValue()) throw new ArgumentException(nameof(name));
         Name    = name;
@@ -128,7 +132,7 @@ public class Startup : ObservableBase
     /* --------------------------------------------------------------------- */
     public string Command =>
         Source.HasValue() ?
-        Source.ToEnumerable().Concat(Arguments).Join(" ", e => e.Quote()) :
+        new[] { Source }.Concat(Arguments).Join(" ", e => e.Quote()) :
         string.Empty;
 
     #endregion
@@ -173,6 +177,7 @@ public class Startup : ObservableBase
         }
 
         using var sk = Open(true);
+        if (sk is null) return;
         if (isadd()) sk.SetValue(Name, Command);
         else sk.DeleteValue(Name, false);
     }

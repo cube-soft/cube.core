@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <version>7.0.0</version>
+        <id>Cube.Forms</id>
+        <title>Cube.Forms</title>
+        <authors>clown,cube-soft</authors>
+        <owners>clown,cube-soft</owners>
+        <description>Provides GUI components in WinForms applications.</description>
+        <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
+        <tags>Cube WinForms MVVM</tags>
+        <readme>docs\Readme.md</readme>
+        <icon>images\Icon.png</icon>
+        <license type="expression">Apache-2.0</license>
+        <projectUrl>https://github.com/cube-soft/Cube.Forms</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <dependencies>
+            <group targetFramework="net6.0-windows7.0">
+                <dependency id="Cube.Core" version="8.0.0" />
+            </group>
+            <group targetFramework="net47">
+                <dependency id="Cube.Core" version="8.0.0" />
+            </group>
+            <group targetFramework="net35">
+                <dependency id="Cube.Core" version="8.0.0" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Readme.md" target="docs" />
+        <file src="..\..\..\Icon.png" target="images" />
+        <file src="bin\Any CPU\Release\net6.0-windows\Cube.Forms.*" target="lib\net6.0-windows7.0" />
+        <file src="bin\Any CPU\Release\net47\Cube.Forms.*" target="lib\net47" />
+        <file src="bin\Any CPU\Release\net35\Cube.Forms.*" target="lib\net35" />
+    </files>
+</package>

@@ -21,7 +21,7 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using Cube.Forms.Behaviors;
-using Cube.Mixin.Uri;
+using Cube.Web.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -46,10 +46,10 @@ public sealed class ShowVersionBehavior : MessageBehaviorBase<AboutMessage>
     /// </summary>
     ///
     /// <param name="view">View object.</param>
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public ShowVersionBehavior(WindowBase view, IAggregator aggregator) : base(aggregator)
+    public ShowVersionBehavior(Window view, IAggregator aggregator) : base(aggregator)
     {
         _icon = view.Icon;
         _text = view.Text;

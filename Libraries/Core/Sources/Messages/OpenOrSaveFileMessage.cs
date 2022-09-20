@@ -20,10 +20,9 @@ namespace Cube;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cube.FileSystem;
-using Cube.Mixin.Collections;
-using Cube.Mixin.Collections.Generic;
-using Cube.Mixin.String;
+using Cube.Collections.Extensions;
+using Cube.Generics.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -45,16 +44,13 @@ public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
     ///
     /// <summary>
     /// Initializes a new instance of the OpenOrSaveFileMessage class
-    /// with the specified arguments.
+    /// with the specified text.
     /// </summary>
     ///
-    /// <param name="src">Entity of the initial path.</param>
+    /// <param name="text">Message text.</param>
     ///
     /* --------------------------------------------------------------------- */
-    protected OpenOrSaveFileMessage(Entity src)
-    {
-        if (src != null) InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
-    }
+    protected OpenOrSaveFileMessage(string text) : base(text) { }
 
     #endregion
 
@@ -96,7 +92,7 @@ public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
     ///
     /* --------------------------------------------------------------------- */
     public IEnumerable<FileDialogFilter> Filters { get; set; } =
-        new FileDialogFilter("All Files", ".*").ToEnumerable();
+        new[] { new FileDialogFilter("All Files", ".*") };
 
     #endregion
 

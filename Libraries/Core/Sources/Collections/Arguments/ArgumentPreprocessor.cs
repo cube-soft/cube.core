@@ -99,21 +99,7 @@ public class PosixArgumentPreprocessor : IArgumentPreprocessor
     protected virtual IEnumerable<ArgumentToken> Convert(string src) =>
         src.StartsWith("-") ?
         src.Skip(1).Select(c => new ArgumentToken(c.ToString(), "-")) :
-        AsEnumerable(new(src));
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// AsEnumerable
-    ///
-    /// <summary>
-    /// Treats the specified value as enumerable.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected IEnumerable<ArgumentToken> AsEnumerable(ArgumentToken src)
-    {
-        yield return src;
-    }
+        new[] { new ArgumentToken(src) };
 }
 
 #endregion
@@ -144,7 +130,7 @@ public class GnuArgumentPreprocessor : PosixArgumentPreprocessor
     /* --------------------------------------------------------------------- */
     protected override IEnumerable<ArgumentToken> Convert(string src) =>
         src.StartsWith("--") ?
-        AsEnumerable(new(src.Substring(2), "--")) :
+        new[] { new ArgumentToken(src.Substring(2), "--") } :
         base.Convert(src);
 }
 

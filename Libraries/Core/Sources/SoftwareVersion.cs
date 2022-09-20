@@ -21,8 +21,8 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
-using Cube.Mixin.Assembly;
-using Cube.Mixin.String;
+using Cube.Reflection.Extensions;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

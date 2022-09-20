@@ -329,7 +329,7 @@ internal static class QueryDispatcher
     ///
     /* --------------------------------------------------------------------- */
     public static Dispatcher Create() =>
-        SynchronizationContext.Current != null ? new ContextDispatcher(true) : Dispatcher.Vanilla;
+        SynchronizationContext.Current is not null ? new ContextDispatcher(true) : Dispatcher.Vanilla;
 }
 
 #endregion

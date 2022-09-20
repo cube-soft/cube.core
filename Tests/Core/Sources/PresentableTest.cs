@@ -20,8 +20,8 @@ namespace Cube.Tests;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Cube.Mixin.Observing;
-using Cube.Mixin.Syntax;
+using Cube.Observable.Extensions;
+using Cube.Syntax.Extensions;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
@@ -145,15 +145,15 @@ class PresentableTest
         using (var src = new Presenter(new()))
         using (src.Subscribe<DialogMessage>(e => dest = e))
         {
-            src.RunSync(() => throw new OperationCanceledException("Ignore"));
-            src.RunSync(() => throw new ArgumentException(nameof(Run)));
+            src.RunSync(() => throw new OperationCanceledException("Ignore (Test)"));
+            src.RunSync(() => throw new ArgumentException($"{nameof(Run)} (Test)"));
         }
 
-        Assert.That(dest.Text, Does.StartWith(nameof(Run)));
-        Assert.That(dest.Title, Is.Not.Null.And.Not.Empty);
-        Assert.That(dest.Icon, Is.EqualTo(DialogIcon.Error));
+        Assert.That(dest.Text,    Does.StartWith(nameof(Run)));
+        Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
+        Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
         Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-        Assert.That(dest.Value, Is.EqualTo(DialogStatus.Ok));
+        Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
     }
 
     /* --------------------------------------------------------------------- */
@@ -172,7 +172,7 @@ class PresentableTest
         using (var src = new Presenter(new()))
         using (src.Subscribe<DialogMessage>(e => n++))
         {
-            src.RunSync(() => throw new ArgumentException(), () => n *= 10);
+            src.RunSync(() => throw new ArgumentException($"{nameof(Run2)} (Test)"), () => n *= 10);
         }
         Assert.That(n, Is.EqualTo(10));
     }

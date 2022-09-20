@@ -18,7 +18,7 @@
 namespace Cube.FileSystem.AlphaFS;
 
 using Alphaleonis.Win32.Filesystem;
-using Cube.Mixin.Generic;
+using Cube.Generics.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///

@@ -20,7 +20,7 @@ namespace Cube.Xui.Behaviors;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Cube.Mixin.Generic;
+using Cube.Generics.Extensions;
 
 #region CommandBehavior<TView>
 

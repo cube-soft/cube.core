@@ -18,7 +18,6 @@
 namespace Cube.Tests;
 
 using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
@@ -38,126 +37,66 @@ class LoggerTest
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Debug
+    /// Test
     ///
     /// <summary>
-    /// Executes the test of the LogDebug extended methods.
+    /// Tests the Logger basic methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Test]
-    public void Debug()
+    public void Test()
     {
-        Logger.Separator = ",";
-        var src = GetType();
-        src.LogDebug();
-        src.LogDebug("Debug");
-        src.LogDebug("Debug", "multiple", "messages");
+        Assert.DoesNotThrow(() => Logger.Debug("Message"));
+        Assert.DoesNotThrow(() => Logger.Info("Message"));
+        Assert.DoesNotThrow(() => Logger.Warn("Message"));
+        Assert.DoesNotThrow(() => Logger.Error("Message"));
+
+        Assert.DoesNotThrow(() => Logger.Info(GetType().Assembly));
+        Assert.DoesNotThrow(() => Logger.Warn(() => throw new Exception("Test")));
+        Assert.DoesNotThrow(() => Logger.Error(() => throw new Exception("Test")));
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Info
+    /// TestTask
     ///
     /// <summary>
-    /// Executes the test of the LogInfo extended methods.
+    /// Tests for logging UnobservedTaskException exceptions.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Test]
-    public void Info()
+    public void TestTask()
     {
-        Logger.Separator = "\t";
-        var src = GetType();
-        src.LogInfo();
-        src.LogInfo("Info");
-        src.LogInfo("Info", "multiple", "messages");
+        _ = TaskEx.Run(() => throw new Exception("Test for ObserveTaskException"));
+        TaskEx.Delay(100).Wait();
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Warn
+    /// TestName
     ///
     /// <summary>
-    /// Executes the test of the LogWarn extended methods.
+    /// Tests the Debug method with various paths as arguments.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Test]
-    public void Warn()
-    {
-        Logger.Separator = ":";
-        var src = GetType();
-        src.LogWarn();
-        src.LogWarn("Warn");
-        src.LogWarn("Warn", "multiple", "messages");
-
-        var error = new ArgumentException("Warn (throw)");
-        src.LogWarn(() => throw error);
-
-        try { throw error; }
-        catch (ArgumentException err) { src.LogWarn(err); }
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Error
-    ///
-    /// <summary>
-    /// Executes the test of the LogError extended methods.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void Error()
-    {
-        var src = GetType();
-        src.LogError();
-        src.LogError("Error");
-        src.LogError("Error", "multiple", "messages");
-
-        var error = new Win32Exception(0);
-        src.LogError(() => throw error);
-
-        try { throw error; }
-        catch (Win32Exception err) { src.LogError(err); }
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ObserveTaskException
-    ///
-    /// <summary>
-    /// Executes the test of the ObserveTaskException method.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void ObserveTaskException()
-    {
-        using (Logger.ObserveTaskException())
-        {
-            // Assert.DoesNotThrow
-            _ = TaskEx.Run(() => throw new ArgumentException("Test for ObserveTaskException"));
-            TaskEx.Delay(100).Wait();
-        }
-    }
-
-    #endregion
-
-    #region Others
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// TearDown
-    ///
-    /// <summary>
-    /// Invokes when each test terminates.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [TearDown]
-    public void TearDown() => Logger.Separator = "\t";
+    [TestCase("C:\\Win\\Path\\To\\Filename1.cs")]
+    [TestCase("Win\\Path\\To\\Filename2.cs")]
+    [TestCase("Win\\Path\\To\\.cs")]
+    [TestCase("Win\\Dir\\Only\\")]
+    [TestCase("/Unix/Path/To/Filename3.cs")]
+    [TestCase("Unix/Path/To/Filename4.cs")]
+    [TestCase("Unix/Path/To/.cs")]
+    [TestCase("Unix/Dir/Only/")]
+    [TestCase("FilenameOnly.cs")]
+    [TestCase("BasenameOnly")]
+    [TestCase(".cs")]
+    [TestCase("")]
+    [TestCase(null)]
+    public void TestName(string name) =>
+        Assert.DoesNotThrow(() => Logger.Debug("message", name));
 
     #endregion
 }

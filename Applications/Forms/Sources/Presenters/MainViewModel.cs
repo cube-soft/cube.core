@@ -56,7 +56,7 @@ public class MainViewModel : PresentableBase<MainFacade>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public void Setup() => GetType().LogDebug("Shown");
+    public void Setup() => Logger.Debug("Shown");
 
     /* --------------------------------------------------------------------- */
     ///
@@ -81,7 +81,7 @@ public class MainViewModel : PresentableBase<MainFacade>
     /* --------------------------------------------------------------------- */
     public void File() => Send(
         new FileViewModel(Context),
-        e => GetType().LogDebug(e.Value),
+        e => Logger.Debug(e.Value),
         true
     );
 
@@ -121,7 +121,7 @@ public class MainViewModel : PresentableBase<MainFacade>
         var msg = Message.ForConfirm();
         Send(msg);
         src.Cancel = msg.Value == DialogStatus.Cancel;
-        GetType().LogDebug("Closing", $"Reason:{src.CloseReason}", $"Cancel:{src.Cancel}");
+        Logger.Debug($"Closing Reason:{src.CloseReason} Cancel:{src.Cancel}");
     }
 
     /* --------------------------------------------------------------------- */
@@ -133,7 +133,7 @@ public class MainViewModel : PresentableBase<MainFacade>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public void Log(FormClosedEventArgs src) => GetType().LogDebug("Closed", $"Reason:{src.CloseReason}");
+    public void Log(FormClosedEventArgs src) => Logger.Debug($"Closed Reason:{src.CloseReason}");
 
     #endregion
 }

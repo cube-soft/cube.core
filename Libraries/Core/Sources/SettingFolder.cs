@@ -24,9 +24,8 @@ using System.Threading.Tasks;
 using System.Timers;
 using Cube.DataContract;
 using Cube.FileSystem;
-using Cube.Mixin.Assembly;
-using Cube.Mixin.Environment;
-using Cube.Mixin.Tasks;
+using Cube.Reflection.Extensions;
+using Cube.Tasks.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -258,7 +257,7 @@ public class SettingFolder<T> : ObservableBase where T : INotifyPropertyChanged,
     protected override void Dispose(bool disposing)
     {
         if (disposing) _autosaver.Dispose();
-        if (AutoSave) GetType().LogWarn(() => Save());
+        if (AutoSave) Logger.Warn(Save);
     }
 
     /* --------------------------------------------------------------------- */
@@ -273,7 +272,7 @@ public class SettingFolder<T> : ObservableBase where T : INotifyPropertyChanged,
     private static string GetLocation(Format fmt, Assembly asm)
     {
         var root = fmt != Format.Registry ?
-                   Environment.SpecialFolder.LocalApplicationData.GetName() :
+                   Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) :
                    string.Empty;
         return Io.Combine(root, asm.GetCompany(), asm.GetProduct());
     }
@@ -300,7 +299,7 @@ public class SettingFolder<T> : ObservableBase where T : INotifyPropertyChanged,
                 _autosaver.Interval = AutoSaveDelay.TotalMilliseconds;
                 _autosaver.Start();
             }
-            else GetType().LogWarn(() => Save());
+            else Logger.Warn(Save);
         }
         finally { OnPropertyChanged(e); }
     }
