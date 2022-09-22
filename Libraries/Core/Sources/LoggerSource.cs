@@ -38,12 +38,13 @@ public interface ILoggerSource
     /// Writes a log entry.
     /// </summary>
     ///
-    /// <param name="name">Logger name.</param>
+    /// <param name="path">Source file path.</param>
+    /// <param name="number">Source line number.</param>
     /// <param name="level">Log level.</param>
     /// <param name="message">Logging message.</param>
     ///
     /* --------------------------------------------------------------------- */
-    void Log(string name, LogLevel level, string message);
+    void Log(string path, int number, LogLevel level, string message);
 }
 
 #endregion
@@ -69,12 +70,13 @@ public sealed class NullLoggerSource : ILoggerSource
     /// Writes a log entry.
     /// </summary>
     ///
-    /// <param name="name">Logger name.</param>
+    /// <param name="path">Source file path.</param>
+    /// <param name="number">Source line number.</param>
     /// <param name="level">Log level.</param>
     /// <param name="message">Logging message.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Log(string name, LogLevel level, string message) { }
+    public void Log(string path, int number, LogLevel level, string message) { }
 }
 
 #endregion
