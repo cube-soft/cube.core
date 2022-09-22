@@ -15,6 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Text.Extensions;
+using System;
+
 namespace Cube.Logging.NLog;
 
 /* ------------------------------------------------------------------------- */
@@ -28,6 +31,8 @@ namespace Cube.Logging.NLog;
 /* ------------------------------------------------------------------------- */
 public sealed class LoggerSource : ILoggerSource
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
     /// Log
@@ -36,21 +41,48 @@ public sealed class LoggerSource : ILoggerSource
     /// Writes a log entry.
     /// </summary>
     ///
-    /// <param name="name">Logger name.</param>
+    /// <param name="path">Source file path.</param>
+    /// <param name="number">Source line number.</param>
     /// <param name="level">Log level.</param>
     /// <param name="message">Logging message.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Log(string name, LogLevel level, string message)
+    public void Log(string path, int number, LogLevel level, string message)
     {
-        var e = global::NLog.LogManager.GetLogger(name);
+        var e = global::NLog.LogManager.GetLogger(GetLoggerName(path));
+        var m = $"({number}) {message}";
+
         switch (level)
         {
-            case LogLevel.Trace:       e.Trace(message); break;
-            case LogLevel.Debug:       e.Debug(message); break;
-            case LogLevel.Information: e.Info(message);  break;
-            case LogLevel.Warning:     e.Warn(message);  break;
-            case LogLevel.Error:       e.Error(message); break;
+            case LogLevel.Trace:       e.Trace(m); break;
+            case LogLevel.Debug:       e.Debug(m); break;
+            case LogLevel.Information: e.Info(m);  break;
+            case LogLevel.Warning:     e.Warn(m);  break;
+            case LogLevel.Error:       e.Error(m); break;
         }
     }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetLoggerName
+    ///
+    /// <summary>
+    /// Gets the logger name with the specified path.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static string GetLoggerName(string path)
+    {
+        if (!path.HasValue()) return "None";
+
+        var p0 = Math.Min(path.LastIndexOfAny(new[] { '/', '\\' }) + 1, path.Length - 1);
+        var p1 = path.LastIndexOf('.');
+        return p1 > p0 ? path.Substring(p0, p1 - p0) : path.Substring(p0);
+    }
+
+    #endregion
 }
