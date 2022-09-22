@@ -63,7 +63,7 @@ public static class Methods
     /// <returns>SoftwareVersion object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static SoftwareVersion GetSoftwareVersion(this Assembly src) => new(src.GetVersion());
+    public static SoftwareVersion GetSoftwareVersion(this Assembly src) => new(src);
 
     /* --------------------------------------------------------------------- */
     ///
