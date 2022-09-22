@@ -72,7 +72,7 @@ public static class Logger
     /* --------------------------------------------------------------------- */
     public static void Debug(string message,
         [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
-        _source.Log(GetLoggerName(path, n), LogLevel.Debug, message);
+        _source.Log(path, n, LogLevel.Debug, message);
 
     #endregion
 
@@ -93,7 +93,7 @@ public static class Logger
     /* --------------------------------------------------------------------- */
     public static void Info(string message,
         [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
-        _source.Log(GetLoggerName(path, n), LogLevel.Information, message);
+        _source.Log(path, n, LogLevel.Information, message);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -136,7 +136,7 @@ public static class Logger
     /* --------------------------------------------------------------------- */
     public static void Warn(string message,
         [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
-        _source.Log(GetLoggerName(path, n), LogLevel.Warning, message);
+        _source.Log(path, n, LogLevel.Warning, message);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -191,7 +191,7 @@ public static class Logger
     /* --------------------------------------------------------------------- */
     public static void Error(string message,
         [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
-        _source.Log(GetLoggerName(path, n), LogLevel.Error, message);
+        _source.Log(path, n, LogLevel.Error, message);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -251,25 +251,6 @@ public static class Logger
     #endregion
 
     #region Implementations
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetLoggerName
-    ///
-    /// <summary>
-    /// Gets the logger name with the specified arguments.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static string GetLoggerName(string path, int n)
-    {
-        if (!path.HasValue()) return $":{n}";
-
-        var p0 = Math.Min(path.LastIndexOfAny(new[] { '/', '\\' }) + 1, path.Length - 1);
-        var p1 = path.LastIndexOf('.');
-        var s = p1 > p0 ? path.Substring(p0, p1 - p0) : path.Substring(p0);
-        return $"{s}:{n}";
-    }
 
     /* --------------------------------------------------------------------- */
     ///
