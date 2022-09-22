@@ -19,6 +19,7 @@ namespace Cube;
 
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Cube.Reflection.Extensions;
@@ -42,28 +43,43 @@ public class SoftwareVersion
     /// SoftwareVersion
     ///
     /// <summary>
-    /// Initializes a new instance of the class.
+    /// Initializes a new instance of the SoftwareVersion class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public SoftwareVersion() : this(new Version(1, 0, 0, 0)) { }
+    public SoftwareVersion() : this(new(1, 0, 0, 0), Assembly.GetCallingAssembly().GetArchitecture()) { }
 
     /* --------------------------------------------------------------------- */
     ///
     /// SoftwareVersion
     ///
     /// <summary>
-    /// Initializes a new instance of the class with the specified
-    /// arguments.
+    /// Initializes a new instance of the SoftwareVersion class with the
+    /// specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Source assembly.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public SoftwareVersion(Assembly src) : this(src.GetVersion(), src.GetArchitecture()) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SoftwareVersion
+    ///
+    /// <summary>
+    /// Initializes a new instance of the SoftwareVersion class with the
+    /// specified arguments.
     /// </summary>
     ///
     /// <param name="src">Version object.</param>
+    /// <param name="architecture">Architecture string.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public SoftwareVersion(Version src)
+    public SoftwareVersion(Version src, string architecture)
     {
         Number       = src;
-        Architecture = GetType().Assembly.GetArchitecture();
+        Architecture = architecture;
     }
 
     /* --------------------------------------------------------------------- */
@@ -71,8 +87,8 @@ public class SoftwareVersion
     /// SoftwareVersion
     ///
     /// <summary>
-    /// Initializes a new instance of the class with the specified
-    /// string.
+    /// Initializes a new instance of the SoftwareVersion class with the
+    /// specified string.
     /// </summary>
     ///
     /// <param name="src">
@@ -80,7 +96,7 @@ public class SoftwareVersion
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public SoftwareVersion(string src) : this()
+    public SoftwareVersion(string src) : this(new(1, 0, 0, 0), Assembly.GetCallingAssembly().GetArchitecture())
     {
         if (!src.HasValue()) return;
 
