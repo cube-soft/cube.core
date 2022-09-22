@@ -178,7 +178,7 @@ class UriTest
     {
         var asm  = GetType().Assembly;
         var dest = $"{Create()}?ver=8.0.0-beta";
-        var src  = Create().With(new SoftwareVersion(asm.GetVersion()) { Suffix = "-beta" });
+        var src  = Create().With(new SoftwareVersion(asm) { Suffix = "-beta" });
 
         Assert.That(src.ToString(), Is.EqualTo(dest));
     }

@@ -52,7 +52,7 @@ class SoftwareVersionTest
         var minor = src.GetVersion().Minor;
         var build = src.GetVersion().Build;
         var pf    = src.GetArchitecture();
-        var dest  = new SoftwareVersion(src.GetVersion())
+        var dest  = new SoftwareVersion(src)
         {
             Prefix = "begin-",
             Suffix = "-end"
