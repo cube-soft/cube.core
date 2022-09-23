@@ -196,10 +196,10 @@ public class VersionControl : ControlBase
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     public string Platform => string.Format("{0} ({1}){2}{3}{4}",
-        Environment.OSVersion,
-        Environment.Is64BitOperatingSystem ? "64bit" : "32bit",
+        System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+        System.Runtime.InteropServices.RuntimeInformation.OSArchitecture,
         Environment.NewLine,
-        $".NET Framework {Environment.Version}",
+        System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
         Environment.NewLine
     );
 

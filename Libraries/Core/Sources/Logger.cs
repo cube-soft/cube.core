@@ -109,10 +109,12 @@ public static class Logger
     /* --------------------------------------------------------------------- */
     public static void Info(Assembly src, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
     {
-        var arch = Environment.Is64BitOperatingSystem ? "64bit" : "32bit";
+        var fw   = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+        var os   = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+        var arch = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture;
         Info($"{src.GetProduct()} {src.GetVersionString(4, true)}", path, n);
-        Info($"{Environment.OSVersion} ({arch})", path, n);
-        Info($".NET Framework {Environment.Version}", path, n);
+        Info($"{os} ({arch})", path, n);
+        Info($"{fw}", path, n);
         Info($"{Environment.UserName}@{Environment.MachineName} ({CultureInfo.CurrentCulture})", path, n);
     }
 
