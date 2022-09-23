@@ -47,16 +47,4 @@ static class Program
         Logger.Configure(new Logging.NLog.LoggerSource());
         Logger.Info(typeof(Program).Assembly);
     }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Main
-    ///
-    /// <summary>
-    /// Represents the main method.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [STAThread]
-    static void Main() { }
 }

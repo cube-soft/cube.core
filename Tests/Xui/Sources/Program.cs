@@ -52,16 +52,4 @@ static class Program
         Application.Current.ObserveUiException();
         Logger.Info(typeof(Program).Assembly);
     }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Main
-    ///
-    /// <summary>
-    /// Represents the main method.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [STAThread]
-    static void Main() { }
 }
