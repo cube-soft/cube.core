@@ -83,7 +83,7 @@ class AssemblyTest
             yield return new TestCaseData(typeof(AssemblyTest).Assembly, new Expected
             {
                 Name          = "Cube.Core.Tests",
-                FileName      = "Cube.Core.Tests.exe",
+                FileName      = "Cube.Core.Tests.dll",
                 DirectoryName = @"Tests\Core\bin",
                 Title         = "Cube.Core UnitTest",
                 Description   = "NUnit framework を用いて Cube.Core プロジェクトをテストします。",
