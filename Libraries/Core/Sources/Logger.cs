@@ -109,9 +109,9 @@ public static class Logger
     /* --------------------------------------------------------------------- */
     public static void Info(Assembly src, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
     {
-        var os = Environment.Is64BitOperatingSystem ? "64bit" : "32bit";
+        var arch = Environment.Is64BitOperatingSystem ? "64bit" : "32bit";
         Info($"{src.GetProduct()} {src.GetVersionString(4, true)}", path, n);
-        Info($"{Environment.OSVersion} ({os})", path, n);
+        Info($"{Environment.OSVersion} ({arch})", path, n);
         Info($".NET Framework {Environment.Version}", path, n);
         Info($"{Environment.UserName}@{Environment.MachineName} ({CultureInfo.CurrentCulture})", path, n);
     }
