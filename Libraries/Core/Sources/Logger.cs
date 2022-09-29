@@ -111,10 +111,11 @@ public static class Logger
     {
         var fw   = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
         var os   = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+        var pa   = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture;
         var arch = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture;
         Info($"{src.GetProduct()} {src.GetVersionString(4, true)}", path, n);
         Info($"{os} ({arch})", path, n);
-        Info($"{fw}", path, n);
+        Info($"{fw} ({pa})", path, n);
         Info($"{Environment.UserName}@{Environment.MachineName} ({CultureInfo.CurrentCulture})", path, n);
     }
 
