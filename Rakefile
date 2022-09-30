@@ -22,6 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT   = "Cube.Core"
+LATEST    = "v8"
 BRANCHES  = ["net47", "net60", "net35"]
 PLATFORMS = ["Any CPU"]
 PACKAGES  = ["Libraries/Core/Cube.Core",
@@ -44,7 +45,7 @@ CLOBBER.include("../packages/cube.*")
 # --------------------------------------------------------------------------- #
 desc "Clean, build, test, and create NuGet packages."
 task :default => [:clean, :build_all] do
-    checkout("net35") { Rake::Task[:pack].execute }
+    checkout("#{LATEST}/net35") { Rake::Task[:pack].execute }
 end
 
 # --------------------------------------------------------------------------- #
@@ -75,12 +76,13 @@ end
 # build_all
 # --------------------------------------------------------------------------- #
 desc "Build projects in pre-defined branches and platforms."
-task :build_all do
-    BRANCHES.product(PLATFORMS).each do |e|
-        checkout(e[0]) do
+task :build_all, [:version] do |_, e|
+    e.with_defaults(:version => LATEST)
+
+    BRANCHES.product(PLATFORMS).each do |bp|
+        checkout("#{e.version}/#{bp[0]}") do
             Rake::Task[:build].reenable
-            Rake::Task[:build].invoke(e[1])
-            Rake::Task[:test].execute
+            Rake::Task[:build].invoke(bp[1])
         end
     end
 end
