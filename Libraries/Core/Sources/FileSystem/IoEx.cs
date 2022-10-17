@@ -134,7 +134,7 @@ public static class IoEx
     ///
     /* --------------------------------------------------------------------- */
     public static string Rename(string src, string filename) =>
-        Io.Combine(Io.Get(src).DirectoryName, filename);
+        Io.Combine(Io.GetDirectoryName(src), filename);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -150,11 +150,8 @@ public static class IoEx
     /// <returns>Renamed path.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string RenameExtension(string src, string extension)
-    {
-        var e = Io.Get(src);
-        return Io.Combine(e.DirectoryName, $"{e.BaseName}{extension}");
-    }
+    public static string RenameExtension(string src, string extension) =>
+        Io.Combine(Io.GetDirectoryName(src), $"{Io.GetBaseName(src)}{extension}");
 
     #endregion
 
@@ -173,11 +170,9 @@ public static class IoEx
     /// <returns>Unique name.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string GetUniqueName(string src) => GetUniqueName(src, (e, i) =>
-    {
-        var fi = Io.Get(e);
-        return Io.Combine(fi.DirectoryName, $"{fi.BaseName}({i}){fi.Extension}");
-    });
+    public static string GetUniqueName(string src) => GetUniqueName(src,
+        (e, i) => Io.Combine(Io.GetDirectoryName(e), $"{Io.GetBaseName(e)}({i}){Io.GetExtension(e)}")
+    );
 
     /* --------------------------------------------------------------------- */
     ///
