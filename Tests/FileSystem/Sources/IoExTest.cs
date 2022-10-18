@@ -137,7 +137,7 @@ class IoExTest : FileFixture
     [TestCase("Sample.txt", "",     ExpectedResult = "Sample")]
     [TestCase("Sample",     ".txt", ExpectedResult = "Sample.txt")]
     public string RenameExtension(string src, string extension) =>
-        Io.Get(IoEx.RenameExtension(src, extension)).Name;
+        Io.GetFileName(IoEx.RenameExtension(src, extension));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -151,7 +151,7 @@ class IoExTest : FileFixture
     [TestCase("Sample.txt",     ExpectedResult = true)]
     [TestCase("NotFound.dummy", ExpectedResult = true)]
     public bool GetTypeName(string filename) =>
-        Shell.GetTypeName(Io.Get(GetSource(filename)).FullName).HasValue();
+        Shell.GetTypeName(GetSource(filename)).HasValue();
 
     /* --------------------------------------------------------------------- */
     ///
