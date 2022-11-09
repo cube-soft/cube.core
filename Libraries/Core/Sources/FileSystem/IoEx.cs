@@ -20,6 +20,7 @@ namespace Cube.FileSystem;
 using System;
 using System.IO;
 using System.Linq;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -124,7 +125,7 @@ public static class IoEx
     /// Rename
     ///
     /// <summary>
-    /// Changes the filename of a path string.
+    /// Changes the filename of the specified path.
     /// </summary>
     ///
     /// <param name="src">Source path.</param>
@@ -134,24 +135,31 @@ public static class IoEx
     ///
     /* --------------------------------------------------------------------- */
     public static string Rename(string src, string filename) =>
-        Io.Combine(Io.GetDirectoryName(src), filename);
+        Io.Combine(Io.GetDirectoryName(src), Io.GetFileName(filename));
 
     /* --------------------------------------------------------------------- */
     ///
     /// RenameExtension
     ///
     /// <summary>
-    /// Changes the extension of a path string.
+    /// Changes the extension of the specified path.
     /// </summary>
     ///
     /// <param name="src">Source path.</param>
-    /// <param name="extension">Extension to rename.</param>
+    /// <param name="extension">
+    /// New extension (with or without a leading period).
+    /// </param>
     ///
     /// <returns>Renamed path.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string RenameExtension(string src, string extension) =>
-        Io.Combine(Io.GetDirectoryName(src), $"{Io.GetBaseName(src)}{extension}");
+    public static string RenameExtension(string src, string extension)
+    {
+        var cvt = !extension.HasValue() ? string.Empty :
+                  extension[0] == '.'   ? extension :
+                  $".{extension}";
+        return Io.Combine(Io.GetDirectoryName(src), $"{Io.GetBaseName(src)}{cvt}");
+    }
 
     #endregion
 
