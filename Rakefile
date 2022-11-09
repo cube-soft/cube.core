@@ -21,18 +21,18 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
-PROJECT   = "Cube.Core"
-LATEST    = "v8"
-BRANCHES  = ["net47", "net60", "net35"]
-PLATFORMS = ["Any CPU"]
-PACKAGES  = ["Libraries/Core/Cube.Core",
-             "Libraries/Forms/Core/Cube.Forms",
-             "Libraries/Forms/Controls/Cube.Forms.Controls",
-             "Libraries/Xui/Cube.Xui",
-             "Libraries/AlphaFS/Cube.FileSystem.AlphaFS",
-             "Libraries/NLog/Cube.Logging.NLog",
-             "Libraries/Trick/Cube.Trick",
-             "Libraries/Tests/Cube.Private.Tests"]
+PROJECT     = "Cube.Core"
+LATEST      = "v8"
+BRANCHES    = ["net47", "net60", "net35"]
+PLATFORMS   = ["Any CPU"]
+PACKAGES    = ["Libraries/Core/Cube.Core",
+               "Libraries/Forms/Core/Cube.Forms",
+               "Libraries/Forms/Controls/Cube.Forms.Controls",
+               "Libraries/Xui/Cube.Xui",
+               "Libraries/AlphaFS/Cube.FileSystem.AlphaFS",
+               "Libraries/NLog/Cube.Logging.NLog",
+               "Libraries/Trick/Cube.Trick",
+               "Libraries/Tests/Cube.Private.Tests"]
 
 # --------------------------------------------------------------------------- #
 # clean
@@ -43,7 +43,7 @@ CLOBBER.include("../packages/cube.*")
 # --------------------------------------------------------------------------- #
 # default
 # --------------------------------------------------------------------------- #
-desc "Clean, build, test, and create NuGet packages."
+desc "Clean, build, and create NuGet packages."
 task :default => [:clean, :build_all] do
     checkout("#{LATEST}/net35") { Rake::Task[:pack].execute }
 end
@@ -54,6 +54,21 @@ end
 desc "Resote NuGet packages in the current branch."
 task :restore do
     cmd("nuget restore #{PROJECT}.sln")
+end
+
+# --------------------------------------------------------------------------- #
+# pack
+# --------------------------------------------------------------------------- #
+desc "Create NuGet packages."
+task :pack do
+    PACKAGES.each do |e|
+        spec = File.exists?("#{e}.nuspec")
+        pack = spec ?
+               %(nuget pack -Properties "Configuration=Release;Platform=AnyCPU") :
+               "dotnet pack -c Release --no-restore --no-build -o ."
+        ext  = spec ? "nuspec" : "csproj"
+        cmd("#{pack} #{e}.#{ext}")
+    end
 end
 
 # --------------------------------------------------------------------------- #
@@ -91,23 +106,8 @@ end
 # test
 # --------------------------------------------------------------------------- #
 desc "Test projects in the current branch."
-task :test do
+task :test => [:build] do
     cmd("dotnet test -c Release --no-restore --no-build #{PROJECT}.sln")
-end
-
-# --------------------------------------------------------------------------- #
-# pack
-# --------------------------------------------------------------------------- #
-desc "Create NuGet packages."
-task :pack do
-    PACKAGES.each do |e|
-        spec = File.exists?("#{e}.nuspec")
-        pack = spec ?
-               %(nuget pack -Properties "Configuration=Release;Platform=AnyCPU") :
-               "dotnet pack -c Release --no-restore --no-build -o ."
-        ext  = spec ? "nuspec" : "csproj"
-        cmd("#{pack} #{e}.#{ext}")
-    end
 end
 
 # --------------------------------------------------------------------------- #

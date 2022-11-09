@@ -113,6 +113,27 @@ class IoExTest : FileFixture
 
     /* --------------------------------------------------------------------- */
     ///
+    /// GetFileName
+    ///
+    /// <summary>
+    /// Tests the GetFileName, GetBaseName, GetExtension, and
+    /// GetDirectoryName methods.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase(@"relative\to\file.txt",    @"relative\to", "file",     ".txt")]
+    [TestCase(@"z:\foo\bar.tmp",          @"z:\foo",      "bar",      ".tmp")]
+    [TestCase(@"C:\Windows\explorer.exe", @"C:\Windows",  "explorer", ".exe")]
+    public void GetFileName(string src, string dir, string name, string ext)
+    {
+        Assert.That(Io.GetFileName(src),      Is.EqualTo($"{name}{ext}"));
+        Assert.That(Io.GetBaseName(src),      Is.EqualTo(name));
+        Assert.That(Io.GetExtension(src),     Is.EqualTo(ext));
+        Assert.That(Io.GetDirectoryName(src), Is.EqualTo(dir));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// Rename
     ///
     /// <summary>
@@ -120,8 +141,10 @@ class IoExTest : FileFixture
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestCase(@"c:\foo\Sample.txt", "Rename.dat", ExpectedResult = @"c:\foo\Rename.dat")]
-    [TestCase(@"c:\bar\Remove.txt", "",           ExpectedResult = @"c:\bar")]
+    [TestCase(@"c:\foo\Sample.txt",   @"Rename.dat",       ExpectedResult = @"c:\foo\Rename.dat")]
+    [TestCase(@"c:\dir\Remove.txt",   @"",                 ExpectedResult = @"c:\dir")]
+    [TestCase(@"c:\path\to\foo.txt",  @"d:\dummy\bar.txt", ExpectedResult = @"c:\path\to\bar.txt")]
+    [TestCase(@"relative\to\foo.txt", @"dummy\bas.txt",    ExpectedResult = @"relative\to\bas.txt")]
     public string Rename(string src, string filename) => IoEx.Rename(src, filename);
 
     /* --------------------------------------------------------------------- */
@@ -136,8 +159,8 @@ class IoExTest : FileFixture
     [TestCase("Sample.txt", ".new", ExpectedResult = "Sample.new")]
     [TestCase("Sample.txt", "",     ExpectedResult = "Sample")]
     [TestCase("Sample",     ".txt", ExpectedResult = "Sample.txt")]
-    public string RenameExtension(string src, string extension) =>
-        Io.Get(IoEx.RenameExtension(src, extension)).Name;
+    [TestCase("Sample.txt", "dat",  ExpectedResult = "Sample.dat")]
+    public string RenameExtension(string src, string extension) => IoEx.RenameExtension(src, extension);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -151,7 +174,7 @@ class IoExTest : FileFixture
     [TestCase("Sample.txt",     ExpectedResult = true)]
     [TestCase("NotFound.dummy", ExpectedResult = true)]
     public bool GetTypeName(string filename) =>
-        Shell.GetTypeName(Io.Get(GetSource(filename)).FullName).HasValue();
+        Shell.GetTypeName(GetSource(filename)).HasValue();
 
     /* --------------------------------------------------------------------- */
     ///

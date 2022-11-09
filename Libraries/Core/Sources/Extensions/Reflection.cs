@@ -131,7 +131,7 @@ public static class Methods
     public static string GetFileName(this Assembly src)
     {
         var path = src.GetLocation();
-        return path.HasValue() ? Io.Get(path).Name : string.Empty;
+        return path.HasValue() ? Io.GetFileName(path) : string.Empty;
     }
 
     /* --------------------------------------------------------------------- */
@@ -150,7 +150,7 @@ public static class Methods
     public static string GetDirectoryName(this Assembly src)
     {
         var path = src.GetLocation();
-        return path.HasValue() ? Io.Get(path).DirectoryName : string.Empty;
+        return path.HasValue() ? Io.GetDirectoryName(path) : string.Empty;
     }
 
     /* --------------------------------------------------------------------- */

@@ -60,7 +60,7 @@ class ShortcutTest : FileFixture
 
         Assert.That(sc.Exists, Is.False);
         Assert.That(sc.FullName, Does.EndWith(".lnk"));
-        Assert.That(Io.Get(sc.FullName).BaseName, Does.Not.EndWith(".lnk"));
+        Assert.That(Io.GetBaseName(sc.FullName), Does.Not.EndWith(".lnk"));
 
         sc.Create();
         return sc.Exists;
@@ -235,7 +235,7 @@ class ShortcutTest : FileFixture
     private string GetTargetPath(string filename)
     {
         var asm = Assembly.GetExecutingAssembly().Location;
-        var dir = Io.Get(asm).DirectoryName;
+        var dir = Io.GetDirectoryName(asm);
         return Io.Combine(dir, filename);
     }
 

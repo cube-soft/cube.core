@@ -20,6 +20,7 @@ namespace Cube.FileSystem;
 using System;
 using System.IO;
 using System.Linq;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -124,7 +125,7 @@ public static class IoEx
     /// Rename
     ///
     /// <summary>
-    /// Changes the filename of a path string.
+    /// Changes the filename of the specified path.
     /// </summary>
     ///
     /// <param name="src">Source path.</param>
@@ -134,26 +135,30 @@ public static class IoEx
     ///
     /* --------------------------------------------------------------------- */
     public static string Rename(string src, string filename) =>
-        Io.Combine(Io.Get(src).DirectoryName, filename);
+        Io.Combine(Io.GetDirectoryName(src), Io.GetFileName(filename));
 
     /* --------------------------------------------------------------------- */
     ///
     /// RenameExtension
     ///
     /// <summary>
-    /// Changes the extension of a path string.
+    /// Changes the extension of the specified path.
     /// </summary>
     ///
     /// <param name="src">Source path.</param>
-    /// <param name="extension">Extension to rename.</param>
+    /// <param name="extension">
+    /// New extension (with or without a leading period).
+    /// </param>
     ///
     /// <returns>Renamed path.</returns>
     ///
     /* --------------------------------------------------------------------- */
     public static string RenameExtension(string src, string extension)
     {
-        var e = Io.Get(src);
-        return Io.Combine(e.DirectoryName, $"{e.BaseName}{extension}");
+        var cvt = !extension.HasValue() ? string.Empty :
+                  extension[0] == '.'   ? extension :
+                  $".{extension}";
+        return Io.Combine(Io.GetDirectoryName(src), $"{Io.GetBaseName(src)}{cvt}");
     }
 
     #endregion
@@ -173,11 +178,9 @@ public static class IoEx
     /// <returns>Unique name.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string GetUniqueName(string src) => GetUniqueName(src, (e, i) =>
-    {
-        var fi = Io.Get(e);
-        return Io.Combine(fi.DirectoryName, $"{fi.BaseName}({i}){fi.Extension}");
-    });
+    public static string GetUniqueName(string src) => GetUniqueName(src,
+        (e, i) => Io.Combine(Io.GetDirectoryName(e), $"{Io.GetBaseName(e)}({i}){Io.GetExtension(e)}")
+    );
 
     /* --------------------------------------------------------------------- */
     ///
