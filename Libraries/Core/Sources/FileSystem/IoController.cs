@@ -149,24 +149,6 @@ public class IoController
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Combine
-    ///
-    /// <summary>
-    /// Combines the specified paths.
-    /// </summary>
-    ///
-    /// <param name="paths">Collection of paths.</param>
-    ///
-    /// <returns>Combined path.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public virtual string Combine(params string[] paths) =>
-        paths != null && paths.Length > 0 ?
-        paths.Aggregate((x, s) => string.IsNullOrEmpty(x) ? s : Path.Combine(x, s)) :
-        string.Empty;
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// Open
     ///
     /// <summary>
@@ -341,6 +323,101 @@ public class IoController
     /* --------------------------------------------------------------------- */
     public virtual void Copy(string src, string dest, bool overwrite) =>
         File.Copy(src, dest, overwrite);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetFileName
+    ///
+    /// <summary>
+    /// Gets the filename and extension of the specified path string.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>
+    /// The characters after the last directory separator character in path.
+    /// If the last character of path is a directory or volume separator
+    /// character, this method returns Empty. If path is null, this method
+    /// returns null.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public virtual string GetFileName(string src) => Path.GetFileName(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetBaseName
+    ///
+    /// <summary>
+    /// Gets the filename of the specified path string without the
+    /// extension.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>
+    /// The string returned by GetFileName method, minus the last period
+    /// and all characters following it.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public virtual string GetBaseName(string src) => Path.GetFileNameWithoutExtension(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetExtension
+    ///
+    /// <summary>
+    /// Gets the extension of the specified path string.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>
+    /// The extension of the specified path, or null, or Empty. If path is
+    /// null, GetExtension method returns null. If path does not have
+    /// extension information, GetExtension method returns Empty.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public virtual string GetExtension(string src) => Path.GetExtension(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetDirectoryName
+    ///
+    /// <summary>
+    /// Gets the directory name for the specified path.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>
+    /// Directory information for path, or null if path denotes a root
+    /// directory or is null. Returns Empty if path does not contain
+    /// directory information.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public virtual string GetDirectoryName(string src) => Path.GetDirectoryName(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Combine
+    ///
+    /// <summary>
+    /// Combines the specified paths.
+    /// </summary>
+    ///
+    /// <param name="paths">Collection of paths.</param>
+    ///
+    /// <returns>Combined path.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public virtual string Combine(params string[] paths) =>
+        paths is not null && paths.Length > 0 ?
+        paths.Aggregate((x, s) => string.IsNullOrEmpty(x) ? s : Path.Combine(x, s)) :
+        string.Empty;
 
     #endregion
 }

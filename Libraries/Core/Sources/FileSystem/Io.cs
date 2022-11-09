@@ -184,21 +184,6 @@ public static class Io
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Combine
-    ///
-    /// <summary>
-    /// Combines the specified paths.
-    /// </summary>
-    ///
-    /// <param name="paths">Collection of paths.</param>
-    ///
-    /// <returns>Combined path.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string Combine(params string[] paths) => _controller.Combine(paths);
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// Open
     ///
     /// <summary>
@@ -365,6 +350,86 @@ public static class Io
         if (si.IsDirectory) CopyDirectory(si, Get(dest), overwrite);
         else CopyFile(si, Get(dest), overwrite);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetFileName
+    ///
+    /// <summary>
+    /// Gets the filename and extension of the specified path string.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>
+    /// Filename and extension of the specified path string.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string GetFileName(string src) => _controller.GetFileName(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetBaseName
+    ///
+    /// <summary>
+    /// Gets the filename of the specified path string without the
+    /// extension.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>
+    /// Filename of the specified path string without the extension.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string GetBaseName(string src) => _controller.GetBaseName(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetExtension
+    ///
+    /// <summary>
+    /// Gets the extension of the specified path string.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>Extension of the specified path string.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string GetExtension(string src) => _controller.GetExtension(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetDirectoryName
+    ///
+    /// <summary>
+    /// Gets the directory name for the specified path.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>Directory name for the specified path.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string GetDirectoryName(string src) => _controller.GetDirectoryName(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Combine
+    ///
+    /// <summary>
+    /// Combines the specified paths.
+    /// </summary>
+    ///
+    /// <param name="paths">Collection of paths.</param>
+    ///
+    /// <returns>Combined path.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string Combine(params string[] paths) => _controller.Combine(paths);
 
     #endregion
 

@@ -52,7 +52,7 @@ class FileIconTest : FileFixture
     public int Get(string filename, IconSize size)
     {
         var src  = GetSource(filename);
-        var dest = Get($"{Io.Get(filename).BaseName}-{size}.png");
+        var dest = Get($"{Io.GetBaseName(filename)}-{size}.png");
         using (var e = FileIcon.GetImage(src, size)) e.Save(dest, ImageFormat.Png);
         using (var e = Image.FromFile(dest)) return e.Width;
     }
