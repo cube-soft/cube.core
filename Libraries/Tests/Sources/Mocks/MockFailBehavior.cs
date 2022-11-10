@@ -15,40 +15,33 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Tests.Forms;
+namespace Cube.Tests.Mocks;
 
-using Cube.Forms.Behaviors;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// MockDialogBehavior
+/// MockFailBehavior
 ///
 /// <summary>
-/// Provides functionality to process a DialogMessage object for testing.
+/// Provides functionality to notify failure when receiving the provided
+/// type object.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class MockDialogBehavior : MessageBehavior<DialogMessage>
+public class MockFailBehavior<T> : MockMessageBehavior<T>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MockDialogBehavior
+    /// MockFailBehavior
     ///
     /// <summary>
-    /// Initializes a new instance of the MockDialogBehavior class with
-    /// the specified aggregator object.
+    /// Initializes a new instance of the MockFailBehavior class
+    /// with the specified aggregator object.
     /// </summary>
     ///
     /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public MockDialogBehavior(IAggregator aggregator) : base(aggregator, e =>
-    {
-        e.Value  = e.Buttons == DialogButtons.YesNo ? DialogStatus.Yes : DialogStatus.Ok;
-        e.Cancel = false;
-
-        if (e.Icon == DialogIcon.Error) Assert.Fail(e.Text);
-        else Logger.Debug($"{e.Icon} {e.Text}");
-    }) { }
+    public MockFailBehavior(IAggregator aggregator) : base(aggregator, e => Assert.Fail(e.ToString())) { }
 }
