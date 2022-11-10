@@ -17,23 +17,34 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Collections;
 
+using System;
+
 /* ------------------------------------------------------------------------- */
 ///
-/// Argument
+/// ArgumentExtension
 ///
 /// <summary>
-/// Specifies prefix kinds of optional parameters.
+/// Provides extended methods of the Argument enumeration.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public enum Argument
+internal static class ArgumentExtension
 {
-    /// <summary>Allows only the '-' prefix, and option names are all one character.</summary>
-    Posix,
-    /// <summary>Allows '-' and '--' prefix, the latter is known as long-named options.</summary>
-    Gnu,
-    /// <summary>Allows only the '/' prefix, and treated as long-named options.</summary>
-    Dos,
-    /// <summary>Allows '/', '-', and '--' prefix, and all of them are treated as long-named options.</summary>
-    Windows,
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Get
+    ///
+    /// <summary>
+    /// Gets the preprocessor from the specified kind.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IArgumentPreprocessor Get(this Argument src) => src switch
+    {
+        Argument.Posix   => new PosixArgumentPreprocessor(),
+        Argument.Gnu     => new GnuArgumentPreprocessor(),
+        Argument.Dos     => new DosArgumentPreprocessor(),
+        Argument.Windows => new WindowsArgumentPreprocessor(),
+        _                => throw new ArgumentException(),
+    };
 }
