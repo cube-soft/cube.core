@@ -25,8 +25,8 @@ using Cube.Generics.Extensions;
 /// EntitySource
 ///
 /// <summary>
-/// Provides functionality to refresh properties of a EntitySource
-/// object by using the AlphaFS module.
+/// Provides functionality to set up properties of a EntitySource object
+/// by using the AlphaFS module.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
@@ -46,24 +46,7 @@ public class EntitySource : FileSystem.EntitySource
     /// <param name="src">Path of the file or directory.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public EntitySource(string src) : this(src, true) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// EntitySource
-    ///
-    /// <summary>
-    /// Initializes a new instance of the AlphaFS.EntitySource class
-    /// with the specified arguments.
-    /// </summary>
-    ///
-    /// <param name="src">Path of the file or directory.</param>
-    /// <param name="refresh">
-    /// Value indicating whether to invoke the Refresh method.
-    /// </param>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected EntitySource(string src, bool refresh) : base(src, refresh) { }
+    public EntitySource(string src) : base(src) { }
 
     #endregion
 
@@ -71,14 +54,14 @@ public class EntitySource : FileSystem.EntitySource
 
     /* --------------------------------------------------------------------- */
     ///
-    /// OnRefresh
+    /// Setup
     ///
     /// <summary>
-    /// Refreshes the file or directory information.
+    /// Sets up the file or directory information.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected override void OnRefresh()
+    public override void Setup()
     {
         FileSystemInfo obj = Directory.Exists(RawName) ?
                              new DirectoryInfo(RawName) :

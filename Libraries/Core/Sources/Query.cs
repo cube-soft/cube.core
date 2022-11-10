@@ -91,8 +91,7 @@ public class Query<T, U> : IQuery<T, U>
     /// <param name="callback">Callback function.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public Query(Action<QueryMessage<T, U>> callback) :
-        this(callback, QueryDispatcher.Create()) { }
+    public Query(Action<QueryMessage<T, U>> callback) : this(callback, Dispatcher.Vanilla) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -210,8 +209,7 @@ public class OnceQuery<T, U> : IQuery<T, U>
     /// <param name="callback">Callback function.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public OnceQuery(Action<QueryMessage<T, U>> callback) :
-        this(callback, QueryDispatcher.Create()) { }
+    public OnceQuery(Action<QueryMessage<T, U>> callback) : this(callback, Dispatcher.Vanilla) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -302,34 +300,6 @@ public class OnceQuery<T> : OnceQuery<T, T>, IQuery<T>
     /* --------------------------------------------------------------------- */
     public OnceQuery(Action<QueryMessage<T, T>> callback, Dispatcher dispatcher) :
         base(callback, dispatcher) { }
-}
-
-#endregion
-
-#region QueryDispatcher
-
-/* ------------------------------------------------------------------------- */
-///
-/// QueryDispatcher
-///
-/// <summary>
-/// Provides functionality to create a dispatcher.
-/// </summary>
-///
-/* ------------------------------------------------------------------------- */
-internal static class QueryDispatcher
-{
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Create
-    ///
-    /// <summary>
-    /// Creates a new instance of the Dispatcher class.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static Dispatcher Create() =>
-        SynchronizationContext.Current is not null ? new ContextDispatcher(true) : Dispatcher.Vanilla;
 }
 
 #endregion

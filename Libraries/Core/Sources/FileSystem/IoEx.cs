@@ -250,6 +250,31 @@ public static class IoEx
 
     #endregion
 
+    #region GetOrDefault
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetOrDefault
+    ///
+    /// <summary>
+    /// Gets the Entity object from the specified path. If the specified
+    /// path is empty or some exception occurs, the method returns null.
+    /// </summary>
+    ///
+    /// <param name="path">Target path.</param>
+    ///
+    /// <returns>Entity object or null.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Entity GetOrDefault(string path)
+    {
+        try { return path.HasValue() ? Io.Get(path) : default; }
+        catch (Exception e) { Logger.Debug(e.Message); }
+        return default;
+    }
+
+    #endregion
+
     #region GetEntitySource
 
     /* --------------------------------------------------------------------- */

@@ -15,41 +15,39 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Tests.Forms;
-
-using Cube.Forms.Behaviors;
+namespace Cube.Tests.Mocks;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// MockOpenDirectoryBehavior
+/// MockSaveFileBehavior
 ///
 /// <summary>
-/// Provides functionality to process an OpenDirectoryMessage object for
-/// testing.
+/// Provides functionality to process a SaveFileMessage object for testing.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class MockOpenDirectoryBehavior : MessageBehavior<OpenDirectoryMessage>
+public class MockSaveFileBehavior : MockMessageBehavior<SaveFileMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MockOpenDirectoryBehavior
+    /// MockSaveFileBehavior
     ///
     /// <summary>
-    /// Initializes a new instance of the MockOpenDirectoryBehavior class
-    /// with the specified arguments.
+    /// Initializes a new instance of the MockSaveFileBehavior class with
+    /// the specified arguments.
     /// </summary>
     ///
     /// <param name="value">Value of the received message.</param>
     /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public MockOpenDirectoryBehavior(string value, IAggregator aggregator) : base(aggregator, e =>
+    public MockSaveFileBehavior(string value, IAggregator aggregator) : base(aggregator, e =>
     {
         e.Value  = value;
         e.Cancel = false;
 
         Logger.Debug(e.Text);
         Logger.Debug(e.Value);
+        Logger.Debug($"{e.GetFilterIndex()} ({e.GetFilterText()})");
     }) { }
 }
