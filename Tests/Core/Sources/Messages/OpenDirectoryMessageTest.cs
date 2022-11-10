@@ -50,7 +50,7 @@ class OpenDirectoryMessageTest : FileFixture
     public void Test(string filename)
     {
         var dest = new OpenDirectoryMessage();
-        dest.Set(Io.GetOrDefault(GetSource(filename)));
+        dest.Set(IoEx.GetOrDefault(GetSource(filename)));
 
         Assert.That(dest.Text,      Is.EqualTo(nameof(OpenDirectoryMessage)));
         Assert.That(dest.Value,     Is.EqualTo(Examples));

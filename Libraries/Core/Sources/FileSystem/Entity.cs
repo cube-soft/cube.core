@@ -75,7 +75,7 @@ public class Entity
     /// <param name="src">Source object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public Entity(EntitySource src) : this(src, false) { }
+    public Entity(EntitySource src) : this(src, true) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -95,8 +95,12 @@ public class Entity
     /* --------------------------------------------------------------------- */
     public Entity(EntitySource src, bool dispose)
     {
+        if (src is null) throw new ArgumentNullException(nameof(src));
+
         try
         {
+            src.Setup();
+
             RawName        = src.RawName;
             Exists         = src.Exists;
             IsDirectory    = src.IsDirectory;

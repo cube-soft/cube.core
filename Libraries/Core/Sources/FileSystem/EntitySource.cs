@@ -26,7 +26,7 @@ using Cube.Generics.Extensions;
 /// EntitySource
 ///
 /// <summary>
-/// Represents the file or directory information that is editable.
+/// Represents the file or directory information.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
@@ -46,28 +46,7 @@ public class EntitySource : DisposableBase
     /// <param name="src">Path of the file or directory.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public EntitySource(string src) : this(src, true) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// EntitySource
-    ///
-    /// <summary>
-    /// Initializes a new instance of the EntitySource class with the
-    /// specified arguments.
-    /// </summary>
-    ///
-    /// <param name="src">Path of the file or directory.</param>
-    /// <param name="refresh">
-    /// Value indicating whether to invoke the Refresh method.
-    /// </param>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected EntitySource(string src, bool refresh)
-    {
-        RawName = src;
-        if (refresh) Refresh();
-    }
+    public EntitySource(string src) => RawName = src;
 
     #endregion
 
@@ -116,7 +95,7 @@ public class EntitySource : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string Name { get; protected set; }
+    public string Name { get; protected set; } = string.Empty;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -127,7 +106,7 @@ public class EntitySource : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string BaseName { get; protected set; }
+    public string BaseName { get; protected set; } = string.Empty;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -138,7 +117,7 @@ public class EntitySource : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string Extension { get; protected set; }
+    public string Extension { get; protected set; } = string.Empty;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -149,7 +128,7 @@ public class EntitySource : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string FullName { get; protected set; }
+    public string FullName { get; protected set; } = string.Empty;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -160,7 +139,7 @@ public class EntitySource : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string DirectoryName { get; protected set; }
+    public string DirectoryName { get; protected set; } = string.Empty;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -223,25 +202,14 @@ public class EntitySource : DisposableBase
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Refresh
+    /// Setup
     ///
     /// <summary>
-    /// Refreshes the file or directory information.
+    /// Sets up the file or directory information.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public void Refresh() => OnRefresh();
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// OnRefresh
-    ///
-    /// <summary>
-    /// Refreshes the file or directory information.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected virtual void OnRefresh()
+    public virtual void Setup()
     {
         FileSystemInfo obj = Directory.Exists(RawName) ?
                              new DirectoryInfo(RawName) :
