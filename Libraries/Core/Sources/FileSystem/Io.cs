@@ -80,27 +80,6 @@ public static class Io
 
     /* --------------------------------------------------------------------- */
     ///
-    /// GetOrDefault
-    ///
-    /// <summary>
-    /// Gets the Entity object from the specified path. If the specified
-    /// path is empty or some exception occurs, the method returns null.
-    /// </summary>
-    ///
-    /// <param name="path">Target path.</param>
-    ///
-    /// <returns>Entity object or null.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static Entity GetOrDefault(string path)
-    {
-        try { return path.HasValue() ? Get(path) : default; }
-        catch (Exception e) { Logger.Debug(e.Message); }
-        return default;
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// GetFiles
     ///
     /// <summary>

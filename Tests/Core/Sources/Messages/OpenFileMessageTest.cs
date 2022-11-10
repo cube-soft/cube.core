@@ -51,7 +51,7 @@ class OpenFileMessageTest : FileFixture
     public void Test(string filename, int n)
     {
         var dest = new OpenFileMessage();
-        dest.Set(Io.GetOrDefault(GetSource(filename)));
+        dest.Set(IoEx.GetOrDefault(GetSource(filename)));
 
         Assert.That(dest.Text,             Is.EqualTo(nameof(OpenFileMessage)));
         Assert.That(dest.Value.Count(),    Is.EqualTo(n));

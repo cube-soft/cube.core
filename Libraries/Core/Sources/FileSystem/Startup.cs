@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Collections.Extensions;
-using Cube.Generics.Extensions;
 using Cube.Text.Extensions;
 using Microsoft.Win32;
 

@@ -15,48 +15,36 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Tests.Messages;
+namespace Cube.Collections;
 
-using Cube.FileSystem;
-using Cube.Text.Extensions;
-using NUnit.Framework;
+using System;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// OpenDirectoryMessageTest
+/// ArgumentExtension
 ///
 /// <summary>
-/// Tests the OpenDirectoryMessage class.
+/// Provides extended methods of the Argument enumeration.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-[TestFixture]
-class OpenDirectoryMessageTest : FileFixture
+internal static class ArgumentExtension
 {
-    #region Tests
-
     /* --------------------------------------------------------------------- */
     ///
-    /// Test_WithFile
+    /// Get
     ///
     /// <summary>
-    /// Tests the constructor and confirms values of some properties.
+    /// Gets the preprocessor from the specified kind.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestCase("Sample.txt")]
-    [TestCase("InExistent.dat")]
-    [TestCase("")]
-    public void Test(string filename)
+    public static IArgumentPreprocessor Get(this Argument src) => src switch
     {
-        var dest = new OpenDirectoryMessage();
-        dest.Set(IoEx.GetOrDefault(GetSource(filename)));
-
-        Assert.That(dest.Text,      Is.EqualTo(nameof(OpenDirectoryMessage)));
-        Assert.That(dest.Value,     Is.EqualTo(Examples));
-        Assert.That(dest.NewButton, Is.True, nameof(dest.NewButton));
-        Assert.That(dest.Cancel,    Is.False, nameof(dest.Cancel));
-    }
-
-    #endregion
+        Argument.Posix   => new PosixArgumentPreprocessor(),
+        Argument.Gnu     => new GnuArgumentPreprocessor(),
+        Argument.Dos     => new DosArgumentPreprocessor(),
+        Argument.Windows => new WindowsArgumentPreprocessor(),
+        _                => throw new ArgumentException(),
+    };
 }

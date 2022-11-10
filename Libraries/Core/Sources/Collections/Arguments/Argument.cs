@@ -17,11 +17,6 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Collections;
 
-using System;
-using System.Collections.Generic;
-
-#region Argument
-
 /* ------------------------------------------------------------------------- */
 ///
 /// Argument
@@ -42,50 +37,3 @@ public enum Argument
     /// <summary>Allows '/', '-', and '--' prefix, and all of them are treated as long-named options.</summary>
     Windows,
 }
-
-#endregion
-
-#region ArgumentExtension
-
-/* ------------------------------------------------------------------------- */
-///
-/// ArgumentExtension
-///
-/// <summary>
-/// Provides extended methods of the Argument enumeration.
-/// </summary>
-///
-/* ------------------------------------------------------------------------- */
-internal static class ArgumentExtension
-{
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Map
-    ///
-    /// <summary>
-    /// Gets the map of Argument values and preprocessors.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static Dictionary<Argument, IArgumentPreprocessor> Map { get; } = new()
-    {
-        { Argument.Posix,   new PosixArgumentPreprocessor()   },
-        { Argument.Gnu,     new GnuArgumentPreprocessor()     },
-        { Argument.Dos,     new DosArgumentPreprocessor()     },
-        { Argument.Windows, new WindowsArgumentPreprocessor() },
-    };
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Get
-    ///
-    /// <summary>
-    /// Gets the preprocessor from the specified kind.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static IArgumentPreprocessor Get(this Argument src) =>
-        Map.TryGetValue(src, out var dest) ? dest : throw new ArgumentException();
-}
-
-#endregion

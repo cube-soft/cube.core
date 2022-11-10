@@ -50,7 +50,7 @@ class SaveFileMessageTest : FileFixture
     public void Test(string filename)
     {
         var dest = new SaveFileMessage();
-        dest.Set(Io.GetOrDefault(GetSource(filename)));
+        dest.Set(IoEx.GetOrDefault(GetSource(filename)));
 
         Assert.That(dest.Text,             Is.EqualTo(nameof(SaveFileMessage)));
         Assert.That(dest.Value,            Is.EqualTo(filename));
