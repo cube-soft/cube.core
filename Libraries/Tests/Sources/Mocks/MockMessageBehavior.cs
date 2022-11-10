@@ -15,59 +15,71 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Tests.Forms;
+namespace Cube.Tests.Mocks;
 
-using System.Collections.Generic;
-using Cube.Forms.Behaviors;
-using Cube.Generics.Extensions;
+using System;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// MockOpenFileBehavior
+/// MockMessageBehavior(TMessage)
 ///
 /// <summary>
-/// Provides functionality to process an OpenFileMessage object for testing.
+/// Represents the behavior that communicates with a presentable
+/// object via a message.
 /// </summary>
 ///
+/// <typeparam name="TMessage">Message type.</typeparam>
+///
 /* ------------------------------------------------------------------------- */
-public class MockOpenFileBehavior : MessageBehavior<OpenFileMessage>
+public class MockMessageBehavior<TMessage> : DisposableBase
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// MockOpenFileBehavior
-    ///
-    /// <summary>
-    /// Initializes a new instance of the MockOpenFileBehavior class with
-    /// the specified arguments.
-    /// </summary>
-    ///
-    /// <param name="value">Value of the received message.</param>
-    /// <param name="aggregator">Message aggregator.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public MockOpenFileBehavior(string value, IAggregator aggregator) :
-        this(new[] { value }, aggregator) { }
+    #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// MockOpenFileBehavior
+    /// MockMessageBehavior
     ///
     /// <summary>
-    /// Initializes a new instance of the MockOpenFileBehavior class
-    /// with the specified arguments.
+    /// Initializes a new instance of the MockMessageBehavior class with the
+    /// specified arguments.
     /// </summary>
     ///
-    /// <param name="value">Value of the received message.</param>
     /// <param name="aggregator">Message aggregator.</param>
+    /// <param name="action">
+    /// Action to be invoked when a message is received.
+    /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public MockOpenFileBehavior(IEnumerable<string> value, IAggregator aggregator) : base(aggregator, e =>
+    public MockMessageBehavior(IAggregator aggregator, Action<TMessage> action) =>
+        _disposable = new(aggregator.Subscribe(action));
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object and
+    /// optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing)
     {
-        e.Value  = value;
-        e.Cancel = false;
+        if (disposing) _disposable.Dispose();
+    }
 
-        Logger.Debug(e.Text);
-        foreach (var s in value) Logger.Debug(s);
-        Logger.Debug($"{e.GetFilterIndex()} ({e.GetFilterText()})");
-    }) { }
+    #endregion
+
+    #region Fields
+    private readonly DisposableContainer _disposable;
+    #endregion
 }
