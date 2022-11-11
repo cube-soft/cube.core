@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Tests.Forms;
+namespace Cube.Tests;
 
 using System.ComponentModel;
 using System.Threading;
