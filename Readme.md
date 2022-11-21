@@ -3,8 +3,10 @@ Cube.Core
 
 [![Core](https://badgen.net/nuget/v/cube.core?label=core)](https://www.nuget.org/packages/cube.core/)
 [![Forms](https://badgen.net/nuget/v/cube.forms?label=forms)](https://www.nuget.org/packages/cube.forms/)
+[![Forms.Controls](https://badgen.net/nuget/v/cube.forms?label=forms.controls)](https://www.nuget.org/packages/cube.forms.controls/)
 [![Xui](https://badgen.net/nuget/v/cube.xui?label=xui)](https://www.nuget.org/packages/cube.xui/)
 [![AlphaFS](https://badgen.net/nuget/v/cube.filesystem.alphafs?label=alphafs)](https://www.nuget.org/packages/cube.filesystem.alphafs/)
+[![NLog](https://badgen.net/nuget/v/cube.logging.nlog?label=nlog)](https://www.nuget.org/packages/cube.logging.nlog/)
 [![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
 [![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
@@ -15,6 +17,12 @@ The project provides support the MVVM pattern in WinForms or WPF (or possibly ot
 * [Cube.Xui](https://www.nuget.org/packages/cube.xui/) (WPF)
 
 The Cube.Core package provides some additional utility functions. One of them is Cube.FileSystem.Io class, which provides functionality to switch between the use of .NET standard methods or other third party libraries for I/O operations such as move, copy, delete, etc. The [Cube.FileSystem.AlphaFS](https://www.nuget.org/packages/cube.filesystem.alphafs/) package is the implementations of those I/O operations by using the [AlphaFS](https://alphafs.alphaleonis.com/) library.
+
+Note that the libraries may output debug logs internally, but by default, these logs are not actually output anywhere. To check the contents of the debug logs, add [Cube.Logging.NLog](https://www.nuget.org/packages/cube.logging.nlog/) package and add the following code.
+
+```cs
+Cube.Logger.Configure(new Cube.Logging.NLog.LoggerSource());
+```
 
 These packages are basically available for .NET Framework 3.5, 4.7, .NET Standard 2.0, .NET 6, or later. Note that the Cube.FileSystem.AlphaFS package supports only .NET Framework.
 
