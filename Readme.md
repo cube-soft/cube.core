@@ -3,7 +3,7 @@ Cube.Core
 
 [![Core](https://badgen.net/nuget/v/cube.core?label=core)](https://www.nuget.org/packages/cube.core/)
 [![Forms](https://badgen.net/nuget/v/cube.forms?label=forms)](https://www.nuget.org/packages/cube.forms/)
-[![Forms.Controls](https://badgen.net/nuget/v/cube.forms?label=forms.controls)](https://www.nuget.org/packages/cube.forms.controls/)
+[![Forms.Controls](https://badgen.net/nuget/v/cube.forms.controls?label=forms.controls)](https://www.nuget.org/packages/cube.forms.controls/)
 [![Xui](https://badgen.net/nuget/v/cube.xui?label=xui)](https://www.nuget.org/packages/cube.xui/)
 [![AlphaFS](https://badgen.net/nuget/v/cube.filesystem.alphafs?label=alphafs)](https://www.nuget.org/packages/cube.filesystem.alphafs/)
 [![NLog](https://badgen.net/nuget/v/cube.logging.nlog?label=nlog)](https://www.nuget.org/packages/cube.logging.nlog/)
