@@ -9,7 +9,7 @@
         <RootNamespace>Cube.Tests</RootNamespace>
         <AssemblyTitle>Cube.Core UnitTest</AssemblyTitle>
         <AssemblyName>Cube.Core.Tests</AssemblyName>
-        <TargetFramework>net47</TargetFramework>
+        <TargetFramework>net462</TargetFramework>
         <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
         <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
