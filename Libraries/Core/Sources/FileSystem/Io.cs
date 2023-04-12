@@ -20,7 +20,6 @@ namespace Cube.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -62,6 +61,21 @@ public static class Io
     ///
     /* --------------------------------------------------------------------- */
     public static bool Exists(string path) => _controller.Exists(path);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IsDirectory
+    ///
+    /// <summary>
+    /// Determines if the specified path is directory.
+    /// </summary>
+    ///
+    /// <param name="path">Path to check.</param>
+    ///
+    /// <returns>true for exists and is directory.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool IsDirectory(string path) => _controller.IsDirectory(path);
 
     /* --------------------------------------------------------------------- */
     ///
