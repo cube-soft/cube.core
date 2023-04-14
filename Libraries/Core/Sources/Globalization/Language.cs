@@ -17,8 +17,6 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube;
 
-using System.Globalization;
-
 /* ------------------------------------------------------------------------- */
 ///
 /// Language
@@ -48,55 +46,4 @@ public enum Language
     Russian = 0x0419,
     /// <summary>Portuguese</summary>
     Portuguese = 0x0816,
-}
-
-/* ------------------------------------------------------------------------- */
-///
-/// LanguageExtension
-///
-/// <summary>
-/// Provides extended methods for the Language enum.
-/// </summary>
-///
-/* ------------------------------------------------------------------------- */
-public static class LanguageExtension
-{
-    #region Constructors
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// LanguageExtension
-    ///
-    /// <summary>
-    /// Initializes static fields.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    static LanguageExtension() => _auto = CultureInfo.CurrentCulture;
-
-    #endregion
-
-    #region Methods
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ToCultureInfo
-    ///
-    /// <summary>
-    /// Gets the CultureInfo object from the specified value.
-    /// </summary>
-    ///
-    /// <param name="src">Language value.</param>
-    ///
-    /// <returns>CultureInfo object.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static CultureInfo ToCultureInfo(this Language src) =>
-        src == Language.Auto ? _auto : new((int)src);
-
-    #endregion
-
-    #region Fields
-    private static readonly CultureInfo _auto;
-    #endregion
 }

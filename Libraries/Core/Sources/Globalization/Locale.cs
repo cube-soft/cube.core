@@ -18,6 +18,7 @@
 namespace Cube;
 
 using System;
+using System.Globalization;
 using System.Threading;
 using Cube.Collections;
 
@@ -49,6 +50,7 @@ public static class Locale
     {
         _default  = new(Language.Auto);
         _accessor = _default;
+        _culture  = CultureInfo.CurrentCulture;
     }
 
     #endregion
@@ -69,6 +71,22 @@ public static class Locale
     #endregion
 
     #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ToCultureInfo
+    ///
+    /// <summary>
+    /// Gets the CultureInfo object from the specified value.
+    /// </summary>
+    ///
+    /// <param name="src">Language value.</param>
+    ///
+    /// <returns>CultureInfo object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static CultureInfo ToCultureInfo(this Language src) =>
+        src == Language.Auto ? _culture : new((int)src);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -136,6 +154,7 @@ public static class Locale
 
     #region Fields
     private static Accessor<Language> _accessor;
+    private static readonly CultureInfo _culture;
     private static readonly Accessor<Language> _default;
     private static readonly Subscription<Action<Language>> _subscription = new();
     #endregion
