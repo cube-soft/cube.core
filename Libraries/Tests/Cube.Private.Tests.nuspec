@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>8.0.0</version>
+        <version>8.1.0</version>
         <id>Cube.Private.Tests</id>
         <title>Cube.Private.Tests</title>
         <authors>clown,cube-soft</authors>
@@ -15,18 +15,18 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net6.0-windows7.0">
-                <dependency id="Cube.Core" version="8.0.0" />
-                <dependency id="Cube.Logging.NLog" version="8.0.0" />
+                <dependency id="Cube.Core" version="8.1.0" />
+                <dependency id="Cube.Logging.NLog" version="8.1.0" />
                 <dependency id="NUnit" version="3.13.3" />
             </group>
-            <group targetFramework="net47">
-                <dependency id="Cube.Core" version="8.0.0" />
-                <dependency id="Cube.Logging.NLog" version="8.0.0" />
+            <group targetFramework="net46">
+                <dependency id="Cube.Core" version="8.1.0" />
+                <dependency id="Cube.Logging.NLog" version="8.1.0" />
                 <dependency id="NUnit" version="3.13.3" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.Core" version="8.0.0" />
-                <dependency id="Cube.Logging.NLog" version="8.0.0" />
+                <dependency id="Cube.Core" version="8.1.0" />
+                <dependency id="Cube.Logging.NLog" version="8.1.0" />
                 <dependency id="NUnit" version="3.13.3" />
             </group>
         </dependencies>
@@ -34,7 +34,7 @@
     <files>
         <file src="..\..\Icon.png" target="images" />
         <file src="bin\Any CPU\Release\net6.0-windows\Cube.Private.Tests.*" target="lib\net6.0-windows7.0" />
-        <file src="bin\Any CPU\Release\net47\Cube.Private.Tests.*" target="lib\net47" />
+        <file src="bin\Any CPU\Release\net46\Cube.Private.Tests.*" target="lib\net46" />
         <file src="bin\Any CPU\Release\net35\Cube.Private.Tests.*" target="lib\net35" />
     </files>
 </package>
