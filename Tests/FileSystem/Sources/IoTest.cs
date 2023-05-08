@@ -52,11 +52,15 @@ class IoTest : FileFixture
     {
         Io.Configure(controller);
 
+        var src = GetSource("Sample.txt");
+        Assert.That(Io.Exists(src), Is.True);
+        Assert.That(Io.IsDirectory(src), Is.False);
+
         var dest = Io.Get(GetSource("Sample.txt"));
         Assert.That(dest, Is.Not.Null, $"{id}");
 
         var cmp = new DateTime(2017, 6, 5);
-        Assert.That(dest.RawName,        Is.EqualTo(GetSource("Sample.txt")));
+        Assert.That(dest.RawName,        Is.EqualTo(src));
         Assert.That(dest.FullName,       Is.EqualTo(dest.RawName));
         Assert.That(dest.Name,           Is.EqualTo("Sample.txt"));
         Assert.That(dest.BaseName,       Is.EqualTo("Sample"));

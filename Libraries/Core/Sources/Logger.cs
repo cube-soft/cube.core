@@ -22,8 +22,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using Cube.Reflection.Extensions;
 
 /* ------------------------------------------------------------------------- */
@@ -50,7 +48,7 @@ public static class Logger
     /// <param name="src">Logger source.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Configure(ILoggerSource src) => Interlocked.Exchange(ref _source, src);
+    public static void Configure(ILoggerSource src) => System.Threading.Interlocked.Exchange(ref _source, src);
 
     #endregion
 
@@ -244,10 +242,10 @@ public static class Logger
     /* --------------------------------------------------------------------- */
     public static void ObserveTaskException()
     {
-        static void f(object s, UnobservedTaskExceptionEventArgs e) => Error(e.Exception);
-        TaskScheduler.UnobservedTaskException -= f;
-        TaskScheduler.UnobservedTaskException += f;
-        _disposable.Add(Disposable.Create(() => TaskScheduler.UnobservedTaskException -= f));
+        static void f(object s, System.Threading.Tasks.UnobservedTaskExceptionEventArgs e) => Error(e.Exception);
+        System.Threading.Tasks.TaskScheduler.UnobservedTaskException -= f;
+        System.Threading.Tasks.TaskScheduler.UnobservedTaskException += f;
+        _disposable.Add(Disposable.Create(() => System.Threading.Tasks.TaskScheduler.UnobservedTaskException -= f));
     }
 
     #endregion
