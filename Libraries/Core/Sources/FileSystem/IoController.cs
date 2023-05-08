@@ -67,6 +67,21 @@ public class IoController
 
     /* --------------------------------------------------------------------- */
     ///
+    /// IsDirectory
+    ///
+    /// <summary>
+    /// Determines if the specified path is directory.
+    /// </summary>
+    ///
+    /// <param name="path">Path to check.</param>
+    ///
+    /// <returns>true for exists and is directory.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public virtual bool IsDirectory(string path) => Directory.Exists(path);
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// GetFiles
     ///
     /// <summary>
