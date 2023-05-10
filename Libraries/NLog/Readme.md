@@ -12,7 +12,7 @@ The Cube.Logging.NLog package uses the [NLog](https://nlog-project.org/) library
 Logger.Configure(new Cube.Logging.NLog.LoggerSource());
 ```
 
-The package is available for .NET Framework 3.5, 4.7, .NET Standard 2.0, or later. 
+The package is available for .NET Framework 3.5, 4.6, .NET Standard 2.0, or later. 
 
 ## Installation
 
