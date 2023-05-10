@@ -24,7 +24,7 @@ Note that the libraries may output debug logs internally, but by default, these 
 Cube.Logger.Configure(new Cube.Logging.NLog.LoggerSource());
 ```
 
-These packages are basically available for .NET Framework 3.5, 4.7, .NET Standard 2.0, .NET 6, or later. Note that the Cube.FileSystem.AlphaFS package supports only .NET Framework.
+These packages are basically available for .NET Framework 3.5, 4.6, .NET Standard 2.0, .NET 6, or later. Note that the Cube.FileSystem.AlphaFS package supports only .NET Framework.
 
 ## Installation
 
