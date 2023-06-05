@@ -56,7 +56,7 @@ class IoTest : FileFixture
         Assert.That(Io.Exists(src), Is.True);
         Assert.That(Io.IsDirectory(src), Is.False);
 
-        var dest = Io.Get(GetSource("Sample.txt"));
+        var dest = new Entity(GetSource("Sample.txt"));
         Assert.That(dest, Is.Not.Null, $"{id}");
 
         var cmp = new DateTime(2017, 6, 5);
@@ -70,7 +70,7 @@ class IoTest : FileFixture
         Assert.That(dest.LastWriteTime,  Is.GreaterThan(cmp));
         Assert.That(dest.LastAccessTime, Is.GreaterThan(cmp));
 
-        var dir = Io.Get(dest.DirectoryName);
+        var dir = new Entity(dest.DirectoryName);
         Assert.That(dir.FullName,        Is.EqualTo(Examples));
         Assert.That(dir.Name,            Is.EqualTo("Examples"));
         Assert.That(dir.BaseName,        Is.EqualTo("Examples"));
@@ -92,7 +92,7 @@ class IoTest : FileFixture
     {
         Io.Configure(controller);
 
-        var src = Io.Get(GetSource("Sample.txt"));
+        var src = new Entity(GetSource("Sample.txt"));
         var bin = Get($"{nameof(Serialize)}-{id}.bin");
         var fmt = new BinaryFormatter();
 
@@ -127,7 +127,7 @@ class IoTest : FileFixture
     public void Get_Throws(int id, IoController controller)
     {
         Io.Configure(controller);
-        Assert.That(() => Io.Get(string.Empty), Throws.ArgumentException, $"{id}");
+        Assert.That(() => new Entity(string.Empty), Throws.ArgumentException, $"{id}");
     }
 
     /* --------------------------------------------------------------------- */
@@ -191,7 +191,7 @@ class IoTest : FileFixture
         Io.Configure(controller);
         var dest = Get("Directory", $"{nameof(Create)}.txt");
         using (var stream = Io.Create(dest)) stream.WriteByte((byte)'A');
-        Assert.That(Io.Get(dest).Length, Is.EqualTo(1), $"{id}");
+        Assert.That(new Entity(dest).Length, Is.EqualTo(1), $"{id}");
     }
 
     /* --------------------------------------------------------------------- */

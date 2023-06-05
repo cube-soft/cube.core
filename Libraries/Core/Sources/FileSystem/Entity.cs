@@ -69,6 +69,20 @@ public class Entity
     ///
     /// <summary>
     /// Creates a new instance of the Entity class with the specified
+    /// file or directory path.
+    /// </summary>
+    ///
+    /// <param name="src">File or directory path.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Entity(string src) : this(Io.GetController().GetEntitySource(src)) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Entity
+    ///
+    /// <summary>
+    /// Creates a new instance of the Entity class with the specified
     /// source object.
     /// </summary>
     ///

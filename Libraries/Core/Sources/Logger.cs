@@ -67,8 +67,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Debug(string message,
-        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Debug(string message, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
         _source.Log(path, n, LogLevel.Debug, message);
 
     #endregion
@@ -88,8 +87,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Info(string message,
-        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Info(string message, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
         _source.Log(path, n, LogLevel.Information, message);
 
     /* --------------------------------------------------------------------- */
@@ -134,8 +132,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Warn(string message,
-        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Warn(string message, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
         _source.Log(path, n, LogLevel.Warning, message);
 
     /* --------------------------------------------------------------------- */
@@ -151,26 +148,8 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Warn(Exception error,
-        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Warn(Exception error, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
         Warn(GetErrorMessage(error), path, n);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Warn
-    ///
-    /// <summary>
-    /// Logs as Warning level when the specified action throws an exception.
-    /// </summary>
-    ///
-    /// <param name="action">Action to monitor.</param>
-    /// <param name="path">Caller file path.</param>
-    /// <param name="n">Caller line number.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static void Warn(Action action,
-        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
-        Invoke(action, e => Warn(e, path, n));
 
     #endregion
 
@@ -189,8 +168,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Error(string message,
-        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Error(string message, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
         _source.Log(path, n, LogLevel.Error, message);
 
     /* --------------------------------------------------------------------- */
@@ -206,9 +184,89 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Error(Exception error,
-        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Error(Exception error, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
         Error(GetErrorMessage(error), path, n);
+
+    #endregion
+
+    #region Try
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Try
+    ///
+    /// <summary>
+    /// Logs as Warning level when the specified action throws an exception.
+    /// </summary>
+    ///
+    /// <param name="action">Action to monitor.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
+    ///
+    /// <returns>true if no exception is sent.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool Try(Action action, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
+    {
+        try
+        {
+            action();
+            return true;
+        }
+        catch (Exception err)
+        {
+            Warn(err, path, n);
+            return false;
+        }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TryGet
+    ///
+    /// <summary>
+    /// Logs as Warning level when the specified function throws an exception.
+    /// </summary>
+    ///
+    /// <param name="func">Function object to monitor.</param>
+    /// <param name="dest">Result of executing the specified function.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
+    ///
+    /// <returns>true if no exception is sent.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool TryGet<T>(Func<T> func, out T dest, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
+    {
+        try
+        {
+            dest = func();
+            return true;
+        }
+        catch (Exception err)
+        {
+            Warn(err, path, n);
+            dest = default;
+            return false;
+        }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Warn
+    ///
+    /// <summary>
+    /// Logs as Warning level when the specified action throws an exception.
+    /// </summary>
+    ///
+    /// <param name="action">Action to monitor.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Obsolete("Use the Try method instead.")]
+    public static void Warn(Action action, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        Try(action, path, n);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -223,9 +281,9 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Error(Action action,
-        [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
-        Invoke(action, e => Error(e, path, n));
+    [Obsolete("Use the Try method instead.")]
+    public static void Error(Action action, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        Try(action, path, n);
 
     #endregion
 
@@ -265,21 +323,6 @@ public static class Logger
         src is Win32Exception we ?
         $"{we.Message} (0x{we.NativeErrorCode:X8}){Environment.NewLine}{we.StackTrace}" :
         src.ToString();
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Invoke
-    ///
-    /// <summary>
-    /// Invokes the specified action.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static void Invoke(Action action, Action<Exception> error)
-    {
-        try { action(); }
-        catch (Exception err) { error(err); }
-    }
 
     #endregion
 

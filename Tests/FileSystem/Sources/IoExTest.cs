@@ -66,7 +66,7 @@ class IoExTest : FileFixture
     {
         var dest = Get(nameof(Save));
         IoEx.Save(dest, e => e.WriteByte((byte)'a'));
-        Assert.That(Io.Get(dest).Length, Is.EqualTo(1));
+        Assert.That(new Entity(dest).Length, Is.EqualTo(1));
     }
 
     /* --------------------------------------------------------------------- */
@@ -105,10 +105,10 @@ class IoExTest : FileFixture
         IoEx.Touch(src);
         Assert.That(Io.Exists(src), Is.True);
 
-        var cmp = Io.Get(src).LastWriteTime;
+        var cmp = new Entity(src).LastWriteTime;
         System.Threading.Thread.Sleep(1000);
         IoEx.Touch(src);
-        Assert.That(Io.Get(src).LastWriteTime, Is.GreaterThan(cmp));
+        Assert.That(new Entity(src).LastWriteTime, Is.GreaterThan(cmp));
     }
 
     /* --------------------------------------------------------------------- */

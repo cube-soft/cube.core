@@ -229,7 +229,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
     /* --------------------------------------------------------------------- */
     protected void Send<T>(CancelMessage<T> message, Action<T> next, bool synchronous)
     {
-        Run(true, () => Send(message));
+        RunCore(true, () => Send(message));
         if (!message?.Cancel ?? false) Run(() => next(message.Value), synchronous);
     }
 
@@ -281,7 +281,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    protected void Run(Action action, bool synchronous) => Run(synchronous, action);
+    protected void Run(Action action, bool synchronous) => RunCore(synchronous, action);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -308,7 +308,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
     ///
     /* --------------------------------------------------------------------- */
     protected void Run(Action first, Action next, bool synchronous) =>
-        Run(synchronous, first, next);
+        RunCore(synchronous, first, next);
 
     #endregion
 
@@ -333,7 +333,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
     ///
     /* --------------------------------------------------------------------- */
     protected void Quit(Action action, bool synchronous) =>
-        Run(synchronous, action, () => Send(new CloseMessage()));
+        RunCore(synchronous, action, () => Send(new CloseMessage()));
 
     #endregion
 
@@ -343,7 +343,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Run
+    /// RunCore
     ///
     /// <summary>
     /// Invokes the specified actions and will send the error message
@@ -354,7 +354,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void Run(bool synchronous, params Action[] actions)
+    private void RunCore(bool synchronous, params Action[] actions)
     {
         void invoke()
         {

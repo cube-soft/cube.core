@@ -53,8 +53,7 @@ class LoggerTest
         Assert.DoesNotThrow(() => Logger.Error("Message"));
 
         Assert.DoesNotThrow(() => Logger.Info(GetType().Assembly));
-        Assert.DoesNotThrow(() => Logger.Warn(() => throw new Exception("Test")));
-        Assert.DoesNotThrow(() => Logger.Error(() => throw new Exception("Test")));
+        Assert.That(Logger.Try(() => throw new Exception("Test")), Is.False);
     }
 
     /* --------------------------------------------------------------------- */
