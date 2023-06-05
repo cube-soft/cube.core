@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>8.1.0</version>
+        <version>8.2.0</version>
         <id>Cube.Forms.Controls</id>
         <title>Cube.Forms.Controls</title>
         <authors>clown,cube-soft</authors>
@@ -16,13 +16,13 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net6.0-windows7.0">
-                <dependency id="Cube.Forms" version="8.1.0" />
+                <dependency id="Cube.Forms" version="8.2.0" />
             </group>
             <group targetFramework="net46">
-                <dependency id="Cube.Forms" version="8.1.0" />
+                <dependency id="Cube.Forms" version="8.2.0" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.Forms" version="8.1.0" />
+                <dependency id="Cube.Forms" version="8.2.0" />
             </group>
         </dependencies>
     </metadata>
