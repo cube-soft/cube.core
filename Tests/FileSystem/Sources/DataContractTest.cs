@@ -58,7 +58,7 @@ class DataContractTest : RegistryFixture
     {
         var dest = Get(filename);
         format.Serialize(dest, DummyFactory.Create());
-        Assert.That(Io.Get(dest).Length, Is.AtLeast(1));
+        Assert.That(new Entity(dest).Length, Is.AtLeast(1));
     }
 
     /* --------------------------------------------------------------------- */

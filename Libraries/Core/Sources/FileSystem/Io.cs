@@ -90,6 +90,7 @@ public static class Io
     /// <returns>Entity object.</returns>
     ///
     /* --------------------------------------------------------------------- */
+    [Obsolete("Use the constructor of the Entity class instead.")]
     public static Entity Get(string path) => new(_controller.GetEntitySource(path), true);
 
     /* --------------------------------------------------------------------- */
@@ -205,7 +206,7 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static FileStream Create(string path)
     {
-        CreateParentDirectory(Get(path));
+        CreateParentDirectory(path);
         return _controller.Create(path);
     }
 
@@ -223,7 +224,7 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static void CreateDirectory(string path)
     {
-        if (!Exists(path)) _controller.CreateDirectory(path);
+        if (!IsDirectory(path)) _controller.CreateDirectory(path);
     }
 
     /* --------------------------------------------------------------------- */
@@ -319,9 +320,9 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static void Move(string src, string dest, bool overwrite)
     {
-        var si = Get(src);
-        if (si.IsDirectory) MoveDirectory(si, Get(dest), overwrite);
-        else MoveFile(si, Get(dest), overwrite);
+        var si = new Entity(src);
+        if (si.IsDirectory) MoveDirectory(si, new(dest), overwrite);
+        else MoveFile(si, new(dest), overwrite);
     }
 
     /* --------------------------------------------------------------------- */
@@ -339,9 +340,9 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static void Copy(string src, string dest, bool overwrite)
     {
-        var si = Get(src);
-        if (si.IsDirectory) CopyDirectory(si, Get(dest), overwrite);
-        else CopyFile(si, Get(dest), overwrite);
+        var si = new Entity(src);
+        if (si.IsDirectory) CopyDirectory(si, new(dest), overwrite);
+        else CopyFile(si, new(dest), overwrite);
     }
 
     /* --------------------------------------------------------------------- */
@@ -451,10 +452,10 @@ public static class Io
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void CreateParentDirectory(Entity info)
+    private static void CreateParentDirectory(string src)
     {
-        var dir = Get(info.DirectoryName);
-        if (!dir.Exists) CreateDirectory(dir.FullName);
+        var dir = GetDirectoryName(src);
+        if (!IsDirectory(dir)) CreateDirectory(dir);
     }
 
     /* --------------------------------------------------------------------- */
@@ -490,15 +491,15 @@ public static class Io
 
         foreach (var file in GetFiles(src.FullName))
         {
-            var si = Get(file);
-            var di = Get(Combine(dest.FullName, si.Name));
+            var si = new Entity(file);
+            var di = new Entity(Combine(dest.FullName, si.Name));
             CopyFile(si, di, overwrite);
         }
 
         foreach (var dir in GetDirectories(src.FullName))
         {
-            var si = Get(dir);
-            var di = Get(Combine(dest.FullName, si.Name));
+            var si = new Entity(dir);
+            var di = new Entity(Combine(dest.FullName, si.Name));
             CopyDirectory(si, di, overwrite);
         }
     }
@@ -514,7 +515,7 @@ public static class Io
     /* --------------------------------------------------------------------- */
     private static void CopyFile(Entity src, Entity dest, bool overwrite)
     {
-        CreateParentDirectory(dest);
+        CreateParentDirectory(dest.FullName);
         _controller.Copy(src.FullName, dest.FullName, overwrite);
     }
 
@@ -533,15 +534,15 @@ public static class Io
 
         foreach (var file in GetFiles(src.FullName))
         {
-            var si = Get(file);
-            var di = Get(Combine(dest.FullName, si.Name));
+            var si = new Entity(file);
+            var di = new Entity(Combine(dest.FullName, si.Name));
             MoveFile(si, di, overwrite);
         }
 
         foreach (var dir in GetDirectories(src.FullName))
         {
-            var si = Get(dir);
-            var di = Get(Combine(dest.FullName, si.Name));
+            var si = new Entity(dir);
+            var di = new Entity(Combine(dest.FullName, si.Name));
             MoveDirectory(si, di, overwrite);
         }
 
@@ -562,13 +563,13 @@ public static class Io
         if (!dest.Exists) { MoveFile(src, dest); return; }
         if (!overwrite) return;
 
-        var tmp = Get(Combine(src.DirectoryName, Guid.NewGuid().ToString("N")));
+        var tmp = new Entity(Combine(src.DirectoryName, Guid.NewGuid().ToString("N")));
         MoveFile(dest, tmp);
 
         try
         {
             MoveFile(src, dest);
-            Logger.Warn(() => Delete(tmp.FullName));
+            Logger.Try(() => Delete(tmp.FullName));
         }
         catch
         {
@@ -588,7 +589,7 @@ public static class Io
     /* --------------------------------------------------------------------- */
     private static void MoveFile(Entity src, Entity dest)
     {
-        CreateParentDirectory(dest);
+        CreateParentDirectory(dest.FullName);
         _controller.Move(src.FullName, dest.FullName);
     }
 
