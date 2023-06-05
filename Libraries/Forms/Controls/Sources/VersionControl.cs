@@ -305,7 +305,7 @@ public class VersionControl : ControlBase
         _copyright.LinkClicked += (s, e) =>
         {
             if (Uri is null) return;
-            Logger.Warn(() => Process.Start(Uri.ToString()));
+            Logger.Try(() => Process.Start(Uri.ToString()));
         };
 
         _contents.Controls.Add(_info);
