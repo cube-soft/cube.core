@@ -95,89 +95,6 @@ public static class Io
 
     /* --------------------------------------------------------------------- */
     ///
-    /// GetFiles
-    ///
-    /// <summary>
-    /// Returns the names of files (including their paths) that
-    /// match the specified search pattern in the specified directory,
-    /// using a value to determine whether to search subdirectories.
-    /// </summary>
-    ///
-    /// <param name="path">
-    /// The relative or absolute path to the directory to search.
-    /// This string is not case-sensitive.
-    /// </param>
-    ///
-    /// <param name="pattern">
-    /// The search string to match against the names of subdirectories
-    /// in path. This parameter can contain a combination of valid
-    /// literal and wildcard characters, but doesn't support regular
-    /// expressions.
-    /// </param>
-    ///
-    /// <param name="option">
-    /// One of the enumeration values that specifies whether the
-    /// search operation should include all subdirectories or only
-    /// the current directory.
-    /// </param>
-    ///
-    /// <returns>
-    /// An array of the full names (including paths) for the files
-    /// in the specified directory that match the specified search
-    /// pattern and option, or an empty array if no files are found.
-    /// </returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static IEnumerable<string> GetFiles(
-        string path,
-        string pattern = "*",
-        SearchOption option = SearchOption.TopDirectoryOnly
-    ) => _controller.GetFiles(path, pattern, option);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetDirectories
-    ///
-    /// <summary>
-    /// Returns the names of the subdirectories (including their paths)
-    /// that match the specified search pattern in the specified
-    /// directory, and optionally searches subdirectories.
-    /// </summary>
-    ///
-    /// <param name="path">
-    /// The relative or absolute path to the directory to search.
-    /// This string is not case-sensitive.
-    /// </param>
-    ///
-    /// <param name="pattern">
-    /// The search string to match against the names of subdirectories
-    /// in path. This parameter can contain a combination of valid
-    /// literal and wildcard characters, but doesn't support regular
-    /// expressions.
-    /// </param>
-    ///
-    /// <param name="option">
-    /// One of the enumeration values that specifies whether the
-    /// search operation should include all subdirectories or only
-    /// the current directory.
-    /// </param>
-    ///
-    /// <returns>
-    /// An array of the full names (including paths) for the
-    /// directories in the specified directory that match the specified
-    /// search pattern and option, or an empty array if no directories
-    /// are found.
-    /// </returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static IEnumerable<string> GetDirectories(
-        string path,
-        string pattern = "*",
-        SearchOption option = SearchOption.TopDirectoryOnly
-    ) => _controller.GetDirectories(path, pattern, option);
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// Open
     ///
     /// <summary>
@@ -303,7 +220,21 @@ public static class Io
     /// <param name="path">Path to delete.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Delete(string path) => _controller.Delete(path);
+    public static void Delete(string path)
+    {
+        if (IsDirectory(path))
+        {
+            foreach (var f in GetFiles(path)) Delete(f);
+            foreach (var d in GetDirectories(path)) Delete(d);
+            SetAttributes(path, FileAttributes.Normal);
+            _controller.Delete(path);
+        }
+        else if (Exists(path))
+        {
+            SetAttributes(path, FileAttributes.Normal);
+            _controller.Delete(path);
+        }
+    }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -320,9 +251,8 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static void Move(string src, string dest, bool overwrite)
     {
-        var si = new Entity(src);
-        if (si.IsDirectory) MoveDirectory(si, new(dest), overwrite);
-        else MoveFile(si, new(dest), overwrite);
+        if (IsDirectory(src)) MoveDirectory(src, dest, overwrite);
+        else MoveFile(src, dest, overwrite);
     }
 
     /* --------------------------------------------------------------------- */
@@ -340,10 +270,24 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static void Copy(string src, string dest, bool overwrite)
     {
-        var si = new Entity(src);
-        if (si.IsDirectory) CopyDirectory(si, new(dest), overwrite);
-        else CopyFile(si, new(dest), overwrite);
+        if (IsDirectory(src)) CopyDirectory(src, dest, overwrite);
+        else CopyFile(src, dest, overwrite);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Combine
+    ///
+    /// <summary>
+    /// Combines the specified paths.
+    /// </summary>
+    ///
+    /// <param name="paths">Collection of paths.</param>
+    ///
+    /// <returns>Combined path.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string Combine(params string[] paths) => _controller.Combine(paths);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -412,18 +356,86 @@ public static class Io
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Combine
+    /// GetFiles
     ///
     /// <summary>
-    /// Combines the specified paths.
+    /// Returns the names of files (including their paths) that
+    /// match the specified search pattern in the specified directory,
+    /// using a value to determine whether to search subdirectories.
     /// </summary>
     ///
-    /// <param name="paths">Collection of paths.</param>
+    /// <param name="path">
+    /// The relative or absolute path to the directory to search.
+    /// This string is not case-sensitive.
+    /// </param>
     ///
-    /// <returns>Combined path.</returns>
+    /// <param name="pattern">
+    /// The search string to match against the names of subdirectories
+    /// in path. This parameter can contain a combination of valid
+    /// literal and wildcard characters, but doesn't support regular
+    /// expressions.
+    /// </param>
+    ///
+    /// <param name="option">
+    /// One of the enumeration values that specifies whether the
+    /// search operation should include all subdirectories or only
+    /// the current directory.
+    /// </param>
+    ///
+    /// <returns>
+    /// An array of the full names (including paths) for the files
+    /// in the specified directory that match the specified search
+    /// pattern and option, or an empty array if no files are found.
+    /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string Combine(params string[] paths) => _controller.Combine(paths);
+    public static IEnumerable<string> GetFiles(
+        string path,
+        string pattern = "*",
+        SearchOption option = SearchOption.TopDirectoryOnly
+    ) => _controller.GetFiles(path, pattern, option);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetDirectories
+    ///
+    /// <summary>
+    /// Returns the names of the subdirectories (including their paths)
+    /// that match the specified search pattern in the specified
+    /// directory, and optionally searches subdirectories.
+    /// </summary>
+    ///
+    /// <param name="path">
+    /// The relative or absolute path to the directory to search.
+    /// This string is not case-sensitive.
+    /// </param>
+    ///
+    /// <param name="pattern">
+    /// The search string to match against the names of subdirectories
+    /// in path. This parameter can contain a combination of valid
+    /// literal and wildcard characters, but doesn't support regular
+    /// expressions.
+    /// </param>
+    ///
+    /// <param name="option">
+    /// One of the enumeration values that specifies whether the
+    /// search operation should include all subdirectories or only
+    /// the current directory.
+    /// </param>
+    ///
+    /// <returns>
+    /// An array of the full names (including paths) for the
+    /// directories in the specified directory that match the specified
+    /// search pattern and option, or an empty array if no directories
+    /// are found.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IEnumerable<string> GetDirectories(
+        string path,
+        string pattern = "*",
+        SearchOption option = SearchOption.TopDirectoryOnly
+    ) => _controller.GetDirectories(path, pattern, option);
 
     #endregion
 
@@ -485,23 +497,11 @@ public static class Io
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void CopyDirectory(Entity src, Entity dest, bool overwrite)
+    private static void CopyDirectory(string src, string dest, bool overwrite)
     {
-        if (!dest.Exists) CreateDirectory(dest.FullName, src);
-
-        foreach (var file in GetFiles(src.FullName))
-        {
-            var si = new Entity(file);
-            var di = new Entity(Combine(dest.FullName, si.Name));
-            CopyFile(si, di, overwrite);
-        }
-
-        foreach (var dir in GetDirectories(src.FullName))
-        {
-            var si = new Entity(dir);
-            var di = new Entity(Combine(dest.FullName, si.Name));
-            CopyDirectory(si, di, overwrite);
-        }
+        if (!Exists(dest)) CreateDirectory(dest, new(src));
+        foreach (var e in GetFiles(src)) CopyFile(e, Combine(dest, GetFileName(e)), overwrite);
+        foreach (var e in GetDirectories(src)) CopyDirectory(e, Combine(dest, GetFileName(e)), overwrite);
     }
 
     /* --------------------------------------------------------------------- */
@@ -513,10 +513,14 @@ public static class Io
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void CopyFile(Entity src, Entity dest, bool overwrite)
+    private static void CopyFile(string src, string dest, bool overwrite)
     {
-        CreateParentDirectory(dest.FullName);
-        _controller.Copy(src.FullName, dest.FullName, overwrite);
+        CreateParentDirectory(dest);
+        var attr = new Entity(dest).Attributes;
+        SetAttributes(src,  FileAttributes.Normal);
+        SetAttributes(dest, FileAttributes.Normal);
+        _controller.Copy(src, dest, overwrite);
+        SetAttributes(dest, attr);
     }
 
     /* --------------------------------------------------------------------- */
@@ -528,25 +532,12 @@ public static class Io
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void MoveDirectory(Entity src, Entity dest, bool overwrite)
+    private static void MoveDirectory(string src, string dest, bool overwrite)
     {
-        if (!dest.Exists) CreateDirectory(dest.FullName, src);
-
-        foreach (var file in GetFiles(src.FullName))
-        {
-            var si = new Entity(file);
-            var di = new Entity(Combine(dest.FullName, si.Name));
-            MoveFile(si, di, overwrite);
-        }
-
-        foreach (var dir in GetDirectories(src.FullName))
-        {
-            var si = new Entity(dir);
-            var di = new Entity(Combine(dest.FullName, si.Name));
-            MoveDirectory(si, di, overwrite);
-        }
-
-        Delete(src.FullName);
+        if (!Exists(dest)) CreateDirectory(dest, new(src));
+        foreach (var e in GetFiles(src)) MoveFile(e, Combine(dest, GetFileName(e)), overwrite);
+        foreach (var e in GetDirectories(src)) MoveDirectory(e, Combine(dest, GetFileName(e)), overwrite);
+        Delete(src);
     }
 
     /* --------------------------------------------------------------------- */
@@ -558,18 +549,18 @@ public static class Io
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void MoveFile(Entity src, Entity dest, bool overwrite)
+    private static void MoveFile(string src, string dest, bool overwrite)
     {
-        if (!dest.Exists) { MoveFile(src, dest); return; }
+        if (!Exists(dest)) { MoveFile(src, dest); return; }
         if (!overwrite) return;
 
-        var tmp = new Entity(Combine(src.DirectoryName, Guid.NewGuid().ToString("N")));
+        var tmp = Combine(GetDirectoryName(src), Guid.NewGuid().ToString("N"));
         MoveFile(dest, tmp);
 
         try
         {
             MoveFile(src, dest);
-            Logger.Try(() => Delete(tmp.FullName));
+            Logger.Try(() => Delete(tmp));
         }
         catch
         {
@@ -587,10 +578,14 @@ public static class Io
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void MoveFile(Entity src, Entity dest)
+    private static void MoveFile(string src, string dest)
     {
-        CreateParentDirectory(dest.FullName);
-        _controller.Move(src.FullName, dest.FullName);
+        CreateParentDirectory(dest);
+        var attr = new Entity(dest).Attributes;
+        SetAttributes(src,  FileAttributes.Normal);
+        SetAttributes(dest, FileAttributes.Normal);
+        _controller.Move(src, dest);
+        SetAttributes(dest, attr);
     }
 
     #endregion

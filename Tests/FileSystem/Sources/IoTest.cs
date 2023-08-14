@@ -209,12 +209,13 @@ class IoTest : FileFixture
     {
         Io.Configure(controller);
 
-        var dest = Get(nameof(SetTime));
+        var dest = Get($"{nameof(SetTime)}-{id}");
         Io.Copy(GetSource("SampleDirectory"), dest, true);
 
         var ts = new DateTime(2021, 6, 29, 12, 0, 0, DateTimeKind.Local);
         foreach (var f in Io.GetFiles(dest))
         {
+            Io.SetAttributes(f, System.IO.FileAttributes.Normal);
             Io.SetCreationTime(f, ts);
             Io.SetLastWriteTime(f, ts);
             Io.SetLastAccessTime(f, ts);
@@ -345,9 +346,39 @@ class IoTest : FileFixture
     {
         Io.Configure(controller);
 
+        var name = "Sample.txt";
+        var src  = Io.Combine(Results, name);
+        var dest = Io.Combine(Results, $"{nameof(Move)}-{id}.txt");
+
+        Io.Copy(GetSource(name), src, false);
+        Io.Copy(src, dest, false);
+        Io.SetAttributes(src, System.IO.FileAttributes.ReadOnly);
+        Io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
+        Assert.That(Io.Exists(src), Is.True);
+        Assert.That(Io.Exists(dest), Is.True);
+
+        Io.Move(src, dest, true);
+        Assert.That(Io.Exists(src), Is.False);
+        Assert.That(Io.Exists(dest), Is.True);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Move_Recursive
+    ///
+    /// <summary>
+    /// Tests the Move method recursively.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCaseSource(nameof(TestCases))]
+    public void Move_Recursive(int id, IoController controller)
+    {
+        Io.Configure(controller);
+
         var name = "SampleDirectory";
         var src  = Io.Combine(Results, name);
-        var dest = Io.Combine(Results, $"{name}-{nameof(Move)}-{id}");
+        var dest = Io.Combine(Results, $"{nameof(Move_Recursive)}-{id}");
 
         Io.Copy(GetSource(name), src, false);
         Assert.That(Io.Exists(src),  Is.True);
