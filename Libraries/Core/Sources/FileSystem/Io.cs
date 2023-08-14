@@ -172,8 +172,13 @@ public static class Io
     /// <param name="time">Creation time.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void SetCreationTime(string path, DateTime time) =>
+    public static void SetCreationTime(string path, DateTime time)
+    {
+        var attr = new Entity(path).Attributes;
+        SetAttributes(path, FileAttributes.Normal);
         _controller.SetCreationTime(path, time);
+        SetAttributes(path, attr);
+    }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -188,8 +193,13 @@ public static class Io
     /// <param name="time">Last updated time.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void SetLastWriteTime(string path, DateTime time) =>
+    public static void SetLastWriteTime(string path, DateTime time)
+    {
+        var attr = new Entity(path).Attributes;
+        SetAttributes(path, FileAttributes.Normal);
         _controller.SetLastWriteTime(path, time);
+        SetAttributes(path, attr);
+    }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -204,8 +214,13 @@ public static class Io
     /// <param name="time">Last accessed time.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void SetLastAccessTime(string path, DateTime time) =>
+    public static void SetLastAccessTime(string path, DateTime time)
+    {
+        var attr = new Entity(path).Attributes;
+        SetAttributes(path, FileAttributes.Normal);
         _controller.SetLastAccessTime(path, time);
+        SetAttributes(path, attr);
+    }
 
     /* --------------------------------------------------------------------- */
     ///

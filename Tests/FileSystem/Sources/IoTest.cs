@@ -215,53 +215,11 @@ class IoTest : FileFixture
         var ts = new DateTime(2021, 6, 29, 12, 0, 0, DateTimeKind.Local);
         foreach (var f in Io.GetFiles(dest))
         {
-            Io.SetAttributes(f, System.IO.FileAttributes.Normal);
             Io.SetCreationTime(f, ts);
             Io.SetLastWriteTime(f, ts);
             Io.SetLastAccessTime(f, ts);
         }
 
-        Io.SetCreationTime(dest, ts);
-        Io.SetLastWriteTime(dest, ts);
-        Io.SetLastAccessTime(dest, ts);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SetTime_Throws
-    ///
-    /// <summary>
-    /// Tests the SetCreationTime, SetLastWriteTime, and SetLastAccessTime
-    /// methods.
-    /// </summary>
-    ///
-    /// <remarks>
-    /// AlphaFS does not thorw.
-    /// </remarks>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void SetTime_Throws()
-    {
-        Io.Configure(new IoController());
-
-        var dest = Get(nameof(SetTime_Throws));
-        Io.Delete(dest);
-        Io.Copy(GetSource("SampleDirectory"), dest, false);
-
-        var ts = new DateTime(2021, 6, 29, 13, 0, 0, DateTimeKind.Local);
-        foreach (var f in Io.GetFiles(dest))
-        {
-            Io.SetAttributes(f, System.IO.FileAttributes.ReadOnly);
-            Assert.That(() => Io.SetCreationTime(f, ts),
-                Throws.TypeOf<UnauthorizedAccessException>());
-            Assert.That(() => Io.SetLastWriteTime(f, ts),
-                Throws.TypeOf<UnauthorizedAccessException>());
-            Assert.That(() => Io.SetLastAccessTime(f, ts),
-                Throws.TypeOf<UnauthorizedAccessException>());
-        }
-
-        Io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
         Io.SetCreationTime(dest, ts);
         Io.SetLastWriteTime(dest, ts);
         Io.SetLastAccessTime(dest, ts);
