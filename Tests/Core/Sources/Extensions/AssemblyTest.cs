@@ -93,7 +93,7 @@ class AssemblyTest
                 Configuration = Configuration,
                 Trademark     = string.Empty,
                 Culture       = string.Empty,
-                Version       = new(8, 2, 0, 0),
+                Version       = new(8, 3, 0, 0),
             });
 
             yield return new TestCaseData(typeof(Methods).Assembly, new Expected
@@ -109,7 +109,7 @@ class AssemblyTest
                 Configuration = Configuration,
                 Trademark     = string.Empty,
                 Culture       = string.Empty,
-                Version       = new(8, 2, 0, 0),
+                Version       = new(8, 3, 0, 0),
             });
         }
     }
