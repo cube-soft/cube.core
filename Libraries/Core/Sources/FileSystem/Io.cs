@@ -172,13 +172,8 @@ public static class Io
     /// <param name="time">Creation time.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void SetCreationTime(string path, DateTime time)
-    {
-        var attr = new Entity(path).Attributes;
-        SetAttributes(path, FileAttributes.Normal);
-        _controller.SetCreationTime(path, time);
-        SetAttributes(path, attr);
-    }
+    public static void SetCreationTime(string path, DateTime time) =>
+        Unlock(path, e => _controller.SetCreationTime(e, time));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -193,13 +188,8 @@ public static class Io
     /// <param name="time">Last updated time.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void SetLastWriteTime(string path, DateTime time)
-    {
-        var attr = new Entity(path).Attributes;
-        SetAttributes(path, FileAttributes.Normal);
-        _controller.SetLastWriteTime(path, time);
-        SetAttributes(path, attr);
-    }
+    public static void SetLastWriteTime(string path, DateTime time) =>
+        Unlock(path, e => _controller.SetLastWriteTime(e, time));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -214,13 +204,8 @@ public static class Io
     /// <param name="time">Last accessed time.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void SetLastAccessTime(string path, DateTime time)
-    {
-        var attr = new Entity(path).Attributes;
-        SetAttributes(path, FileAttributes.Normal);
-        _controller.SetLastAccessTime(path, time);
-        SetAttributes(path, attr);
-    }
+    public static void SetLastAccessTime(string path, DateTime time) =>
+        Unlock(path, e => _controller.SetLastAccessTime(e, time));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -497,9 +482,10 @@ public static class Io
     private static void CreateDirectory(string path, Entity src)
     {
         CreateDirectory(path);
-        SetCreationTime(path, src.CreationTime);
-        SetLastWriteTime(path, src.LastWriteTime);
-        SetLastAccessTime(path, src.LastAccessTime);
+        SetAttributes(path, FileAttributes.Normal);
+        _controller.SetCreationTime(path, src.CreationTime);
+        _controller.SetLastWriteTime(path, src.LastWriteTime);
+        _controller.SetLastAccessTime(path, src.LastAccessTime);
         SetAttributes(path, src.Attributes);
     }
 
@@ -521,25 +507,6 @@ public static class Io
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CopyFile
-    ///
-    /// <summary>
-    /// Copies the file.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static void CopyFile(string src, string dest, bool overwrite)
-    {
-        CreateParentDirectory(dest);
-        var attr = new Entity(dest).Attributes;
-        SetAttributes(src,  FileAttributes.Normal);
-        SetAttributes(dest, FileAttributes.Normal);
-        _controller.Copy(src, dest, overwrite);
-        SetAttributes(dest, attr);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// MoveDirectory
     ///
     /// <summary>
@@ -557,6 +524,24 @@ public static class Io
 
     /* --------------------------------------------------------------------- */
     ///
+    /// CopyFile
+    ///
+    /// <summary>
+    /// Copies the file.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static void CopyFile(string src, string dest, bool overwrite)
+    {
+        CreateParentDirectory(dest);
+        Unlock(dest, e => {
+            SetAttributes(src, FileAttributes.Normal);
+            _controller.Copy(src, e, overwrite);
+        });
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// MoveFile
     ///
     /// <summary>
@@ -569,7 +554,7 @@ public static class Io
         if (!Exists(dest)) { MoveFile(src, dest); return; }
         if (!overwrite) return;
 
-        var tmp = Combine(GetDirectoryName(src), Guid.NewGuid().ToString("N"));
+        var tmp = Combine(Path.GetTempPath(), Guid.NewGuid().ToString("n"));
         MoveFile(dest, tmp);
 
         try
@@ -596,11 +581,30 @@ public static class Io
     private static void MoveFile(string src, string dest)
     {
         CreateParentDirectory(dest);
-        var attr = new Entity(dest).Attributes;
-        SetAttributes(src,  FileAttributes.Normal);
-        SetAttributes(dest, FileAttributes.Normal);
-        _controller.Move(src, dest);
-        SetAttributes(dest, attr);
+        Unlock(dest, e => {
+            SetAttributes(src, FileAttributes.Normal);
+            _controller.Move(src, dest);
+        });
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Unlock
+    ///
+    /// <summary>
+    /// Unlocks the specified file and invokes the specified action.
+    /// </summary>
+    ///
+    /// <param name="path">Target path.</param>
+    /// <param name="action">User action.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static void Unlock(string path, Action<string> action)
+    {
+        var attr = new Entity(path).Attributes;
+        SetAttributes(path, FileAttributes.Normal);
+        try { action(path); }
+        finally { SetAttributes(path, attr); }
     }
 
     #endregion
