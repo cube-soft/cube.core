@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>8.2.0</version>
+        <version>8.5.0</version>
         <id>Cube.Core</id>
         <title>Cube.Core</title>
         <authors>clown,cube-soft</authors>

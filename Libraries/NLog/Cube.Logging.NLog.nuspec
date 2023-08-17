@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>8.2.0</version>
+        <version>8.5.0</version>
         <id>Cube.Logging.NLog</id>
         <title>Cube.Logging.NLog</title>
         <authors>clown,cube-soft</authors>
@@ -16,16 +16,16 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="netstandard2.0">
-                <dependency id="Cube.Core" version="8.2.0" />
-                <dependency id="NLog" version="5.2.0" />
+                <dependency id="Cube.Core" version="8.5.0" />
+                <dependency id="NLog" version="5.2.3" />
             </group>
             <group targetFramework="net46">
-                <dependency id="Cube.Core" version="8.2.0" />
-                <dependency id="NLog" version="5.2.0" />
+                <dependency id="Cube.Core" version="8.5.0" />
+                <dependency id="NLog" version="5.2.3" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.Core" version="8.2.0" />
-                <dependency id="NLog" version="5.2.0" />
+                <dependency id="Cube.Core" version="8.5.0" />
+                <dependency id="NLog" version="5.2.3" />
             </group>
         </dependencies>
     </metadata>
