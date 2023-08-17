@@ -20,6 +20,7 @@ namespace Cube.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -156,8 +157,10 @@ public static class Io
     /// <param name="attr">Attributes to set.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void SetAttributes(string path, FileAttributes attr) =>
-        _controller.SetAttributes(path, attr);
+    public static void SetAttributes(string path, FileAttributes attr)
+    {
+        if (Exists(path)) _controller.SetAttributes(path, attr);
+    }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -251,7 +254,7 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static void Move(string src, string dest, bool overwrite)
     {
-        if (IsDirectory(src)) MoveDirectory(src, dest, overwrite);
+        if (IsDirectory(src)) MoveRecursive(src, dest, overwrite);
         else MoveFile(src, dest, overwrite);
     }
 
@@ -270,7 +273,7 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static void Copy(string src, string dest, bool overwrite)
     {
-        if (IsDirectory(src)) CopyDirectory(src, dest, overwrite);
+        if (IsDirectory(src)) CopyRecursive(src, dest, overwrite);
         else CopyFile(src, dest, overwrite);
     }
 
@@ -491,35 +494,19 @@ public static class Io
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CopyDirectory
+    /// CopyRecursive
     ///
     /// <summary>
-    /// Copies the specified directory and files.
+    /// Copies files and directories existing under the specified directory
+    /// recursively.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void CopyDirectory(string src, string dest, bool overwrite)
+    private static void CopyRecursive(string src, string dest, bool overwrite)
     {
         if (!Exists(dest)) CreateDirectory(dest, new(src));
         foreach (var e in GetFiles(src)) CopyFile(e, Combine(dest, GetFileName(e)), overwrite);
-        foreach (var e in GetDirectories(src)) CopyDirectory(e, Combine(dest, GetFileName(e)), overwrite);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// MoveDirectory
-    ///
-    /// <summary>
-    /// Moves the directory.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static void MoveDirectory(string src, string dest, bool overwrite)
-    {
-        if (!Exists(dest)) CreateDirectory(dest, new(src));
-        foreach (var e in GetFiles(src)) MoveFile(e, Combine(dest, GetFileName(e)), overwrite);
-        foreach (var e in GetDirectories(src)) MoveDirectory(e, Combine(dest, GetFileName(e)), overwrite);
-        Delete(src);
+        foreach (var e in GetDirectories(src)) CopyRecursive(e, Combine(dest, GetFileName(e)), overwrite);
     }
 
     /* --------------------------------------------------------------------- */
@@ -531,13 +518,25 @@ public static class Io
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void CopyFile(string src, string dest, bool overwrite)
+    private static void CopyFile(string src, string dest, bool overwrite) =>
+        Unlock(src, dest, (s, d) => _controller.Copy(s, d, overwrite));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// MoveRecursive
+    ///
+    /// <summary>
+    /// Moves files and directories existing under the specified directory
+    /// recursively.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static void MoveRecursive(string src, string dest, bool overwrite)
     {
-        CreateParentDirectory(dest);
-        Unlock(dest, e => {
-            SetAttributes(src, FileAttributes.Normal);
-            _controller.Copy(src, e, overwrite);
-        });
+        if (!Exists(dest)) CreateDirectory(dest, new(src));
+        foreach (var e in GetFiles(src)) MoveFile(e, Combine(dest, GetFileName(e)), overwrite);
+        foreach (var e in GetDirectories(src)) MoveRecursive(e, Combine(dest, GetFileName(e)), overwrite);
+        Delete(src);
     }
 
     /* --------------------------------------------------------------------- */
@@ -551,40 +550,24 @@ public static class Io
     /* --------------------------------------------------------------------- */
     private static void MoveFile(string src, string dest, bool overwrite)
     {
-        if (!Exists(dest)) { MoveFile(src, dest); return; }
+        static void move(string s, string d) => Unlock(s, d, _controller.Move);
+
+        if (!Exists(dest)) { move(src, dest); return; }
         if (!overwrite) return;
 
         var tmp = Combine(Path.GetTempPath(), Guid.NewGuid().ToString("n"));
-        MoveFile(dest, tmp);
+        move(dest, tmp);
 
         try
         {
-            MoveFile(src, dest);
+            move(src, dest);
             Logger.Try(() => Delete(tmp));
         }
         catch
         {
-            MoveFile(tmp, dest); // recover
+            move(tmp, dest); // recover
             throw;
         }
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// MoveFile
-    ///
-    /// <summary>
-    /// Moves the file.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static void MoveFile(string src, string dest)
-    {
-        CreateParentDirectory(dest);
-        Unlock(dest, e => {
-            SetAttributes(src, FileAttributes.Normal);
-            _controller.Move(src, dest);
-        });
     }
 
     /* --------------------------------------------------------------------- */
@@ -601,10 +584,45 @@ public static class Io
     /* --------------------------------------------------------------------- */
     private static void Unlock(string path, Action<string> action)
     {
+        if (!Exists(path)) return;
         var attr = new Entity(path).Attributes;
         SetAttributes(path, FileAttributes.Normal);
         try { action(path); }
         finally { SetAttributes(path, attr); }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Unlock
+    ///
+    /// <summary>
+    /// Unlocks the specified file and invokes the specified action.
+    /// </summary>
+    ///
+    /// <param name="src">Source path.</param>
+    /// <param name="dest">Destination path.</param>
+    /// <param name="action">User action.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static void Unlock(string src, string dest, Action<string, string> action)
+    {
+        CreateParentDirectory(dest);
+
+        var e = new Entity(src);
+        var attr = e.Attributes;
+        var ct = e.CreationTime;
+        var wt = e.LastWriteTime;
+
+        if (Exists(dest)) SetAttributes(dest, FileAttributes.Normal);
+
+        try
+        {
+            SetAttributes(src, FileAttributes.Normal);
+            action(src, dest);
+            _controller.SetCreationTime(dest, ct);
+            _controller.SetLastWriteTime(dest, wt);
+        }
+        finally { if (Exists(dest)) SetAttributes(dest, attr); }
     }
 
     #endregion
