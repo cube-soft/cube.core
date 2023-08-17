@@ -20,6 +20,7 @@ namespace Cube.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -92,6 +93,269 @@ public static class Io
     /* --------------------------------------------------------------------- */
     [Obsolete("Use the constructor of the Entity class instead.")]
     public static Entity Get(string path) => new(_controller.GetEntitySource(path), true);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Open
+    ///
+    /// <summary>
+    /// Opens the specified file as read-only.
+    /// </summary>
+    ///
+    /// <param name="path">File path.</param>
+    ///
+    /// <returns>Read-only stream.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static FileStream Open(string path) => _controller.Open(path);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Create
+    ///
+    /// <summary>
+    /// Creates or opens the specified file and gets the stream.
+    /// </summary>
+    ///
+    /// <param name="path">Path to create or open file.</param>
+    ///
+    /// <returns>FileStream object to write.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static FileStream Create(string path)
+    {
+        CreateParentDirectory(path);
+        return _controller.Create(path);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CreateDirectory
+    ///
+    /// <summary>
+    /// Creates a directory. If a file or directory with the specified
+    /// path exists, the method will be skipped.
+    /// </summary>
+    ///
+    /// <param name="path">Path to create.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void CreateDirectory(string path)
+    {
+        if (!IsDirectory(path)) _controller.CreateDirectory(path);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetAttributes
+    ///
+    /// <summary>
+    /// Sets the specified attributes to the specified file or directory.
+    /// </summary>
+    ///
+    /// <param name="path">Target path.</param>
+    /// <param name="attr">Attributes to set.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void SetAttributes(string path, FileAttributes attr)
+    {
+        if (Exists(path)) _controller.SetAttributes(path, attr);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetCreationTime
+    ///
+    /// <summary>
+    /// Sets the specified creation time to the specified file or
+    /// directory.
+    /// </summary>
+    ///
+    /// <param name="path">Target path.</param>
+    /// <param name="time">Creation time.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void SetCreationTime(string path, DateTime time) =>
+        Unlock(path, e => _controller.SetCreationTime(e, time));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetLastWriteTime
+    ///
+    /// <summary>
+    /// Sets the specified last updated time to the specified file or
+    /// directory.
+    /// </summary>
+    ///
+    /// <param name="path">Target path.</param>
+    /// <param name="time">Last updated time.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void SetLastWriteTime(string path, DateTime time) =>
+        Unlock(path, e => _controller.SetLastWriteTime(e, time));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetLastAccessTime
+    ///
+    /// <summary>
+    /// Sets the specified last accessed time to the specified file or
+    /// directory.
+    /// </summary>
+    ///
+    /// <param name="path">Target path.</param>
+    /// <param name="time">Last accessed time.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void SetLastAccessTime(string path, DateTime time) =>
+        Unlock(path, e => _controller.SetLastAccessTime(e, time));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Delete
+    ///
+    /// <summary>
+    /// Deletes the specified file or directory.
+    /// If the specified path is a directory and has subdirectories,
+    /// the method will recursively remove all of them.
+    /// </summary>
+    ///
+    /// <param name="path">Path to delete.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Delete(string path)
+    {
+        if (IsDirectory(path))
+        {
+            foreach (var f in GetFiles(path)) Delete(f);
+            foreach (var d in GetDirectories(path)) Delete(d);
+            SetAttributes(path, FileAttributes.Normal);
+            _controller.Delete(path);
+        }
+        else if (Exists(path))
+        {
+            SetAttributes(path, FileAttributes.Normal);
+            _controller.Delete(path);
+        }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Move
+    ///
+    /// <summary>
+    /// Moves the specified file.
+    /// </summary>
+    ///
+    /// <param name="src">Source path.</param>
+    /// <param name="dest">Destination path.</param>
+    /// <param name="overwrite">Overwrite or not.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Move(string src, string dest, bool overwrite)
+    {
+        if (IsDirectory(src)) MoveRecursive(src, dest, overwrite);
+        else MoveFile(src, dest, overwrite);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Copy
+    ///
+    /// <summary>
+    /// Copies the specified file.
+    /// </summary>
+    ///
+    /// <param name="src">Source path.</param>
+    /// <param name="dest">Destination path.</param>
+    /// <param name="overwrite">Overwrite or not.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Copy(string src, string dest, bool overwrite)
+    {
+        if (IsDirectory(src)) CopyRecursive(src, dest, overwrite);
+        else CopyFile(src, dest, overwrite);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Combine
+    ///
+    /// <summary>
+    /// Combines the specified paths.
+    /// </summary>
+    ///
+    /// <param name="paths">Collection of paths.</param>
+    ///
+    /// <returns>Combined path.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string Combine(params string[] paths) => _controller.Combine(paths);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetFileName
+    ///
+    /// <summary>
+    /// Gets the filename and extension of the specified path string.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>
+    /// Filename and extension of the specified path string.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string GetFileName(string src) => _controller.GetFileName(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetBaseName
+    ///
+    /// <summary>
+    /// Gets the filename of the specified path string without the
+    /// extension.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>
+    /// Filename of the specified path string without the extension.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string GetBaseName(string src) => _controller.GetBaseName(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetExtension
+    ///
+    /// <summary>
+    /// Gets the extension of the specified path string.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>Extension of the specified path string.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string GetExtension(string src) => _controller.GetExtension(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetDirectoryName
+    ///
+    /// <summary>
+    /// Gets the directory name for the specified path.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /// <returns>Directory name for the specified path.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string GetDirectoryName(string src) => _controller.GetDirectoryName(src);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -176,255 +440,6 @@ public static class Io
         SearchOption option = SearchOption.TopDirectoryOnly
     ) => _controller.GetDirectories(path, pattern, option);
 
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Open
-    ///
-    /// <summary>
-    /// Opens the specified file as read-only.
-    /// </summary>
-    ///
-    /// <param name="path">File path.</param>
-    ///
-    /// <returns>Read-only stream.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static FileStream Open(string path) => _controller.Open(path);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Create
-    ///
-    /// <summary>
-    /// Creates or opens the specified file and gets the stream.
-    /// </summary>
-    ///
-    /// <param name="path">Path to create or open file.</param>
-    ///
-    /// <returns>FileStream object to write.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static FileStream Create(string path)
-    {
-        CreateParentDirectory(path);
-        return _controller.Create(path);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// CreateDirectory
-    ///
-    /// <summary>
-    /// Creates a directory. If a file or directory with the specified
-    /// path exists, the method will be skipped.
-    /// </summary>
-    ///
-    /// <param name="path">Path to create.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static void CreateDirectory(string path)
-    {
-        if (!IsDirectory(path)) _controller.CreateDirectory(path);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SetAttributes
-    ///
-    /// <summary>
-    /// Sets the specified attributes to the specified file or directory.
-    /// </summary>
-    ///
-    /// <param name="path">Target path.</param>
-    /// <param name="attr">Attributes to set.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static void SetAttributes(string path, FileAttributes attr) =>
-        _controller.SetAttributes(path, attr);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SetCreationTime
-    ///
-    /// <summary>
-    /// Sets the specified creation time to the specified file or
-    /// directory.
-    /// </summary>
-    ///
-    /// <param name="path">Target path.</param>
-    /// <param name="time">Creation time.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static void SetCreationTime(string path, DateTime time) =>
-        _controller.SetCreationTime(path, time);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SetLastWriteTime
-    ///
-    /// <summary>
-    /// Sets the specified last updated time to the specified file or
-    /// directory.
-    /// </summary>
-    ///
-    /// <param name="path">Target path.</param>
-    /// <param name="time">Last updated time.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static void SetLastWriteTime(string path, DateTime time) =>
-        _controller.SetLastWriteTime(path, time);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SetLastAccessTime
-    ///
-    /// <summary>
-    /// Sets the specified last accessed time to the specified file or
-    /// directory.
-    /// </summary>
-    ///
-    /// <param name="path">Target path.</param>
-    /// <param name="time">Last accessed time.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static void SetLastAccessTime(string path, DateTime time) =>
-        _controller.SetLastAccessTime(path, time);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Delete
-    ///
-    /// <summary>
-    /// Deletes the specified file or directory.
-    /// If the specified path is a directory and has subdirectories,
-    /// the method will recursively remove all of them.
-    /// </summary>
-    ///
-    /// <param name="path">Path to delete.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static void Delete(string path) => _controller.Delete(path);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Move
-    ///
-    /// <summary>
-    /// Moves the specified file.
-    /// </summary>
-    ///
-    /// <param name="src">Source path.</param>
-    /// <param name="dest">Destination path.</param>
-    /// <param name="overwrite">Overwrite or not.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static void Move(string src, string dest, bool overwrite)
-    {
-        var si = new Entity(src);
-        if (si.IsDirectory) MoveDirectory(si, new(dest), overwrite);
-        else MoveFile(si, new(dest), overwrite);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Copy
-    ///
-    /// <summary>
-    /// Copies the specified file.
-    /// </summary>
-    ///
-    /// <param name="src">Source path.</param>
-    /// <param name="dest">Destination path.</param>
-    /// <param name="overwrite">Overwrite or not.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static void Copy(string src, string dest, bool overwrite)
-    {
-        var si = new Entity(src);
-        if (si.IsDirectory) CopyDirectory(si, new(dest), overwrite);
-        else CopyFile(si, new(dest), overwrite);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetFileName
-    ///
-    /// <summary>
-    /// Gets the filename and extension of the specified path string.
-    /// </summary>
-    ///
-    /// <param name="src">Path of the file or directory.</param>
-    ///
-    /// <returns>
-    /// Filename and extension of the specified path string.
-    /// </returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string GetFileName(string src) => _controller.GetFileName(src);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetBaseName
-    ///
-    /// <summary>
-    /// Gets the filename of the specified path string without the
-    /// extension.
-    /// </summary>
-    ///
-    /// <param name="src">Path of the file or directory.</param>
-    ///
-    /// <returns>
-    /// Filename of the specified path string without the extension.
-    /// </returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string GetBaseName(string src) => _controller.GetBaseName(src);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetExtension
-    ///
-    /// <summary>
-    /// Gets the extension of the specified path string.
-    /// </summary>
-    ///
-    /// <param name="src">Path of the file or directory.</param>
-    ///
-    /// <returns>Extension of the specified path string.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string GetExtension(string src) => _controller.GetExtension(src);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetDirectoryName
-    ///
-    /// <summary>
-    /// Gets the directory name for the specified path.
-    /// </summary>
-    ///
-    /// <param name="src">Path of the file or directory.</param>
-    ///
-    /// <returns>Directory name for the specified path.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string GetDirectoryName(string src) => _controller.GetDirectoryName(src);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Combine
-    ///
-    /// <summary>
-    /// Combines the specified paths.
-    /// </summary>
-    ///
-    /// <param name="paths">Collection of paths.</param>
-    ///
-    /// <returns>Combined path.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string Combine(params string[] paths) => _controller.Combine(paths);
-
     #endregion
 
     #region Implementations
@@ -470,38 +485,28 @@ public static class Io
     private static void CreateDirectory(string path, Entity src)
     {
         CreateDirectory(path);
-        SetCreationTime(path, src.CreationTime);
-        SetLastWriteTime(path, src.LastWriteTime);
-        SetLastAccessTime(path, src.LastAccessTime);
+        SetAttributes(path, FileAttributes.Normal);
+        _controller.SetCreationTime(path, src.CreationTime);
+        _controller.SetLastWriteTime(path, src.LastWriteTime);
+        _controller.SetLastAccessTime(path, src.LastAccessTime);
         SetAttributes(path, src.Attributes);
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CopyDirectory
+    /// CopyRecursive
     ///
     /// <summary>
-    /// Copies the specified directory and files.
+    /// Copies files and directories existing under the specified directory
+    /// recursively.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void CopyDirectory(Entity src, Entity dest, bool overwrite)
+    private static void CopyRecursive(string src, string dest, bool overwrite)
     {
-        if (!dest.Exists) CreateDirectory(dest.FullName, src);
-
-        foreach (var file in GetFiles(src.FullName))
-        {
-            var si = new Entity(file);
-            var di = new Entity(Combine(dest.FullName, si.Name));
-            CopyFile(si, di, overwrite);
-        }
-
-        foreach (var dir in GetDirectories(src.FullName))
-        {
-            var si = new Entity(dir);
-            var di = new Entity(Combine(dest.FullName, si.Name));
-            CopyDirectory(si, di, overwrite);
-        }
+        if (!Exists(dest)) CreateDirectory(dest, new(src));
+        foreach (var e in GetFiles(src)) CopyFile(e, Combine(dest, GetFileName(e)), overwrite);
+        foreach (var e in GetDirectories(src)) CopyRecursive(e, Combine(dest, GetFileName(e)), overwrite);
     }
 
     /* --------------------------------------------------------------------- */
@@ -513,40 +518,25 @@ public static class Io
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void CopyFile(Entity src, Entity dest, bool overwrite)
-    {
-        CreateParentDirectory(dest.FullName);
-        _controller.Copy(src.FullName, dest.FullName, overwrite);
-    }
+    private static void CopyFile(string src, string dest, bool overwrite) =>
+        Unlock(src, dest, (s, d) => _controller.Copy(s, d, overwrite));
 
     /* --------------------------------------------------------------------- */
     ///
-    /// MoveDirectory
+    /// MoveRecursive
     ///
     /// <summary>
-    /// Moves the directory.
+    /// Moves files and directories existing under the specified directory
+    /// recursively.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void MoveDirectory(Entity src, Entity dest, bool overwrite)
+    private static void MoveRecursive(string src, string dest, bool overwrite)
     {
-        if (!dest.Exists) CreateDirectory(dest.FullName, src);
-
-        foreach (var file in GetFiles(src.FullName))
-        {
-            var si = new Entity(file);
-            var di = new Entity(Combine(dest.FullName, si.Name));
-            MoveFile(si, di, overwrite);
-        }
-
-        foreach (var dir in GetDirectories(src.FullName))
-        {
-            var si = new Entity(dir);
-            var di = new Entity(Combine(dest.FullName, si.Name));
-            MoveDirectory(si, di, overwrite);
-        }
-
-        Delete(src.FullName);
+        if (!Exists(dest)) CreateDirectory(dest, new(src));
+        foreach (var e in GetFiles(src)) MoveFile(e, Combine(dest, GetFileName(e)), overwrite);
+        foreach (var e in GetDirectories(src)) MoveRecursive(e, Combine(dest, GetFileName(e)), overwrite);
+        Delete(src);
     }
 
     /* --------------------------------------------------------------------- */
@@ -558,39 +548,81 @@ public static class Io
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void MoveFile(Entity src, Entity dest, bool overwrite)
+    private static void MoveFile(string src, string dest, bool overwrite)
     {
-        if (!dest.Exists) { MoveFile(src, dest); return; }
+        static void move(string s, string d) => Unlock(s, d, _controller.Move);
+
+        if (!Exists(dest)) { move(src, dest); return; }
         if (!overwrite) return;
 
-        var tmp = new Entity(Combine(src.DirectoryName, Guid.NewGuid().ToString("N")));
-        MoveFile(dest, tmp);
+        var tmp = Combine(Path.GetTempPath(), Guid.NewGuid().ToString("n"));
+        move(dest, tmp);
 
         try
         {
-            MoveFile(src, dest);
-            Logger.Try(() => Delete(tmp.FullName));
+            move(src, dest);
+            Logger.Try(() => Delete(tmp));
         }
         catch
         {
-            MoveFile(tmp, dest); // recover
+            move(tmp, dest); // recover
             throw;
         }
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// MoveFile
+    /// Unlock
     ///
     /// <summary>
-    /// Moves the file.
+    /// Unlocks the specified file and invokes the specified action.
     /// </summary>
     ///
+    /// <param name="path">Target path.</param>
+    /// <param name="action">User action.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    private static void MoveFile(Entity src, Entity dest)
+    private static void Unlock(string path, Action<string> action)
     {
-        CreateParentDirectory(dest.FullName);
-        _controller.Move(src.FullName, dest.FullName);
+        if (!Exists(path)) return;
+        var attr = new Entity(path).Attributes;
+        SetAttributes(path, FileAttributes.Normal);
+        try { action(path); }
+        finally { SetAttributes(path, attr); }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Unlock
+    ///
+    /// <summary>
+    /// Unlocks the specified file and invokes the specified action.
+    /// </summary>
+    ///
+    /// <param name="src">Source path.</param>
+    /// <param name="dest">Destination path.</param>
+    /// <param name="action">User action.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static void Unlock(string src, string dest, Action<string, string> action)
+    {
+        CreateParentDirectory(dest);
+
+        var e = new Entity(src);
+        var attr = e.Attributes;
+        var ct = e.CreationTime;
+        var wt = e.LastWriteTime;
+
+        if (Exists(dest)) SetAttributes(dest, FileAttributes.Normal);
+
+        try
+        {
+            SetAttributes(src, FileAttributes.Normal);
+            action(src, dest);
+            _controller.SetCreationTime(dest, ct);
+            _controller.SetLastWriteTime(dest, wt);
+        }
+        finally { if (Exists(dest)) SetAttributes(dest, attr); }
     }
 
     #endregion
