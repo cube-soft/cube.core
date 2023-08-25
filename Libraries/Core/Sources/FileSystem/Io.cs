@@ -617,8 +617,8 @@ public static class Io
 
         try
         {
-            SetAttributes(src, FileAttributes.Normal);
             action(src, dest);
+            SetAttributes(dest, FileAttributes.Normal);
             _controller.SetCreationTime(dest, ct);
             _controller.SetLastWriteTime(dest, wt);
         }
