@@ -20,7 +20,7 @@ namespace Cube.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
+using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -124,7 +124,7 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static FileStream Create(string path)
     {
-        CreateParentDirectory(path);
+        CreateDirectory(GetDirectoryName(path));
         return _controller.Create(path);
     }
 
@@ -142,7 +142,7 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static void CreateDirectory(string path)
     {
-        if (!IsDirectory(path)) _controller.CreateDirectory(path);
+        if (path.HasValue() && !Exists(path)) _controller.CreateDirectory(path);
     }
 
     /* --------------------------------------------------------------------- */
@@ -460,21 +460,6 @@ public static class Io
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CreateParentDirectory
-    ///
-    /// <summary>
-    /// Creates the parent directory.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static void CreateParentDirectory(string src)
-    {
-        var dir = GetDirectoryName(src);
-        if (!IsDirectory(dir)) CreateDirectory(dir);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// CreateDirectory
     ///
     /// <summary>
@@ -606,7 +591,7 @@ public static class Io
     /* --------------------------------------------------------------------- */
     private static void Unlock(string src, string dest, Action<string, string> action)
     {
-        CreateParentDirectory(dest);
+        CreateDirectory(GetDirectoryName(dest));
 
         var e = new Entity(src);
         var attr = e.Attributes;
