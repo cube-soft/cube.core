@@ -16,16 +16,16 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="netstandard2.0">
-                <dependency id="Cube.Core" version="8.5.0" />
-                <dependency id="NLog" version="5.2.3" />
+                <dependency id="Cube.Core" version="8.5.1" />
+                <dependency id="NLog" version="5.2.4" />
             </group>
             <group targetFramework="net46">
-                <dependency id="Cube.Core" version="8.5.0" />
-                <dependency id="NLog" version="5.2.3" />
+                <dependency id="Cube.Core" version="8.5.1" />
+                <dependency id="NLog" version="5.2.4" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.Core" version="8.5.0" />
-                <dependency id="NLog" version="5.2.3" />
+                <dependency id="Cube.Core" version="8.5.1" />
+                <dependency id="NLog" version="5.2.4" />
             </group>
         </dependencies>
     </metadata>

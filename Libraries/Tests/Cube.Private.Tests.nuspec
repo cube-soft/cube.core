@@ -15,18 +15,18 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net6.0-windows7.0">
-                <dependency id="Cube.Core" version="8.5.0" />
-                <dependency id="Cube.Logging.NLog" version="8.5.0" />
+                <dependency id="Cube.Core" version="8.5.1" />
+                <dependency id="Cube.Logging.NLog" version="8.5.1" />
                 <dependency id="NUnit" version="3.13.3" />
             </group>
             <group targetFramework="net46">
-                <dependency id="Cube.Core" version="8.5.0" />
-                <dependency id="Cube.Logging.NLog" version="8.5.0" />
+                <dependency id="Cube.Core" version="8.5.1" />
+                <dependency id="Cube.Logging.NLog" version="8.5.1" />
                 <dependency id="NUnit" version="3.13.3" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.Core" version="8.5.0" />
-                <dependency id="Cube.Logging.NLog" version="8.5.0" />
+                <dependency id="Cube.Core" version="8.5.1" />
+                <dependency id="Cube.Logging.NLog" version="8.5.1" />
                 <dependency id="NUnit" version="3.13.3" />
             </group>
         </dependencies>

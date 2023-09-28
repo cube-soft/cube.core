@@ -16,14 +16,14 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="netstandard2.0">
-                <dependency id="Cube.Core" version="8.5.0" />
+                <dependency id="Cube.Core" version="8.5.1" />
                 <dependency id="System.Drawing.Common" version="7.0.0" />
             </group>
             <group targetFramework="net46">
-                <dependency id="Cube.Core" version="8.5.0" />
+                <dependency id="Cube.Core" version="8.5.1" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.Core" version="8.5.0" />
+                <dependency id="Cube.Core" version="8.5.1" />
             </group>
         </dependencies>
     </metadata>

@@ -16,13 +16,13 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net6.0-windows7.0">
-                <dependency id="Cube.Forms" version="8.5.0" />
+                <dependency id="Cube.Forms" version="8.5.1" />
             </group>
             <group targetFramework="net46">
-                <dependency id="Cube.Forms" version="8.5.0" />
+                <dependency id="Cube.Forms" version="8.5.1" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.Forms" version="8.5.0" />
+                <dependency id="Cube.Forms" version="8.5.1" />
             </group>
         </dependencies>
     </metadata>

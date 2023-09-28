@@ -16,15 +16,15 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net6.0-windows7.0">
-                <dependency id="Cube.Core" version="8.5.0" />
+                <dependency id="Cube.Core" version="8.5.1" />
                 <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.39" />
             </group>
             <group targetFramework="net46">
-                <dependency id="Cube.Core" version="8.5.0" />
+                <dependency id="Cube.Core" version="8.5.1" />
                 <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.39" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.Core" version="8.5.0" />
+                <dependency id="Cube.Core" version="8.5.1" />
                 <dependency id="Expression.Blend.Sdk3" version="1.0.1340.1" />
             </group>
         </dependencies>
