@@ -98,16 +98,16 @@ public static class Locale
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Set
+    /// Reset
     ///
     /// <summary>
-    /// Sets the specified language as the current locale.
+    /// Resets the specified Language value as the current locale.
     /// </summary>
     ///
-    /// <param name="value">Language.</param>
+    /// <param name="value">Language value.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Set(Language value)
+    public static void Reset(Language value)
     {
         if (!_accessor.Set(value)) return;
         foreach (var callback in _subscription) callback(value);

@@ -49,19 +49,19 @@ class LocaleTest
         var count = 0;
         using (Locale.Subscribe(e => ++count))
         {
-            Locale.Set(Language.English);
+            Locale.Reset(Language.English);
             Assert.That(Locale.Language, Is.EqualTo(Language.English));
 
-            Locale.Set(Language.Japanese);
+            Locale.Reset(Language.Japanese);
             Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.Japanese);
+            Locale.Reset(Language.Japanese);
             Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.German);
+            Locale.Reset(Language.German);
             Assert.That(Locale.Language, Is.EqualTo(Language.German));
 
-            Locale.Set(Language.Auto);
+            Locale.Reset(Language.Auto);
             Assert.That(Locale.Language, Is.EqualTo(Language.Auto));
         }
         Assert.That(count, Is.EqualTo(4));
@@ -84,19 +84,19 @@ class LocaleTest
         {
             Locale.Configure(new Accessor<Language>(() => Language.Japanese, e => { }));
 
-            Locale.Set(Language.English);
+            Locale.Reset(Language.English);
             Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.Japanese);
+            Locale.Reset(Language.Japanese);
             Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.Japanese);
+            Locale.Reset(Language.Japanese);
             Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.German);
+            Locale.Reset(Language.German);
             Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.Auto);
+            Locale.Reset(Language.Auto);
             Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
         }
         Assert.That(count, Is.EqualTo(3));
