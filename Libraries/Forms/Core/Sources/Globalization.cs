@@ -20,6 +20,7 @@ namespace Cube.Forms.Globalization;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
+using Cube.Globalization;
 
 /* ------------------------------------------------------------------------- */
 ///

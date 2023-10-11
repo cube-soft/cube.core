@@ -18,6 +18,7 @@
 namespace Cube.Xui.Tests;
 
 using System;
+using Cube.Globalization;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
