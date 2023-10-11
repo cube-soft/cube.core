@@ -71,7 +71,8 @@ public static class LanguageExtension
     ///
     /* --------------------------------------------------------------------- */
     public static CultureInfo ToCultureInfo(this Language src) =>
-        src == Language.Auto ? Locale.GetDefaultCultureInfo() : new((int)src);
+        src == Language.Unknown ? default :
+        src == Language.Auto    ? Locale.GetDefaultCultureInfo() : new((int)src);
 
     #endregion
 }
