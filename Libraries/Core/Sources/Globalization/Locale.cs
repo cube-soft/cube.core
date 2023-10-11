@@ -55,22 +55,33 @@ public static class Locale
 
     #endregion
 
-    #region Properties
+    #region Methods
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Language
+    /// GetCurrentLanguage
     ///
     /// <summary>
-    /// Gets the current language.
+    /// Gets the current Language value.
     /// </summary>
     ///
+    /// <returns>Language value.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static Language Language => _accessor.Get();
+    public static Language GetCurrentLanguage() => _accessor.Get();
 
-    #endregion
-
-    #region Methods
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetDefaultLanguage
+    ///
+    /// <summary>
+    /// Gets the default Language value.
+    /// </summary>
+    ///
+    /// <returns>Language value.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Language GetDefaultLanguage() => GetDefaultCultureInfo().ToLanguage();
 
     /* --------------------------------------------------------------------- */
     ///

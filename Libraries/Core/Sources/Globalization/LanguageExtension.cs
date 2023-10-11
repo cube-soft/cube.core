@@ -34,6 +34,31 @@ public static class LanguageExtension
 
     /* --------------------------------------------------------------------- */
     ///
+    /// ToLanguage
+    ///
+    /// <summary>
+    /// Gets the Language value from the specified object.
+    /// </summary>
+    ///
+    /// <param name="src">CultureInfo object.</param>
+    ///
+    /// <returns>Language value.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Language ToLanguage(this CultureInfo src) => src.LCID switch
+    {
+        0x0407 => Language.German,
+        0x0409 => Language.English,
+        0x040A => Language.Spanish,
+        0x040C => Language.French,
+        0x0411 => Language.Japanese,
+        0x0419 => Language.Russian,
+        0x0816 => Language.Portuguese,
+        _ => Language.Unknown,
+    };
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// ToCultureInfo
     ///
     /// <summary>

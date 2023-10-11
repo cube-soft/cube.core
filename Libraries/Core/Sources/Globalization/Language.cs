@@ -32,18 +32,20 @@ public enum Language
 {
     /// <summary>Same as the system locale</summary>
     Auto = 0x0000,
-    /// <summary>English</summary>
-    English = 0x0409,
-    /// <summary>Japanese</summary>
-    Japanese = 0x0411,
     /// <summary>German</summary>
     German = 0x0407,
+    /// <summary>English</summary>
+    English = 0x0409,
     /// <summary>Spanish</summary>
     Spanish = 0x040A,
     /// <summary>French</summary>
     French = 0x040C,
+    /// <summary>Japanese</summary>
+    Japanese = 0x0411,
     /// <summary>Russian</summary>
     Russian = 0x0419,
     /// <summary>Portuguese</summary>
     Portuguese = 0x0816,
+    /// <summary>Unknown value</summary>
+    Unknown = -1,
 }
