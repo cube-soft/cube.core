@@ -74,19 +74,16 @@ public static class Locale
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ToCultureInfo
+    /// GetDefaultCultureInfo
     ///
     /// <summary>
-    /// Gets the CultureInfo object from the specified value.
+    /// Gets the default CultureInfo object.
     /// </summary>
-    ///
-    /// <param name="src">Language value.</param>
     ///
     /// <returns>CultureInfo object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static CultureInfo ToCultureInfo(this Language src) =>
-        src == Language.Auto ? _culture : new((int)src);
+    public static CultureInfo GetDefaultCultureInfo() => _culture;
 
     /* --------------------------------------------------------------------- */
     ///
