@@ -43,7 +43,7 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     /// ObservableBase
     ///
     /// <summary>
-    /// Initializes a new instance of the DisposableObservable class.
+    /// Initializes a new instance.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -54,8 +54,7 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     /// ObservableBase
     ///
     /// <summary>
-    /// Initializes a new instance of the ObservableBasee class
-    /// with the specified capacity.
+    /// Initializes a new instance with the specified arguments.
     /// </summary>
     ///
     /// <param name="capacity">
@@ -84,8 +83,7 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     /// ObservableBase
     ///
     /// <summary>
-    /// Initializes a new instance of the ObservableBasee class
-    /// with the specified dispatcher.
+    /// Initializes a new instance with the specified arguments.
     /// </summary>
     ///
     /// <param name="dispatcher">Dispatcher object.</param>
@@ -98,8 +96,7 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     /// ObservableBase
     ///
     /// <summary>
-    /// Initializes a new instance of the ObservableBasee class
-    /// with the specified arguments.
+    /// Initializes a new instance with the specified arguments.
     /// </summary>
     ///
     /// <param name="capacity">
@@ -110,7 +107,7 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    protected ObservableBase(int capacity, Dispatcher dispatcher) : base()
+    protected ObservableBase(int capacity, Dispatcher dispatcher)
     {
         Dispatcher = dispatcher;
         _fields    = new(capacity);
@@ -235,9 +232,16 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     /* --------------------------------------------------------------------- */
     protected T Get<T>(Func<T> creator, [CallerMemberName] string name = null)
     {
+        if (name is null) return default;
+
+        // ReSharper disable InconsistentlySynchronizedField
+        // for performance reasons.
         if (!_fields.ContainsKey(name))
         {
-            lock (_fields.SyncRoot) _fields[name] = creator();
+            lock (_fields.SyncRoot)
+            {
+                if (!_fields.ContainsKey(name)) _fields[name] = creator();
+            }
         }
         return (T)_fields[name];
     }
@@ -294,6 +298,8 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     /* --------------------------------------------------------------------- */
     protected bool Set<T>(T value, IEqualityComparer<T> compare, [CallerMemberName] string name = null)
     {
+        if (name is null) return false;
+
         var src = Get<T>(name);
         var set = SetCore(ref src, value, compare);
         if (set)
@@ -362,7 +368,7 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private bool SetCore<T>(ref T field, T value, IEqualityComparer<T> compare)
+    private static bool SetCore<T>(ref T field, T value, IEqualityComparer<T> compare)
     {
         if (compare.Equals(field, value)) return false;
         field = value;
