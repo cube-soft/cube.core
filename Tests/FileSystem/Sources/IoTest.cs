@@ -262,10 +262,8 @@ class IoTest : FileFixture
     {
         Io.Configure(controller);
 
-        var name = "SampleDirectory";
-        var dest = Get(name);
-
-        Io.Copy(GetSource(name), dest, true);
+        var dest = Get($"{nameof(Delete_Recursive)}_{id}");
+        Io.Copy(GetSource("SampleDirectory"), dest, true);
         foreach (var f in Io.GetFiles(dest)) Io.SetAttributes(f, System.IO.FileAttributes.ReadOnly);
         Io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
         Io.Delete(dest);
@@ -334,11 +332,10 @@ class IoTest : FileFixture
     {
         Io.Configure(controller);
 
-        var name = "SampleDirectory";
-        var src  = Io.Combine(Results, name);
-        var dest = Io.Combine(Results, $"{nameof(Move_Recursive)}-{id}");
+        var src  = Io.Combine(Results, $"{nameof(Move_Recursive)}_{id}_Source");
+        var dest = Io.Combine(Results, $"{nameof(Move_Recursive)}_{id}");
 
-        Io.Copy(GetSource(name), src, false);
+        Io.Copy(GetSource("SampleDirectory"), src, false);
         Assert.That(Io.Exists(src),  Is.True);
 
         Io.Copy(src, dest, false);
