@@ -225,7 +225,8 @@ public static class Io
     /// <param name="access">Last accessed time.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void SetTime(string path, DateTime create, DateTime write, DateTime access) => Set(path, e => {
+    public static void SetTime(string path, DateTime create, DateTime write, DateTime access) => Set(path, e =>
+    {
         _controller.SetCreationTime(e, create);
         _controller.SetLastWriteTime(e, write);
         _controller.SetLastAccessTime(e, access);
@@ -487,14 +488,19 @@ public static class Io
     /// Creates a directory and sets the attributes.
     /// </summary>
     ///
+    /// <remarks>
+    /// NOTE: Use Logger.Try for a while because IOException may sometimes
+    /// occur.
+    /// </remarks>
+    ///
     /* --------------------------------------------------------------------- */
     private static void CreateDirectory(string path, Entity src)
     {
         CreateDirectory(path);
         SetAttributes(path, FileAttributes.Normal | FileAttributes.Directory);
-        _controller.SetCreationTime(path, src.CreationTime);
-        _controller.SetLastWriteTime(path, src.LastWriteTime);
-        _controller.SetLastAccessTime(path, src.LastAccessTime);
+        Logger.Try(() => _controller.SetCreationTime(path, src.CreationTime));
+        Logger.Try(() => _controller.SetLastWriteTime(path, src.LastWriteTime));
+        Logger.Try(() => _controller.SetLastAccessTime(path, src.LastAccessTime));
         SetAttributes(path, src.Attributes);
     }
 
@@ -619,6 +625,11 @@ public static class Io
     /// action.
     /// </summary>
     ///
+    /// <remarks>
+    /// NOTE: Use Logger.Try for a while because IOException may sometimes
+    /// occur.
+    /// </remarks>
+    ///
     /* --------------------------------------------------------------------- */
     private static void MoveOrCopy(string src, string dest, Action<string, string> action)
     {
@@ -633,8 +644,8 @@ public static class Io
         {
             action(src, dest);
             SetAttributes(dest, unlock);
-            _controller.SetCreationTime(dest, e.CreationTime);
-            _controller.SetLastWriteTime(dest, e.LastWriteTime);
+            Logger.Try(() => _controller.SetCreationTime(dest, e.CreationTime));
+            Logger.Try(() => _controller.SetLastWriteTime(dest, e.LastWriteTime));
         }
         finally { if (Exists(dest)) SetAttributes(dest, e.Attributes); }
     }
