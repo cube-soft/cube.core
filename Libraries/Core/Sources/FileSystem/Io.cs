@@ -213,6 +213,26 @@ public static class Io
 
     /* --------------------------------------------------------------------- */
     ///
+    /// SetTime
+    ///
+    /// <summary>
+    /// Sets the specified time objects to the specified file or directory.
+    /// </summary>
+    ///
+    /// <param name="path">Target path.</param>
+    /// <param name="create">Creation time.</param>
+    /// <param name="write">Last updated time.</param>
+    /// <param name="access">Last accessed time.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void SetTime(string path, DateTime create, DateTime write, DateTime access) => Set(path, e => {
+        _controller.SetCreationTime(e, create);
+        _controller.SetLastWriteTime(e, write);
+        _controller.SetLastAccessTime(e, access);
+    });
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// Delete
     ///
     /// <summary>

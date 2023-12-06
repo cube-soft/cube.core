@@ -218,11 +218,13 @@ class IoTest : FileFixture
             Io.SetCreationTime(f, ts);
             Io.SetLastWriteTime(f, ts);
             Io.SetLastAccessTime(f, ts);
+            Io.SetTime(f, ts, ts, ts);
         }
 
         Io.SetCreationTime(dest, ts);
         Io.SetLastWriteTime(dest, ts);
         Io.SetLastAccessTime(dest, ts);
+        Io.SetTime(dest, ts, ts, ts);
     }
 
     /* --------------------------------------------------------------------- */
