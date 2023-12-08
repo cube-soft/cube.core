@@ -77,17 +77,16 @@ public static class ValueEventArgs
     /// with the specified arguments.
     /// </summary>
     ///
-    /// <param name="oldvalue">Value before changed.</param>
-    /// <param name="newvalue">Value after changed.</param>
+    /// <param name="older">Value before changed.</param>
+    /// <param name="newer">Value after changed.</param>
     ///
     /// <remarks>
-    /// bool 型の値を指定すると ValueCancelEventArgs(T) のオブジェクトが
-    /// 生成される場合があります。
+    /// A ValueCancelEventArgs(T) object may be created if a value of type
+    /// bool is specified.
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public static ValueChangedEventArgs<T> Create<T>(T oldvalue, T newvalue) =>
-        new(oldvalue, newvalue);
+    public static ValueChangedEventArgs<T> Create<T>(T older, T newer) => new(older, newer);
 
     #endregion
 }
@@ -235,14 +234,14 @@ public class ValueChangedEventArgs<T> : EventArgs
     /// with the specified arguments.
     /// </summary>
     ///
-    /// <param name="oldvalue">Value before changed.</param>
-    /// <param name="newvalue">Value after changed.</param>
+    /// <param name="older">Value before changed.</param>
+    /// <param name="newer">Value after changed.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public ValueChangedEventArgs(T oldvalue, T newvalue)
+    public ValueChangedEventArgs(T older, T newer)
     {
-        OldValue = oldvalue;
-        NewValue = newvalue;
+        OldValue = older;
+        NewValue = newer;
     }
 
     #endregion

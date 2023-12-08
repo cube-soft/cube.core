@@ -106,9 +106,16 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /* --------------------------------------------------------------------- */
     protected T Get<T>(Func<T> creator, [CallerMemberName] string name = null)
     {
+        if (name is null) return default;
+
+        // ReSharper disable InconsistentlySynchronizedField
+        // for performance reasons.
         if (!_fields.ContainsKey(name))
         {
-            lock(_fields.SyncRoot) _fields[name] = creator();
+            lock (_fields.SyncRoot)
+            {
+                if (!_fields.ContainsKey(name)) _fields[name] = creator();
+            }
         }
         return (T)_fields[name];
     }
@@ -165,6 +172,8 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /* --------------------------------------------------------------------- */
     protected bool Set<T>(T value, IEqualityComparer<T> compare, [CallerMemberName] string name = null)
     {
+        if (name is null) return false;
+
         var src = Get<T>(name);
         var set = SetCore(ref src, value, compare);
         if (set)

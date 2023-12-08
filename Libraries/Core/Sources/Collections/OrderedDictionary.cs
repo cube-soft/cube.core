@@ -25,7 +25,7 @@ using System.Linq;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// OrderedDictionary(TKey, TValue)
+/// OrderedDictionary
 ///
 /// <summary>
 /// Represents a dictionary that preserves the insertion order.
@@ -39,7 +39,7 @@ public class OrderedDictionary<TKey, TValue> :
 
     /* --------------------------------------------------------------------- */
     ///
-    /// OrderedDictionary(TKey, TValue)
+    /// OrderedDictionary
     ///
     /// <summary>
     /// Initializes a new instance of the OrderedDictionary(TKey, TValue)
@@ -64,7 +64,7 @@ public class OrderedDictionary<TKey, TValue> :
     public OrderedDictionary(IDictionary<TKey, TValue> cp)
     {
         if (cp is null) return;
-        foreach (KeyValuePair<TKey, TValue> kv in cp) _core.Add(kv.Key, kv.Value);
+        foreach (var kv in cp) _core.Add(kv.Key, kv.Value);
     }
 
     #endregion
@@ -213,7 +213,7 @@ public class OrderedDictionary<TKey, TValue> :
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public bool ContainsKey(TKey key) => !Equals(key, default(TKey)) && _core.Contains(key);
+    public bool ContainsKey(TKey key) => _core.Contains(key);
 
     /* --------------------------------------------------------------------- */
     ///

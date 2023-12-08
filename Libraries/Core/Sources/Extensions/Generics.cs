@@ -40,7 +40,7 @@ public static class Methods
     ///
     /// <param name="src">Source object.</param>
     ///
-    /// <returns>Casted object.</returns>
+    /// <returns>Cast object.</returns>
     ///
     /* --------------------------------------------------------------------- */
     public static T TryCast<T>(this object src) => TryCast(src, default(T));
@@ -60,7 +60,7 @@ public static class Methods
     /// Returned object when the cast is failed.
     /// </param>
     ///
-    /// <returns>Casted object.</returns>
+    /// <returns>Cast object.</returns>
     ///
     /* --------------------------------------------------------------------- */
     public static T TryCast<T>(this object src, T error) => src is T dest ? dest : error;

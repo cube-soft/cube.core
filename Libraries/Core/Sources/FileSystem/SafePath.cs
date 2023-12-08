@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.FileSystem;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Collections;
@@ -359,11 +360,11 @@ public sealed class SafePath
                     PathKind.Normal;
 
             var v = !Source.HasValue() ?
-                    new string[0] :
+                    Array.Empty<string>() :
                     Source.Split(SeparatorChars.ToArray())
                           .SkipWhile(s => !s.HasValue())
                           .Where((s, i) => !IsRemove(s, i))
-                          .Select((s, i) => Escape(s, i))
+                          .Select(Escape)
                           .ToArray();
 
             _obj = new EscapedObject(k, v, Combine(k, v));

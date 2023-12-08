@@ -18,7 +18,6 @@
 namespace Cube;
 
 using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -199,10 +198,10 @@ public class SoftwareVersion
     {
         var ss = new StringBuilder();
 
-        if (Prefix.HasValue()) Append(ss, Prefix);
+        if (Prefix.HasValue()) ss.Append(Prefix);
         AppendNumber(ss, Math.Max(Math.Min(digit, 4), 1));
-        if (Suffix.HasValue()) Append(ss, Suffix);
-        if (architecture) Append(ss, $" ({Architecture})");
+        if (Suffix.HasValue()) ss.Append(Suffix);
+        if (architecture) ss.Append($" ({Architecture})");
 
         return ss.ToString();
     }
@@ -222,28 +221,13 @@ public class SoftwareVersion
     /* --------------------------------------------------------------------- */
     private void AppendNumber(StringBuilder dest, int digit)
     {
-        Append(dest, $"{Number.Major}");
+        dest.Append($"{Number.Major}");
         if (digit <= 1) return;
-        Append(dest, $".{Number.Minor}");
+        dest.Append($".{Number.Minor}");
         if (digit <= 2) return;
-        Append(dest, $".{Number.Build}");
+        dest.Append($".{Number.Build}");
         if (digit <= 3) return;
-        Append(dest, $".{Number.Revision}");
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Append
-    ///
-    /// <summary>
-    /// Appends the specified value.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private void Append(StringBuilder src, string value)
-    {
-        var check = src.Append(value);
-        Debug.Assert(check == src);
+        dest.Append($".{Number.Revision}");
     }
 
     #endregion

@@ -162,8 +162,8 @@ public class ContextDispatcher : Dispatcher
     /* --------------------------------------------------------------------- */
     public override void Invoke(Action action)
     {
-        if (Synchronous) Context.Send(e => action(), null);
-        else Context.Post(e => action(), null);
+        if (Synchronous) Context.Send(_ => action(), null);
+        else Context.Post(_ => action(), null);
     }
 }
 
