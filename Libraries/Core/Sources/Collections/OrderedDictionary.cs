@@ -192,7 +192,7 @@ public class OrderedDictionary<TKey, TValue> :
     ///
     /* --------------------------------------------------------------------- */
     public bool Contains(KeyValuePair<TKey, TValue> item) =>
-        ContainsKey(item.Key) && _core[item.Key].Equals(item.Value);
+        item.Key is not null && ContainsKey(item.Key) && _core[item.Key].Equals(item.Value);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -354,7 +354,8 @@ public class OrderedDictionary<TKey, TValue> :
     /* --------------------------------------------------------------------- */
     public bool TryGetValue(TKey key, out TValue dest)
     {
-        var result = ContainsKey(key);
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+        var result = key is not null && ContainsKey(key);
         dest = result ? this[key] : default;
         return result;
     }
