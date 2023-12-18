@@ -84,8 +84,6 @@ public class CaptionControl : ControlBase
                 case System.Windows.Forms.FormWindowState.Normal:
                     OnNormalized(EventArgs.Empty);
                     break;
-                default:
-                    break;
             }
         }
     }
@@ -133,7 +131,7 @@ public class CaptionControl : ControlBase
         {
             if (_minimize == value) return;
 
-            void handler(object s, EventArgs e) => OnMinmizeRequested(e);
+            void handler(object s, EventArgs e) => OnMinimizeRequested(e);
             if (_minimize is not null) _minimize.Click -= handler;
             _minimize = value;
             if (_minimize is not null) _minimize.Click += handler;
@@ -228,7 +226,7 @@ public class CaptionControl : ControlBase
     /// Maximized
     ///
     /// <summary>
-    /// Occurs when the windows is maximized.
+    /// Occurs when the window is maximized.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -269,7 +267,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected virtual void OnMinmizeRequested(EventArgs e) => MinimizeRequested?.Invoke(this, e);
+    protected virtual void OnMinimizeRequested(EventArgs e) => MinimizeRequested?.Invoke(this, e);
 
     #endregion
 
@@ -306,8 +304,8 @@ public class CaptionControl : ControlBase
     /// Normalized
     ///
     /// <summary>
-    /// Occurs when the window is normalized, i.e., unmaximized or
-    /// unminimized.
+    /// Occurs when the window is normalized, i.e., neither maximized nor
+    /// minimized.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -359,7 +357,7 @@ public class CaptionControl : ControlBase
     /// Deactivate
     ///
     /// <summary>
-    /// Occurs when the window is deactive.
+    /// Occurs when the window is not active.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

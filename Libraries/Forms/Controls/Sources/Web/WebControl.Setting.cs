@@ -110,7 +110,7 @@ partial class WebControl
         if (sk is null) return WebControlVersion.IE7;
 
         var module   = Process.GetCurrentProcess().MainModule;
-        var filename = Path.GetFileName(module.FileName);
+        var filename = Path.GetFileName(module?.FileName ?? string.Empty);
         var obj      = sk.GetValue(filename);
         return obj is WebControlVersion version ? version : WebControlVersion.IE7;
     }
@@ -131,8 +131,8 @@ partial class WebControl
         if (sk is null) return;
 
         var module   = Process.GetCurrentProcess().MainModule;
-        var filename = Path.GetFileName(module.FileName);
-        var value    = (version == WebControlVersion.Latest) ? GetLatestVersion() : version;
+        var filename = Path.GetFileName(module?.FileName ?? string.Empty);
+        var value    = version == WebControlVersion.Latest ? GetLatestVersion() : version;
         sk.SetValue(filename, (int)value);
     }
 
@@ -156,7 +156,7 @@ partial class WebControl
         if (sk is null) return false;
 
         var module   = Process.GetCurrentProcess().MainModule;
-        var filename = Path.GetFileName(module.FileName);
+        var filename = Path.GetFileName(module?.FileName ?? string.Empty);
         var value    = sk.GetValue(filename);
         return value is not null && (int)value == 1;
     }
@@ -177,7 +177,7 @@ partial class WebControl
         if (sk is null) return;
 
         var module   = Process.GetCurrentProcess().MainModule;
-        var filename = Path.GetFileName(module.FileName);
+        var filename = Path.GetFileName(module?.FileName ?? string.Empty);
         var value    = enabled ? 1 : 0;
         sk.SetValue(filename, value);
     }
@@ -204,7 +204,7 @@ partial class WebControl
         if (sk is null) return default_max_connection;
 
         var module   = Process.GetCurrentProcess().MainModule;
-        var filename = Path.GetFileName(module.FileName);
+        var filename = Path.GetFileName(module?.FileName ?? string.Empty);
         var obj      = sk.GetValue(filename);
         return obj is int value ? value : default_max_connection;
     }
@@ -227,9 +227,10 @@ partial class WebControl
         using var sk10 = root?.CreateSubKey(_RegMaxConnections10);
 
         var module   = Process.GetCurrentProcess().MainModule;
-        var filename = Path.GetFileName(module.FileName);
-        if (sk is not null) sk.SetValue(filename, number);
-        if (sk10 is not null) sk10.SetValue(filename, number);
+        var filename = Path.GetFileName(module?.FileName ?? string.Empty);
+
+        sk?.SetValue(filename, number);
+        sk10?.SetValue(filename, number);
     }
 
     #endregion

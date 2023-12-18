@@ -44,8 +44,7 @@ public class Button : System.Windows.Forms.Button
     /// ShowFocusCues
     ///
     /// <summary>
-    /// Gets the value indicating whether or not to display a border
-    /// when focusing.
+    /// Gets the value indicating whether to display a border when focusing.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

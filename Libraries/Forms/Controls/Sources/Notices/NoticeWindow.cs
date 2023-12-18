@@ -238,7 +238,7 @@ public class NoticeWindow : BorderlessWindow
         _image.Style.Default.BorderSize = 0;
         _image.Style.Default.BackColor = Color.FromArgb(230, 230, 230);
         _image.Style.Default.Image = Forms.Controls.Properties.Resources.Logo;
-        _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeResult.Image));
+        _image.Click += (_, _) => OnSelected(ValueEventArgs.Create(NoticeResult.Image));
         _image.ResumeLayout(false);
 
         _title.SuspendLayout();
@@ -251,7 +251,7 @@ public class NoticeWindow : BorderlessWindow
         _title.Style.Default.BackColor = SystemColors.Window;
         _title.Style.Default.BorderSize = 0;
         _title.Style.Default.ContentColor = Color.DimGray;
-        _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeResult.Title));
+        _title.Click += (_, _) => OnSelected(ValueEventArgs.Create(NoticeResult.Title));
         _title.ResumeLayout(false);
 
         _text.SuspendLayout();
@@ -264,7 +264,7 @@ public class NoticeWindow : BorderlessWindow
         _text.TextAlign = ContentAlignment.TopLeft;
         _text.Style.Default.BackColor = SystemColors.Window;
         _text.Style.Default.BorderSize = 0;
-        _text.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeResult.Text));
+        _text.Click += (_, _) => OnSelected(ValueEventArgs.Create(NoticeResult.Text));
         _text.ResumeLayout(false);
 
         _close.SuspendLayout();
@@ -278,7 +278,7 @@ public class NoticeWindow : BorderlessWindow
         _close.Style.MouseOver.BorderColor = Color.FromArgb(230, 230, 230);
         _close.Style.MouseOver.BorderSize = 1;
         _close.Style.MouseDown.BackColor = Color.FromArgb(236, 236, 236);
-        _close.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeResult.Close));
+        _close.Click += (_, _) => OnSelected(ValueEventArgs.Create(NoticeResult.Close));
         _close.ResumeLayout(false);
 
         _panel.SuspendLayout();

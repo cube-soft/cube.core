@@ -143,7 +143,8 @@ public static class Methods
         var pos  = src.Location;
         var size = src.ClientSize;
 
-        if (Cube.Forms.User32.NativeMethods.SetWindowPos(src.Handle,
+        // ReSharper disable CommentTypo
+        if (User32.NativeMethods.SetWindowPos(src.Handle,
             (IntPtr)(-1), // HWND_TOPMOST
             0, 0, 0, 0,
             0x0413 // SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSENDCHANGING | SWP_NOSIZE

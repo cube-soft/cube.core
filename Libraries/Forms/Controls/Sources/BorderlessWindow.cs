@@ -31,12 +31,14 @@ using Microsoft.Win32;
 /// BorderlessWindow
 ///
 /// <summary>
-/// Represents an Windows form with no title bar and borders.
+/// Represents a Windows form with no title bar and borders.
 /// </summary>
 ///
 /// <remarks>
 /// All title bars and borders are changed to be considered as client
 /// areas against the WinForms Form class.
+///
+/// ReSharper disable CommentTypo
 /// </remarks>
 ///
 /* ------------------------------------------------------------------------- */
@@ -57,8 +59,8 @@ public class BorderlessWindow : Window
     {
         DoubleBuffered = true;
         Font = FontFactory.Create(Font);
-        SystemEvents.DisplaySettingsChanged += (s, e) => UpdateMaximumSize();
-        SystemEvents.UserPreferenceChanged  += (s, e) => UpdateMaximumSize();
+        SystemEvents.DisplaySettingsChanged += (_, _) => UpdateMaximumSize();
+        SystemEvents.UserPreferenceChanged  += (_, _) => UpdateMaximumSize();
     }
 
     #endregion
@@ -140,7 +142,7 @@ public class BorderlessWindow : Window
     /// Sizable
     ///
     /// <summary>
-    /// Gets or sets a value indicating whether the windows is resizable.
+    /// Gets or sets a value indicating whether the window is resizable.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -509,12 +511,9 @@ public class BorderlessWindow : Window
     /* --------------------------------------------------------------------- */
     private bool WhenNcActive(ref Message m)
     {
-        if (WindowState != FormWindowState.Minimized)
-        {
-            m.Result = new IntPtr(1);
-            return true;
-        }
-        return false;
+        if (WindowState == FormWindowState.Minimized) return false;
+        m.Result = new IntPtr(1);
+        return true;
     }
 
     /* --------------------------------------------------------------------- */
@@ -631,7 +630,7 @@ public class BorderlessWindow : Window
     /// DoMaximize
     ///
     /// <summary>
-    /// Invokes the miximization.
+    /// Invokes the maximization.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

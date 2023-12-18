@@ -134,8 +134,6 @@ internal static class GraphicsExtension
             case ImageLayout.Tile:
                 DrawTileImage(gs, bounds, image);
                 break;
-            default:
-                break;
         }
     }
 
@@ -177,7 +175,7 @@ internal static class GraphicsExtension
         var height = (int)Math.Floor(image.Height * ratio);
 
         var resize = new Bitmap(width, height);
-        using (var igs = System.Drawing.Graphics.FromImage(resize))
+        using (var igs = Graphics.FromImage(resize))
         {
             igs.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
             igs.DrawImage(image, 0, 0, width, height);
@@ -258,8 +256,6 @@ internal static class GraphicsExtension
                 offset.X = width - image.Width;
                 offset.Y = height - image.Height;
                 break;
-            default:
-                break;
         }
 
         dest.Offset(offset);
@@ -315,8 +311,6 @@ internal static class GraphicsExtension
             case ContentAlignment.BottomRight:
                 dest.Alignment     = StringAlignment.Far;
                 dest.LineAlignment = StringAlignment.Far;
-                break;
-            default:
                 break;
         }
         return dest;

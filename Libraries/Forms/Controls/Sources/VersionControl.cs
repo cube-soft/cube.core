@@ -302,7 +302,7 @@ public class VersionControl : ControlBase
         _copyright.AutoSize = true;
         _copyright.Margin = new System.Windows.Forms.Padding(0, Space, 0, 0);
         _copyright.TabIndex = index++;
-        _copyright.LinkClicked += (s, e) =>
+        _copyright.LinkClicked += (_, _) =>
         {
             if (Uri is null) return;
             Logger.Try(() => Process.Start(new ProcessStartInfo

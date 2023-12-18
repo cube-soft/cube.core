@@ -29,6 +29,7 @@ using System.Windows.Forms;
 ///
 /// <remarks>
 /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms645618.aspx
+/// ReSharper disable CommentTypo
 /// </remarks>
 ///
 /* ------------------------------------------------------------------------- */
@@ -120,7 +121,6 @@ public static class PositionExtension
             case Position.Bottom:      return Cursors.SizeNS;
             case Position.Left:        return Cursors.SizeWE;
             case Position.Right:       return Cursors.SizeWE;
-            default: break;
         }
         return Cursors.Default;
     }
