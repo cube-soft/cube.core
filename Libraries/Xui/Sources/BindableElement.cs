@@ -66,7 +66,7 @@ public class BindableElement : BindableBase, IElement
     public BindableElement(Getter<string> gettext, ICommand command, Dispatcher dispatcher) : base(dispatcher)
     {
         _gettext = gettext;
-        _locale  = Locale.Subscribe(e => React());
+        _locale  = Locale.Subscribe(_ => React());
         if (command is not null) Command = command;
     }
 
