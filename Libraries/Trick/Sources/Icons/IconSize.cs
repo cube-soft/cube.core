@@ -26,7 +26,7 @@ namespace Cube.Icons;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public enum IconSize : int
+public enum IconSize
 {
     /// <summary>32x32 pixel.</summary>
     Large       =  0,

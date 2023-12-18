@@ -52,7 +52,7 @@ public static class FileIcon
     /* --------------------------------------------------------------------- */
     public static Icon Get(string src, IconSize size)
     {
-        var s0 = new ShFileIinfo();
+        var s0 = new ShFileInfo();
         var f0 = 0x4010u; // SHGFI_SYSICONINDEX | SHGFI_USEFILEATTRIBUTES
         _ = Shell32.NativeMethods.SHGetFileInfo(src, 0, ref s0, (uint)Marshal.SizeOf(s0), f0);
 

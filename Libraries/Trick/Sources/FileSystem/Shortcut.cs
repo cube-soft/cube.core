@@ -102,7 +102,7 @@ public class Shortcut
         get
         {
             var index = IconLocation?.LastIndexOf(',') ?? 0;
-            return (index > 0) ? IconLocation.Substring(0, index) : IconLocation;
+            return index > 0 ? IconLocation.Substring(0, index) : IconLocation;
         }
     }
 
@@ -124,7 +124,7 @@ public class Shortcut
             {
                 return int.TryParse(IconLocation.Substring(index + 1), out int dest) ? dest : 0;
             }
-            else return 0;
+            return 0;
         }
     }
 
