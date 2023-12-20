@@ -78,7 +78,7 @@ public static class IndicesMethods
     {
         if (src is ICollection<T> s0) return s0.Count - 1;
         if (src is IReadOnlyCollection<T> s1) return s1.Count - 1;
-        return src.LastIndex(e => true);
+        return src.LastIndex(_ => true);
     }
 
     /* --------------------------------------------------------------------- */

@@ -18,20 +18,19 @@
 namespace Cube;
 
 using System;
-using System.Threading;
 
-#region IQuery<T, U>
+#region IQuery<TSource, TValue>
 
 /* ------------------------------------------------------------------------- */
 ///
-/// IQuery(T, U)
+/// IQuery
 ///
 /// <summary>
 /// Represents the query provider.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public interface IQuery<T, U>
+public interface IQuery<TSource, TValue>
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -44,38 +43,38 @@ public interface IQuery<T, U>
     /// <param name="message">Message to request.</param>
     ///
     /* --------------------------------------------------------------------- */
-    void Request(QueryMessage<T, U> message);
+    void Request(QueryMessage<TSource, TValue> message);
 }
 
 #endregion
 
-#region IQuery<T>
+#region IQuery<TValue>
 
 /* ------------------------------------------------------------------------- */
 ///
-/// IQuery(T)
+/// IQuery
 ///
 /// <summary>
 /// Represents the query provider.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public interface IQuery<T> : IQuery<T, T> { }
+public interface IQuery<TValue> : IQuery<TValue, TValue> { }
 
 #endregion
 
-#region Query<T, U>
+#region Query<TSource, TValue>
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Query(T, U)
+/// Query
 ///
 /// <summary>
-/// Represents the IQuery(T, U) implementation.
+/// Represents the IQuery(TSource, TValue) implementation.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class Query<T, U> : IQuery<T, U>
+public class Query<TSource, TValue> : IQuery<TSource, TValue>
 {
     #region Methods
 
@@ -91,7 +90,7 @@ public class Query<T, U> : IQuery<T, U>
     /// <param name="callback">Callback function.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public Query(Action<QueryMessage<T, U>> callback) : this(callback, Dispatcher.Vanilla) { }
+    public Query(Action<QueryMessage<TSource, TValue>> callback) : this(callback, Dispatcher.Vanilla) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -106,7 +105,7 @@ public class Query<T, U> : IQuery<T, U>
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public Query(Action<QueryMessage<T, U>> callback, Dispatcher dispatcher)
+    public Query(Action<QueryMessage<TSource, TValue>> callback, Dispatcher dispatcher)
     {
         _dispatcher = dispatcher;
         _callback   = callback ?? throw new ArgumentNullException(nameof(callback));
@@ -123,31 +122,31 @@ public class Query<T, U> : IQuery<T, U>
     /// <param name="message">Message to request.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Request(QueryMessage<T, U> message) =>
+    public void Request(QueryMessage<TSource, TValue> message) =>
         _dispatcher.Invoke(() => _callback(message));
 
     #endregion
 
     #region Fields
     private readonly Dispatcher _dispatcher;
-    private readonly Action<QueryMessage<T, U>> _callback;
+    private readonly Action<QueryMessage<TSource, TValue>> _callback;
     #endregion
 }
 
 #endregion
 
-#region Query<T>
+#region Query<TValue>
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Query(T)
+/// Query
 ///
 /// <summary>
-/// Represents the IQuery(T, T) implementation.
+/// Represents the IQuery(TValue) implementation.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class Query<T> : Query<T, T>, IQuery<T>
+public class Query<TValue> : Query<TValue, TValue>, IQuery<TValue>
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -161,7 +160,7 @@ public class Query<T> : Query<T, T>, IQuery<T>
     /// <param name="callback">Callback function.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public Query(Action<QueryMessage<T, T>> callback) : base(callback) { }
+    public Query(Action<QueryMessage<TValue, TValue>> callback) : base(callback) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -176,24 +175,25 @@ public class Query<T> : Query<T, T>, IQuery<T>
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public Query(Action<QueryMessage<T, T>> callback, Dispatcher dispatcher) :
+    public Query(Action<QueryMessage<TValue, TValue>> callback, Dispatcher dispatcher) :
         base(callback, dispatcher) { }
 }
 
 #endregion
 
-#region OnceQuery<T, U>
+#region OnceQuery<TSource, TValue>
 
 /* ------------------------------------------------------------------------- */
 ///
-/// OnceQuery(T, U)
+/// OnceQuery
 ///
 /// <summary>
-/// Represents the IQuery(T, U) implementation that allows only once.
+/// Represents the IQuery(TSource, TValue) implementation that allows only
+/// once.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class OnceQuery<T, U> : IQuery<T, U>
+public class OnceQuery<TSource, TValue> : IQuery<TSource, TValue>
 {
     #region Methods
 
@@ -209,7 +209,7 @@ public class OnceQuery<T, U> : IQuery<T, U>
     /// <param name="callback">Callback function.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public OnceQuery(Action<QueryMessage<T, U>> callback) : this(callback, Dispatcher.Vanilla) { }
+    public OnceQuery(Action<QueryMessage<TSource, TValue>> callback) : this(callback, Dispatcher.Vanilla) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -224,9 +224,9 @@ public class OnceQuery<T, U> : IQuery<T, U>
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public OnceQuery(Action<QueryMessage<T, U>> callback, Dispatcher dispatcher)
+    public OnceQuery(Action<QueryMessage<TSource, TValue>> callback, Dispatcher dispatcher)
     {
-        _dispather = dispatcher;
+        _dispatcher = dispatcher;
         _callback  = new(callback) { IgnoreTwice = false };
     }
 
@@ -245,31 +245,31 @@ public class OnceQuery<T, U> : IQuery<T, U>
     /// </exception>
     ///
     /* --------------------------------------------------------------------- */
-    public void Request(QueryMessage<T, U> message) =>
-        _dispather.Invoke(() => _callback.Invoke(message));
+    public void Request(QueryMessage<TSource, TValue> message) =>
+        _dispatcher.Invoke(() => _callback.Invoke(message));
 
     #endregion
 
     #region Fields
-    private readonly Dispatcher _dispather;
-    private readonly OnceAction<QueryMessage<T, U>> _callback;
+    private readonly Dispatcher _dispatcher;
+    private readonly OnceAction<QueryMessage<TSource, TValue>> _callback;
     #endregion
 }
 
 #endregion
 
-#region OnceQuery<T>
+#region OnceQuery<TValue>
 
 /* ------------------------------------------------------------------------- */
 ///
-/// OnceQuery(T)
+/// OnceQuery
 ///
 /// <summary>
-/// Represents the IQuery(T) implementation that allows only once.
+/// Represents the IQuery(TValue) implementation that allows only once.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class OnceQuery<T> : OnceQuery<T, T>, IQuery<T>
+public class OnceQuery<TValue> : OnceQuery<TValue, TValue>, IQuery<TValue>
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -283,7 +283,7 @@ public class OnceQuery<T> : OnceQuery<T, T>, IQuery<T>
     /// <param name="callback">Callback function.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public OnceQuery(Action<QueryMessage<T, T>> callback) : base(callback) { }
+    public OnceQuery(Action<QueryMessage<TValue, TValue>> callback) : base(callback) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -298,7 +298,7 @@ public class OnceQuery<T> : OnceQuery<T, T>, IQuery<T>
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public OnceQuery(Action<QueryMessage<T, T>> callback, Dispatcher dispatcher) :
+    public OnceQuery(Action<QueryMessage<TValue, TValue>> callback, Dispatcher dispatcher) :
         base(callback, dispatcher) { }
 }
 

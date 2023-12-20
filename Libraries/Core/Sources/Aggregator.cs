@@ -186,7 +186,10 @@ public sealed class Aggregator : IAggregator
         {
             lock (_subscription.SyncRoot)
             {
-                _subscription[key] = new Subscription<Action<object>>();
+                if (!_subscription.ContainsKey(key))
+                {
+                    _subscription[key] = new Subscription<Action<object>>();
+                }
             }
         }
         return Get(key);

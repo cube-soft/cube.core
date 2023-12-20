@@ -15,61 +15,60 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace System.Collections.Generic
+namespace System.Collections.Generic;
+
+
+#region IReadOnlyCollection<T>
+
+/* ------------------------------------------------------------------------- */
+///
+/// IReadOnlyCollection(T)
+///
+/// <summary>
+/// Represents a strongly-typed, read-only collection of elements.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public interface IReadOnlyCollection<T> : IEnumerable<T>, IEnumerable
 {
-    #region IReadOnlyCollection<T>
-
     /* --------------------------------------------------------------------- */
     ///
-    /// IReadOnlyCollection(T)
+    /// Count
     ///
     /// <summary>
-    /// Represents a strongly-typed, read-only collection of elements.
+    /// Gets the number of elements in the collection.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IReadOnlyCollection<T> : IEnumerable<T>, IEnumerable
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Count
-        ///
-        /// <summary>
-        /// Gets the number of elements in the collection.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        int Count { get;  }
-    }
-
-    #endregion
-
-    #region IReadOnlyList<T>
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// IReadOnlyList(T)
-    ///
-    /// <summary>
-    /// Represents a read-only collection of elements that can be accessed
-    /// by index.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public interface IReadOnlyList<T> : IReadOnlyCollection<T>,
-        IEnumerable<T>, IEnumerable
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Item
-        ///
-        /// <summary>
-        /// Gets the element at the specified index in the read-only list.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        T this[int index] { get; }
-    }
-
-    #endregion
+    int Count { get;  }
 }
+
+#endregion
+
+#region IReadOnlyList<T>
+
+/* ------------------------------------------------------------------------- */
+///
+/// IReadOnlyList(T)
+///
+/// <summary>
+/// Represents a read-only collection of elements that can be accessed
+/// by index.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public interface IReadOnlyList<T> : IReadOnlyCollection<T>, IEnumerable<T>, IEnumerable
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Item
+    ///
+    /// <summary>
+    /// Gets the element at the specified index in the read-only list.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    T this[int index] { get; }
+}
+
+#endregion

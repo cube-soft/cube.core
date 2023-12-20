@@ -73,7 +73,7 @@ public class SettingFolder<T> : ObservableBase where T : INotifyPropertyChanged,
     public SettingFolder(Format format, string location, SoftwareVersion version)
     {
         _autosaver.AutoReset = false;
-        _autosaver.Elapsed += (s, e) => TaskEx.Run(() => Save()).Forget();
+        _autosaver.Elapsed += (_, _) => TaskEx.Run(Save).Forget();
 
         Format   = format;
         Location = location;
@@ -141,7 +141,7 @@ public class SettingFolder<T> : ObservableBase where T : INotifyPropertyChanged,
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public bool AutoSave { get; set; } = false;
+    public bool AutoSave { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -287,7 +287,7 @@ public class SettingFolder<T> : ObservableBase where T : INotifyPropertyChanged,
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenChanged(object sener, PropertyChangedEventArgs e)
+    private void WhenChanged(object s, PropertyChangedEventArgs e)
     {
         try
         {

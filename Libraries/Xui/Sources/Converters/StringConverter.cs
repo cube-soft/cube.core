@@ -40,7 +40,7 @@ public class UpperCase : SimplexConverter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public UpperCase() : base((e, t, p, c) => e?.ToString()?.ToUpper(c) ?? string.Empty) { }
+    public UpperCase() : base((e, _, _, c) => e?.ToString().ToUpper(c) ?? string.Empty) { }
 }
 
 #endregion
@@ -67,7 +67,7 @@ public class LowerCase : SimplexConverter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public LowerCase() : base((e, t, p, c) => e?.ToString()?.ToLower(c) ?? string.Empty) { }
+    public LowerCase() : base((e, _, _, c) => e?.ToString().ToLower(c) ?? string.Empty) { }
 }
 
 #endregion

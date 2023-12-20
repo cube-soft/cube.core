@@ -47,6 +47,7 @@ class LoggerTest
     [Test]
     public void Test()
     {
+        Assert.DoesNotThrow(() => Logger.Trace("Message"));
         Assert.DoesNotThrow(() => Logger.Debug("Message"));
         Assert.DoesNotThrow(() => Logger.Info("Message"));
         Assert.DoesNotThrow(() => Logger.Warn("Message"));
@@ -94,8 +95,7 @@ class LoggerTest
     [TestCase(".cs")]
     [TestCase("")]
     [TestCase(null)]
-    public void TestName(string name) =>
-        Assert.DoesNotThrow(() => Logger.Debug("message", name));
+    public void TestName(string name) =>  Assert.DoesNotThrow(() => Logger.Debug("Message", name));
 
     #endregion
 }

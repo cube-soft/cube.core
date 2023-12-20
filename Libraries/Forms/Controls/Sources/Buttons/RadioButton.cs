@@ -45,7 +45,7 @@ public class RadioButton : System.Windows.Forms.RadioButton
     public RadioButton()
     {
         _painter = new RadioButtonPainter(this);
-        _painter.Style.PropertyChanged += (s, e) => Invalidate();
+        _painter.Style.PropertyChanged += (_, _) => Invalidate();
     }
 
     #endregion
@@ -91,8 +91,7 @@ public class RadioButton : System.Windows.Forms.RadioButton
     /// ShowFocusCues
     ///
     /// <summary>
-    /// Gets the value indicating whether or not to display a border
-    /// when focusing.
+    /// Gets the value indicating whether to display a border when focusing.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -333,7 +332,7 @@ public class RadioButton : System.Windows.Forms.RadioButton
     /// CheckAlign
     ///
     /// <summary>
-    /// Gets or sets the location of the check box portion.
+    /// Gets or sets the location of the checkbox portion.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

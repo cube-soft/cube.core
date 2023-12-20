@@ -50,7 +50,7 @@ public abstract class DuplexConverter : MarkupExtension, IValueConverter
     ///
     /* --------------------------------------------------------------------- */
     protected DuplexConverter(Func<object, object> convert, Func<object, object> back) :
-        this((e, t, p, c) => convert(e), (e, t, p, c) => back(e)) { }
+        this((e, _, _, _) => convert(e), (e, _, _, _) => back(e)) { }
 
     /* --------------------------------------------------------------------- */
     ///

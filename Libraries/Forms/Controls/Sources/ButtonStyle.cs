@@ -48,11 +48,11 @@ public class ButtonStyle : ObservableBase
     /* --------------------------------------------------------------------- */
     public ButtonStyle()
     {
-        Default.PropertyChanged   += (s, e) => Refresh(nameof(Default));
-        Disabled.PropertyChanged  += (s, e) => Refresh(nameof(Disabled));
-        Checked.PropertyChanged   += (s, e) => Refresh(nameof(Checked));
-        MouseOver.PropertyChanged += (s, e) => Refresh(nameof(MouseOver));
-        MouseDown.PropertyChanged += (s, e) => Refresh(nameof(MouseDown));
+        Default.PropertyChanged   += (_, _) => Refresh(nameof(Default));
+        Disabled.PropertyChanged  += (_, _) => Refresh(nameof(Disabled));
+        Checked.PropertyChanged   += (_, _) => Refresh(nameof(Checked));
+        MouseOver.PropertyChanged += (_, _) => Refresh(nameof(MouseOver));
+        MouseDown.PropertyChanged += (_, _) => Refresh(nameof(MouseDown));
     }
 
     #endregion
@@ -69,7 +69,7 @@ public class ButtonStyle : ObservableBase
     ///
     /* --------------------------------------------------------------------- */
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-    public ButtonStyleElement Default { get; } = new ButtonStyleElement
+    public ButtonStyleElement Default { get; } = new()
     {
         ContentColor = SystemColors.ControlText,
         BorderColor  = SystemColors.ActiveBorder,
@@ -86,7 +86,7 @@ public class ButtonStyle : ObservableBase
     ///
     /* --------------------------------------------------------------------- */
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-    public ButtonStyleElement Disabled { get; } = new ButtonStyleElement
+    public ButtonStyleElement Disabled { get; } = new()
     {
         BackColor    = SystemColors.Control,
         ContentColor = SystemColors.GrayText,
@@ -103,7 +103,7 @@ public class ButtonStyle : ObservableBase
     ///
     /* --------------------------------------------------------------------- */
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-    public ButtonStyleElement Checked { get; } = new ButtonStyleElement();
+    public ButtonStyleElement Checked { get; } = new();
 
     /* --------------------------------------------------------------------- */
     ///
@@ -115,7 +115,7 @@ public class ButtonStyle : ObservableBase
     ///
     /* --------------------------------------------------------------------- */
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-    public ButtonStyleElement MouseOver { get; } = new ButtonStyleElement();
+    public ButtonStyleElement MouseOver { get; } = new();
 
     /* --------------------------------------------------------------------- */
     ///
@@ -127,7 +127,7 @@ public class ButtonStyle : ObservableBase
     ///
     /* --------------------------------------------------------------------- */
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-    public ButtonStyleElement MouseDown { get; } = new ButtonStyleElement();
+    public ButtonStyleElement MouseDown { get; } = new();
 
     #endregion
 
@@ -261,7 +261,7 @@ public class ButtonStyleElement : ObservableBase
     /// ContentColor
     ///
     /// <summary>
-    /// Gets or sets the color of the main content (a.k.a ForeColor).
+    /// Gets or sets the color of the main content (a.k.a. ForeColor).
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>8.5.1</Version>
+        <Version>8.6.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>Wraps the NLog package compatible with the Cube.ILoggerSource interface.</Description>
@@ -26,7 +26,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
-        <PackageReference Include="NLog" Version="5.2.4" />
+        <PackageReference Include="NLog" Version="5.2.7" />
     </ItemGroup>
     <ItemGroup>
         <None Include="Readme.md" Pack="true" PackagePath="docs" />

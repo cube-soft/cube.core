@@ -59,7 +59,7 @@ public interface IObservePropertyChanged
 /// ObserverBase
 ///
 /// <summary>
-/// Represents a base class of the IObservePropertyChnaged interface.
+/// Represents a base class of the IObservePropertyChanged interface.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
@@ -105,11 +105,11 @@ public abstract class ObserverBase : DisposableBase, IObservePropertyChanged
     /// </summary>
     ///
     /// <param name="type">
-    /// Type of object that raises the PropetyChanged event.
+    /// Type of object that raises the PropertyChanged event.
     /// </param>
     ///
     /// <param name="name">
-    /// Property name associated with the PropetyChanged event.
+    /// Property name associated with the PropertyChanged event.
     /// </param>
     ///
     /* --------------------------------------------------------------------- */

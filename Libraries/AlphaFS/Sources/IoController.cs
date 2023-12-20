@@ -252,7 +252,7 @@ public class IoController : FileSystem.IoController
     /// Combine
     ///
     /// <summary>
-    /// Combiles the specified paths.
+    /// Combines the specified paths.
     /// </summary>
     ///
     /// <param name="paths">Collection of paths.</param>

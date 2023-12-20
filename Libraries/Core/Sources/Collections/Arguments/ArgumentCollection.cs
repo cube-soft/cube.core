@@ -144,7 +144,7 @@ public class ArgumentCollection : EnumerableBase<string>, IReadOnlyList<string>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string this[int index] => _oprands[index];
+    public string this[int index] => _operands[index];
 
     /* --------------------------------------------------------------------- */
     ///
@@ -155,7 +155,7 @@ public class ArgumentCollection : EnumerableBase<string>, IReadOnlyList<string>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public int Count => _oprands.Count;
+    public int Count => _operands.Count;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -196,7 +196,7 @@ public class ArgumentCollection : EnumerableBase<string>, IReadOnlyList<string>
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public override IEnumerator<string> GetEnumerator() => _oprands.GetEnumerator();
+    public override IEnumerator<string> GetEnumerator() => _operands.GetEnumerator();
 
     #endregion
 
@@ -221,7 +221,7 @@ public class ArgumentCollection : EnumerableBase<string>, IReadOnlyList<string>
     {
         if (disposing)
         {
-            _oprands.Clear();
+            _operands.Clear();
             _options.Clear();
         }
     }
@@ -252,7 +252,7 @@ public class ArgumentCollection : EnumerableBase<string>, IReadOnlyList<string>
                 _options.AddOrSet(key, arg.Value);
                 key = string.Empty;
             }
-            else _oprands.Add(arg.Value);
+            else _operands.Add(arg.Value);
         }
 
         if (key.HasValue()) _options.AddOrSet(key, string.Empty);
@@ -261,7 +261,7 @@ public class ArgumentCollection : EnumerableBase<string>, IReadOnlyList<string>
     #endregion
 
     #region Fields
-    private readonly List<string> _oprands = new();
+    private readonly List<string> _operands = new();
     private readonly Dictionary<string, string> _options;
     #endregion
 }

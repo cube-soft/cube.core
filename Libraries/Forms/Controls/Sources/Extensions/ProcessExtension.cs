@@ -46,10 +46,10 @@ public static class ProcessMethods
     {
         var h = src?.MainWindowHandle ?? IntPtr.Zero;
         if (h == IntPtr.Zero) return;
-        if (Cube.Forms.User32.NativeMethods.IsIconic(h))
+        if (User32.NativeMethods.IsIconic(h))
         {
-            _ = Cube.Forms.User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
+            _ = User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
         }
-        _ = Cube.Forms.User32.NativeMethods.SetForegroundWindow(h);
+        _ = User32.NativeMethods.SetForegroundWindow(h);
     }
 }

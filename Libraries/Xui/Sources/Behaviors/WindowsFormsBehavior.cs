@@ -51,7 +51,7 @@ public class WindowsFormsBehavior<TControl> : Behavior<WindowsFormsHost>
     /// Parent
     ///
     /// <summary>
-    /// Gets the parecont control of the source.
+    /// Gets the parent control of the source.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

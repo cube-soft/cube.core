@@ -82,8 +82,14 @@ public class NumericStringComparer : StringComparer
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public override int Compare(string x, string y) =>
-        Compare(x.GetEnumerator(), y.GetEnumerator());
+    public override int Compare(string x, string y)
+    {
+        if (x is null && y is null) return 0;
+        if (x is null) return -1;
+        if (y is null) return 1;
+
+        return Compare(x.GetEnumerator(), y.GetEnumerator());
+    }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -168,8 +174,6 @@ public class NumericStringComparer : StringComparer
                 if (z != 0) return z;
             }
         }
-
-        throw new InvalidOperationException("never reached");
     }
 
     /* --------------------------------------------------------------------- */

@@ -260,7 +260,7 @@ public partial class WebControl : WF.WebBrowser
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected override WF.WebBrowserSiteBase CreateWebBrowserSiteBase() => new ShowUIWebBrowserSite(this);
+    protected override WF.WebBrowserSiteBase CreateWebBrowserSiteBase() => new ShowUiWebBrowserSite(this);
 
     /* --------------------------------------------------------------------- */
     ///

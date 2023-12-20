@@ -49,7 +49,7 @@ public abstract class SimplexConverter : MarkupExtension, IValueConverter
     /// <param name="func">Function to convert.</param>
     ///
     /* --------------------------------------------------------------------- */
-    protected SimplexConverter(Func<object, object> func) : this((e, t, p, c) => func(e)) { }
+    protected SimplexConverter(Func<object, object> func) : this((e, _, _, _) => func(e)) { }
 
     /* --------------------------------------------------------------------- */
     ///

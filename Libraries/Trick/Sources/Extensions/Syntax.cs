@@ -88,7 +88,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static IEnumerable<T> Make<T>(this int n, Func<int, T> func) =>
-        Enumerable.Range(0, n).Select(i => func(i));
+        Enumerable.Range(0, n).Select(func);
 
     /* --------------------------------------------------------------------- */
     ///

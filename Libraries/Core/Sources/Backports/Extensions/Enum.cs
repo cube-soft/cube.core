@@ -15,53 +15,47 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Generics.Extensions;
+namespace Cube.Backports;
+
+using System;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Methods
+/// EnumExtensions
 ///
 /// <summary>
-/// Provides extended methods of generic classes.
+/// Provides extended methods for the Enum class for compatibility with
+/// .NET Framework 3.5.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public static class Methods
+public static class EnumExtensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TryCast
+    /// HasFlag
     ///
     /// <summary>
-    /// Tries to cast the specified object to the specified type.
+    /// Determines whether one or more bit fields are set in the current
+    /// instance.
     /// </summary>
     ///
-    /// <typeparam name="T">Type to be cast.</typeparam>
+    /// <param name="src">A source Enum object.</param>
+    /// <param name="flag">An enumeration value.</param>
     ///
-    /// <param name="src">Source object.</param>
-    ///
-    /// <returns>Cast object.</returns>
+    /// <returns>
+    /// true if the bit field or bit fields that are set in flag are also
+    /// set in the current instance; otherwise, false.
+    /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static T TryCast<T>(this object src) => TryCast(src, default(T));
+    public static bool HasFlag(this Enum src, Enum flag)
+    {
+        if (src.GetType() != flag.GetType()) throw new ArgumentException();
 
-    /* --------------------------------------------------------------------- */
-    ///
-    /// TryCast
-    ///
-    /// <summary>
-    /// Tries to cast the specified object to the specified type.
-    /// </summary>
-    ///
-    /// <typeparam name="T">Type to be cast.</typeparam>
-    ///
-    /// <param name="src">Source object.</param>
-    /// <param name="error">
-    /// Returned object when the cast is failed.
-    /// </param>
-    ///
-    /// <returns>Cast object.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static T TryCast<T>(this object src, T error) => src is T dest ? dest : error;
+        var n0 = Convert.ToUInt64(src);
+        var n1 = Convert.ToUInt64(flag);
+
+        return (n0 & n1) == n1;
+    }
 }

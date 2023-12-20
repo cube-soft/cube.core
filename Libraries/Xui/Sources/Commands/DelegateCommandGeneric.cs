@@ -45,7 +45,7 @@ public class DelegateCommand<T> : DelegateCommandBase
     /// <param name="execute">Action to execute.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public DelegateCommand(Action<T> execute) : this(execute, e => true) { }
+    public DelegateCommand(Action<T> execute) : this(execute, _ => true) { }
 
     /* --------------------------------------------------------------------- */
     ///

@@ -22,8 +22,8 @@ namespace Cube.Forms;
 /// QueryEventHandler
 ///
 /// <summary>
-/// Represents the event handler with a QueryMessage(T, U) object.
+/// Represents the event handler with a QueryMessage object.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public delegate void QueryEventHandler<T, U>(object sender, QueryMessage<T, U> e);
+public delegate void QueryEventHandler<TSource, TValue>(object sender, QueryMessage<TSource, TValue> e);

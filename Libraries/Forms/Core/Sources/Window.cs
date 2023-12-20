@@ -170,9 +170,9 @@ public class Window : Form, IBinder
     /* --------------------------------------------------------------------- */
     protected override bool ProcessCmdKey(ref Message msg, Keys keys)
     {
-        if (ShortcutKeys.ContainsKey(keys))
+        if (ShortcutKeys.TryGetValue(keys, out var action))
         {
-            ShortcutKeys[keys]();
+            action();
             return true;
         }
         return base.ProcessCmdKey(ref msg, keys);

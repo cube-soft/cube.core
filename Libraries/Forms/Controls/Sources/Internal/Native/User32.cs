@@ -43,7 +43,7 @@ internal static class NativeMethods
     ///
     /* --------------------------------------------------------------------- */
     [DllImport(LibName, CharSet = CharSet.Unicode)]
-    public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+    public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -55,7 +55,7 @@ internal static class NativeMethods
     ///
     /* --------------------------------------------------------------------- */
     [DllImport(LibName, CharSet = CharSet.Unicode)]
-    public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+    public static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -80,7 +80,7 @@ internal static class NativeMethods
     /* --------------------------------------------------------------------- */
     [DllImport(LibName)]
     public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
-        int X, int Y, int cx, int cy, uint uFlags);
+        int x, int y, int cx, int cy, uint uFlags);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -105,7 +105,7 @@ internal static class NativeMethods
     /* --------------------------------------------------------------------- */
     [DllImport(LibName)]
     public static extern bool EnableMenuItem(IntPtr hMenu,
-        uint uIDEnableItem, uint uEnable);
+        uint uIdEnableItem, uint uEnable);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -117,8 +117,8 @@ internal static class NativeMethods
     ///
     /* --------------------------------------------------------------------- */
     [DllImport(LibName)]
-    public static extern int TrackPopupMenuEx(IntPtr hmenu, uint fuFlags,
-        int x, int y, IntPtr hwnd, IntPtr lptpm);
+    public static extern int TrackPopupMenuEx(IntPtr hMenu, uint fuFlags,
+        int x, int y, IntPtr hwnd, IntPtr lPtpm);
 
     /* --------------------------------------------------------------------- */
     ///

@@ -15,53 +15,47 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Generics.Extensions;
+namespace Cube.Backports;
+
+using System.IO;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Methods
+/// StreamExtensions
 ///
 /// <summary>
-/// Provides extended methods of generic classes.
+/// Provides extended methods for the Stream class for compatibility
+/// with .NET Framework 3.5.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public static class Methods
+public static class StreamExtensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TryCast
+    /// CopyTo
     ///
     /// <summary>
-    /// Tries to cast the specified object to the specified type.
+    /// Reads the bytes from the source stream and writes them to
+    /// another stream.
     /// </summary>
     ///
-    /// <typeparam name="T">Type to be cast.</typeparam>
+    /// <param name="src">The source stream.</param>
     ///
-    /// <param name="src">Source object.</param>
-    ///
-    /// <returns>Cast object.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static T TryCast<T>(this object src) => TryCast(src, default(T));
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// TryCast
-    ///
-    /// <summary>
-    /// Tries to cast the specified object to the specified type.
-    /// </summary>
-    ///
-    /// <typeparam name="T">Type to be cast.</typeparam>
-    ///
-    /// <param name="src">Source object.</param>
-    /// <param name="error">
-    /// Returned object when the cast is failed.
+    /// <param name="dest">
+    /// The stream to which the contents of the source stream will be
+    /// copied.
     /// </param>
     ///
-    /// <returns>Cast object.</returns>
-    ///
     /* --------------------------------------------------------------------- */
-    public static T TryCast<T>(this object src, T error) => src is T dest ? dest : error;
+    public static void CopyTo(this Stream src, Stream dest)
+    {
+        var buffer = new byte[16 * 1024];
+        var result = 0;
+
+        while ((result = src.Read(buffer, 0, buffer.Length)) > 0)
+        {
+            dest.Write(buffer, 0, result);
+        }
+    }
 }

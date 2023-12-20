@@ -15,53 +15,51 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Generics.Extensions;
+namespace Cube.Backports;
+
+using Microsoft.Win32;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Methods
+/// RegistryExtensions
 ///
 /// <summary>
-/// Provides extended methods of generic classes.
+/// Provides extended methods for the Registry class for compatibility
+/// with .NET Framework 3.5.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public static class Methods
+public static class RegistryExtensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TryCast
+    /// DeleteSubKeyTree
     ///
     /// <summary>
-    /// Tries to cast the specified object to the specified type.
+    /// Deletes the specified subkey and any child subkeys recursively,
+    /// and specifies whether an exception is raised if the subkey
+    /// is not found.
     /// </summary>
     ///
-    /// <typeparam name="T">Type to be cast.</typeparam>
+    /// <param name="key">A source RegistryKey object.</param>
     ///
-    /// <param name="src">Source object.</param>
-    ///
-    /// <returns>Cast object.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static T TryCast<T>(this object src) => TryCast(src, default(T));
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// TryCast
-    ///
-    /// <summary>
-    /// Tries to cast the specified object to the specified type.
-    /// </summary>
-    ///
-    /// <typeparam name="T">Type to be cast.</typeparam>
-    ///
-    /// <param name="src">Source object.</param>
-    /// <param name="error">
-    /// Returned object when the cast is failed.
+    /// <param name="subkey">
+    /// The name of the subkey to delete. This string is not
+    /// case-sensitive.
     /// </param>
     ///
-    /// <returns>Cast object.</returns>
+    /// <param name="throwOnMissingSubKey">
+    /// Indicates whether an exception should be raised if the specified
+    /// subkey cannot be found. If this argument is true and the specified
+    /// subkey does not exist, an exception is raised.
+    /// If this argument is false and the specified subkey does not
+    /// exist, no action is taken.
+    /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public static T TryCast<T>(this object src, T error) => src is T dest ? dest : error;
+    public static void DeleteSubKeyTree(this RegistryKey key, string subkey, bool throwOnMissingSubKey)
+    {
+        try { key.DeleteSubKeyTree(subkey); }
+        catch { if (throwOnMissingSubKey) throw; }
+    }
 }

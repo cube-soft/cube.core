@@ -15,142 +15,141 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace System;
+
 using System.Threading;
 
-namespace System
-{
-    #region IProgress<T>
+#region IProgress<T>
 
+/* ------------------------------------------------------------------------- */
+///
+/// IProgress(T)
+///
+/// <summary>
+/// Defines a provider for progress updates.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public interface IProgress<T>
+{
     /* --------------------------------------------------------------------- */
     ///
-    /// IProgress(T)
+    /// Report
     ///
     /// <summary>
-    /// Defines a provider for progress updates.
+    /// Reports a progress update.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IProgress<T>
+    void Report(T value);
+}
+
+#endregion
+
+#region Progress<T>
+
+/* ------------------------------------------------------------------------- */
+///
+/// Progress(T)
+///
+/// <summary>
+/// Provides an IProgress(T) that invokes callbacks for each reported
+/// progress value.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class Progress<T> : IProgress<T> where T : EventArgs
+{
+    #region Constructors
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Progress
+    ///
+    /// <summary>
+    /// Initializes the Progress(T) object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Progress()
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Report
-        ///
-        /// <summary>
-        /// Reports a progress update.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        void Report(T value);
+        _context = SynchronizationContext.Current;
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Progress
+    ///
+    /// <summary>
+    /// Initializes the Progress(T) object with the specified callback.
+    /// </summary>
+    ///
+    /// <param name="handler">
+    /// A handler to invoke for each reported progress value.
+    /// This handler will be invoked in addition to any delegates
+    /// registered with the ProgressChanged event. Depending on the
+    /// SynchronizationContext instance captured by the Progress(T)
+    /// at construction, it is possible that this handler instance
+    /// could be invoked concurrently with itself.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Progress(Action<T> handler) : this()
+    {
+        ProgressChanged += (s, e) => handler(e);
     }
 
     #endregion
 
-    #region Progress<T>
+    #region Events
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Progress(T)
+    /// ProgressChanged
     ///
     /// <summary>
-    /// Provides an IProgress(T) that invokes callbacks for each reported
-    /// progress value.
+    /// Raised for each reported progress value.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Progress<T> : IProgress<T> where T : EventArgs
+    public event EventHandler<T> ProgressChanged;
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Report
+    ///
+    /// <summary>
+    /// Reports a progress change.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Report(T value) => OnReport(value);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnReport
+    ///
+    /// <summary>
+    /// Reports a progress change.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected virtual void OnReport(T value)
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Progress
-        ///
-        /// <summary>
-        /// Initializes the Progress(T) object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Progress()
-        {
-            _context = SynchronizationContext.Current;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Progress
-        ///
-        /// <summary>
-        /// Initializes the Progress(T) object with the specified callback.
-        /// </summary>
-        ///
-        /// <param name="handler">
-        /// A handler to invoke for each reported progress value.
-        /// This handler will be invoked in addition to any delegates
-        /// registered with the ProgressChanged event. Depending on the
-        /// SynchronizationContext instance captured by the Progress(T)
-        /// at construction, it is possible that this handler instance
-        /// could be invoked concurrently with itself.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Progress(Action<T> handler) : this()
-        {
-            ProgressChanged += (s, e) => handler(e);
-        }
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ProgressChanged
-        ///
-        /// <summary>
-        /// Raised for each reported progress value.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler<T> ProgressChanged;
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Report
-        ///
-        /// <summary>
-        /// Reports a progress change.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Report(T value) => OnReport(value);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnReport
-        ///
-        /// <summary>
-        /// Reports a progress change.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnReport(T value)
-        {
-            if (ProgressChanged == null) return;
-            if (_context != null) _context.Post(_ => ProgressChanged(this, value), null);
-            else ProgressChanged(this, value);
-        }
-
-        #endregion
-
-        #region Fields
-        private readonly SynchronizationContext _context;
-        #endregion
+        if (ProgressChanged == null) return;
+        if (_context != null) _context.Post(_ => ProgressChanged(this, value), null);
+        else ProgressChanged(this, value);
     }
 
+    #endregion
+
+    #region Fields
+    private readonly SynchronizationContext _context;
     #endregion
 }
+
+#endregion

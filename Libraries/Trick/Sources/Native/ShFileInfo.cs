@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// ShFileIinfo
+/// ShFileInfo
 ///
 /// <summary>
 /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb759792.aspx
@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 ///
 /* ------------------------------------------------------------------------- */
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-internal struct ShFileIinfo
+internal struct ShFileInfo
 {
     public IntPtr hIcon;
     public int iIcon;

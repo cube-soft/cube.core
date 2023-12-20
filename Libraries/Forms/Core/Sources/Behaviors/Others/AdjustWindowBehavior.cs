@@ -34,11 +34,10 @@ public sealed class AdjustWindowBehavior : ShownEventBehavior
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// AdjustWindowBehavio
+    /// AdjustWindowBehavior
     ///
     /// <summary>
-    /// Initializes a new instance of the AdjustWindowBehavio class
-    /// with the specified arguments.
+    /// Initializes a new instance with the specified arguments.
     /// </summary>
     ///
     /// <param name="src">Source view.</param>

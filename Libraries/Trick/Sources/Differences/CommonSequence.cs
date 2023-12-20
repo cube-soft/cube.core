@@ -216,7 +216,8 @@ internal class CommonSequence<T>
     /* --------------------------------------------------------------------- */
     private IEnumerable<T> Slice(T[] src, int start, int count)
     {
-        var n = Math.Min(count, src?.Length - start ?? 0);
+        if (src is null) return null;
+        var n = Math.Min(count, src.Length - start);
         if (n <= 0) return null;
 
         var dest = new T[n];

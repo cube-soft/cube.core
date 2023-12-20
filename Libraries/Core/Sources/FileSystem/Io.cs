@@ -20,6 +20,8 @@ namespace Cube.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using Cube.Backports;
 using Cube.Text.Extensions;
 
 /* ------------------------------------------------------------------------- */
@@ -46,7 +48,7 @@ public static class Io
     /// <param name="src">I/O controller.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Configure(IoController src) => _controller = src;
+    public static void Configure(IoController src) => Interlocked.Exchange(ref _controller, src);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -176,7 +178,7 @@ public static class Io
     ///
     /* --------------------------------------------------------------------- */
     public static void SetCreationTime(string path, DateTime time) =>
-        Unlock(path, e => _controller.SetCreationTime(e, time));
+        Set(path, e => _controller.SetCreationTime(e, time));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -192,7 +194,7 @@ public static class Io
     ///
     /* --------------------------------------------------------------------- */
     public static void SetLastWriteTime(string path, DateTime time) =>
-        Unlock(path, e => _controller.SetLastWriteTime(e, time));
+        Set(path, e => _controller.SetLastWriteTime(e, time));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -208,7 +210,28 @@ public static class Io
     ///
     /* --------------------------------------------------------------------- */
     public static void SetLastAccessTime(string path, DateTime time) =>
-        Unlock(path, e => _controller.SetLastAccessTime(e, time));
+        Set(path, e => _controller.SetLastAccessTime(e, time));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetTime
+    ///
+    /// <summary>
+    /// Sets the specified time objects to the specified file or directory.
+    /// </summary>
+    ///
+    /// <param name="path">Target path.</param>
+    /// <param name="create">Creation time.</param>
+    /// <param name="write">Last updated time.</param>
+    /// <param name="access">Last accessed time.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void SetTime(string path, DateTime create, DateTime write, DateTime access) => Set(path, e =>
+    {
+        _controller.SetCreationTime(e, create);
+        _controller.SetLastWriteTime(e, write);
+        _controller.SetLastAccessTime(e, access);
+    });
 
     /* --------------------------------------------------------------------- */
     ///
@@ -229,7 +252,7 @@ public static class Io
         {
             foreach (var f in GetFiles(path)) Delete(f);
             foreach (var d in GetDirectories(path)) Delete(d);
-            SetAttributes(path, FileAttributes.Normal);
+            SetAttributes(path, FileAttributes.Normal | FileAttributes.Directory);
             _controller.Delete(path);
         }
         else if (Exists(path))
@@ -255,7 +278,7 @@ public static class Io
     public static void Move(string src, string dest, bool overwrite)
     {
         if (IsDirectory(src)) MoveRecursive(src, dest, overwrite);
-        else MoveFile(src, dest, overwrite);
+        else MoveOne(src, dest, overwrite);
     }
 
     /* --------------------------------------------------------------------- */
@@ -274,7 +297,7 @@ public static class Io
     public static void Copy(string src, string dest, bool overwrite)
     {
         if (IsDirectory(src)) CopyRecursive(src, dest, overwrite);
-        else CopyFile(src, dest, overwrite);
+        else CopyOne(src, dest, overwrite);
     }
 
     /* --------------------------------------------------------------------- */
@@ -466,15 +489,54 @@ public static class Io
     /// Creates a directory and sets the attributes.
     /// </summary>
     ///
+    /// <remarks>
+    /// NOTE: Use Logger.Try for a while because IOException may sometimes
+    /// occur.
+    /// </remarks>
+    ///
     /* --------------------------------------------------------------------- */
     private static void CreateDirectory(string path, Entity src)
     {
         CreateDirectory(path);
-        SetAttributes(path, FileAttributes.Normal);
-        _controller.SetCreationTime(path, src.CreationTime);
-        _controller.SetLastWriteTime(path, src.LastWriteTime);
-        _controller.SetLastAccessTime(path, src.LastAccessTime);
+        SetAttributes(path, FileAttributes.Normal | FileAttributes.Directory);
+        Logger.Try(() => _controller.SetCreationTime(path, src.CreationTime));
+        Logger.Try(() => _controller.SetLastWriteTime(path, src.LastWriteTime));
+        Logger.Try(() => _controller.SetLastAccessTime(path, src.LastAccessTime));
         SetAttributes(path, src.Attributes);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetUnlockAttributes
+    ///
+    /// <summary>
+    /// Get file attributes to allow modification.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static FileAttributes GetUnlockAttributes(FileAttributes src) =>
+        src.HasFlag(FileAttributes.Directory) ?
+        FileAttributes.Normal | FileAttributes.Directory :
+        FileAttributes.Normal;
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Set
+    ///
+    /// <summary>
+    /// Unlocks the specified file and invokes the specified setter action.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static void Set(string path, Action<string> setter)
+    {
+        if (!Exists(path)) return;
+
+        var e = new Entity(path);
+        SetAttributes(path, GetUnlockAttributes(e.Attributes));
+
+        try { setter(path); }
+        finally { SetAttributes(path, e.Attributes); }
     }
 
     /* --------------------------------------------------------------------- */
@@ -490,21 +552,21 @@ public static class Io
     private static void CopyRecursive(string src, string dest, bool overwrite)
     {
         if (!Exists(dest)) CreateDirectory(dest, new(src));
-        foreach (var e in GetFiles(src)) CopyFile(e, Combine(dest, GetFileName(e)), overwrite);
+        foreach (var e in GetFiles(src)) CopyOne(e, Combine(dest, GetFileName(e)), overwrite);
         foreach (var e in GetDirectories(src)) CopyRecursive(e, Combine(dest, GetFileName(e)), overwrite);
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CopyFile
+    /// CopyOne
     ///
     /// <summary>
     /// Copies the file.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void CopyFile(string src, string dest, bool overwrite) =>
-        Unlock(src, dest, (s, d) => _controller.Copy(s, d, overwrite));
+    private static void CopyOne(string src, string dest, bool overwrite) =>
+        MoveOrCopy(src, dest, (s, d) => _controller.Copy(s, d, overwrite));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -519,23 +581,23 @@ public static class Io
     private static void MoveRecursive(string src, string dest, bool overwrite)
     {
         if (!Exists(dest)) CreateDirectory(dest, new(src));
-        foreach (var e in GetFiles(src)) MoveFile(e, Combine(dest, GetFileName(e)), overwrite);
+        foreach (var e in GetFiles(src)) MoveOne(e, Combine(dest, GetFileName(e)), overwrite);
         foreach (var e in GetDirectories(src)) MoveRecursive(e, Combine(dest, GetFileName(e)), overwrite);
         Delete(src);
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// MoveFile
+    /// MoveOne
     ///
     /// <summary>
     /// Moves the file.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void MoveFile(string src, string dest, bool overwrite)
+    private static void MoveOne(string src, string dest, bool overwrite)
     {
-        static void move(string s, string d) => Unlock(s, d, _controller.Move);
+        static void move(string s, string d) => MoveOrCopy(s, d, _controller.Move);
 
         if (!Exists(dest)) { move(src, dest); return; }
         if (!overwrite) return;
@@ -557,57 +619,36 @@ public static class Io
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Unlock
+    /// MoveOrCopy
     ///
     /// <summary>
-    /// Unlocks the specified file and invokes the specified action.
+    /// Unlocks the specified file and invokes the specified move or copy
+    /// action.
     /// </summary>
     ///
-    /// <param name="path">Target path.</param>
-    /// <param name="action">User action.</param>
+    /// <remarks>
+    /// NOTE: Use Logger.Try for a while because IOException may sometimes
+    /// occur.
+    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    private static void Unlock(string path, Action<string> action)
-    {
-        if (!Exists(path)) return;
-        var attr = new Entity(path).Attributes;
-        SetAttributes(path, FileAttributes.Normal);
-        try { action(path); }
-        finally { SetAttributes(path, attr); }
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Unlock
-    ///
-    /// <summary>
-    /// Unlocks the specified file and invokes the specified action.
-    /// </summary>
-    ///
-    /// <param name="src">Source path.</param>
-    /// <param name="dest">Destination path.</param>
-    /// <param name="action">User action.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static void Unlock(string src, string dest, Action<string, string> action)
+    private static void MoveOrCopy(string src, string dest, Action<string, string> action)
     {
         CreateDirectory(GetDirectoryName(dest));
 
         var e = new Entity(src);
-        var attr = e.Attributes;
-        var ct = e.CreationTime;
-        var wt = e.LastWriteTime;
+        var unlock = GetUnlockAttributes(e.Attributes);
 
-        if (Exists(dest)) SetAttributes(dest, FileAttributes.Normal);
+        if (Exists(dest)) SetAttributes(dest, unlock);
 
         try
         {
             action(src, dest);
-            SetAttributes(dest, FileAttributes.Normal);
-            _controller.SetCreationTime(dest, ct);
-            _controller.SetLastWriteTime(dest, wt);
+            SetAttributes(dest, unlock);
+            Logger.Try(() => _controller.SetCreationTime(dest, e.CreationTime));
+            Logger.Try(() => _controller.SetLastWriteTime(dest, e.LastWriteTime));
         }
-        finally { if (Exists(dest)) SetAttributes(dest, attr); }
+        finally { if (Exists(dest)) SetAttributes(dest, e.Attributes); }
     }
 
     #endregion
