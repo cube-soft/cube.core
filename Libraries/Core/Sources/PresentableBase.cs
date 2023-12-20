@@ -256,7 +256,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
     ///
     /* --------------------------------------------------------------------- */
     protected void Send<T>(T src, Action<T> next, bool synchronous) where T : IBindable =>
-        Send(new CancelMessage<T>() { Value = src }, next, synchronous);
+        Send(new CancelMessage<T> { Value = src }, next, synchronous);
 
     #endregion
 
@@ -296,7 +296,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
     /// <param name="first">Action to be invoked.</param>
     ///
     /// <param name="next">
-    /// Action to be invoked afetr the first specified action has finished.
+    /// Action to be invoked after the first specified action has finished.
     /// The action will always be invoked even if the first specified
     /// action throws an exception.
     /// </param>
@@ -364,7 +364,8 @@ public abstract class PresentableBase : ObservableBase, IBindable
                 catch (Exception e)
                 {
                     Logger.Warn(e);
-                    if (OnMessage(e) is DialogMessage msg) Send(msg);
+                    var m = OnMessage(e);
+                    if (m is not null) Send(m);
                 }
             }
         }

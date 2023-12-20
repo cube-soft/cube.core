@@ -69,7 +69,7 @@ public sealed class Subscription<T> : EnumerableBase<T>
         var key = Guid.NewGuid();
         return _subscribers.TryAdd(key, subscriber) ?
                Disposable.Create(() => _subscribers.TryRemove(key, out _)) :
-               Subscribe(subscriber); // Retry due to GUID confliction.
+               Subscribe(subscriber); // Retry due to GUID collision.
     }
 
     /* --------------------------------------------------------------------- */

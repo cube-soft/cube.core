@@ -62,7 +62,7 @@ partial class WebControl
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public WebControl Host { get; private set; }
+        public WebControl Host { get; }
 
         #endregion
 
@@ -77,11 +77,11 @@ partial class WebControl
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void BeforeNavigate2(object pDisp, ref object URL,
+        public void BeforeNavigate2(object pDisp, ref object url,
             ref object flags, ref object targetFrameName,
             ref object postData, ref object headers, ref bool cancel)
         {
-            var e = new NavigatingEventArgs((string)URL, (string)targetFrameName);
+            var e = new NavigatingEventArgs((string)url, (string)targetFrameName);
             Host.OnBeforeNavigating(e);
             cancel = e.Cancel;
         }
@@ -91,14 +91,14 @@ partial class WebControl
         /// NewWindow3
         ///
         /// <summary>
-        /// Occurs before opening in a new window..
+        /// Occurs before opening in a new window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public void NewWindow3(object pDisp, ref bool cancel,
-            ref object flags, ref object URLContext, ref object URL)
+            ref object flags, ref object context, ref object url)
         {
-            var e = new NavigatingEventArgs((string)URL, string.Empty);
+            var e = new NavigatingEventArgs((string)url, string.Empty);
             Host.OnBeforeNewWindow(e);
             cancel = e.Cancel;
 
@@ -113,10 +113,10 @@ partial class WebControl
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void NavigateError(object pDisp, ref object URL,
+        public void NavigateError(object pDisp, ref object url,
             ref object targetFrameName, ref object statusCode, ref bool cancel)
         {
-            var e = new NavigatingErrorEventArgs((string)URL, (string)targetFrameName, (int)statusCode);
+            var e = new NavigatingErrorEventArgs((string)url, (string)targetFrameName, (int)statusCode);
             Host.OnNavigatingError(e);
             cancel = e.Cancel;
         }

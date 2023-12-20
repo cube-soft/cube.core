@@ -27,7 +27,8 @@ using System;
 ///
 /// <summary>
 /// Provides methods to create a new instance of the
-/// KeyValueEventArgs(T, U) or KeyValueCancelEventArgs(T, U) classes.
+/// KeyValueEventArgs(TKey, TValue) or KeyValueCancelEventArgs(TKey, TValue)
+/// classes.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
@@ -48,14 +49,14 @@ public static class KeyValueEventArgs
     /// <param name="value">Value to use for the event.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static KeyValueEventArgs<T, U> Create<T, U>(T key, U value) => new(key, value);
+    public static KeyValueEventArgs<TKey, TValue> Create<TKey, TValue>(TKey key, TValue value) => new(key, value);
 
     /* --------------------------------------------------------------------- */
     ///
     /// Create
     ///
     /// <summary>
-    /// Creates a new instance of the KeyValueCancelEventArgs(T, U)
+    /// Creates a new instance of the KeyValueCancelEventArgs(TKey, TValue)
     /// class with the specified arguments.
     /// </summary>
     ///
@@ -66,7 +67,7 @@ public static class KeyValueEventArgs
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public static KeyValueCancelEventArgs<T, U> Create<T, U>(T key, U value, bool cancel) =>
+    public static KeyValueCancelEventArgs<TKey, TValue> Create<TKey, TValue>(TKey key, TValue value, bool cancel) =>
         new(key, value, cancel);
 
     #endregion
@@ -74,18 +75,18 @@ public static class KeyValueEventArgs
 
 #endregion
 
-#region KeyValueEventArgs<T, U>
+#region KeyValueEventArgs<TKey, TValue>
 
 /* ------------------------------------------------------------------------- */
 ///
-/// KeyValueEventArgs(T, U)
+/// KeyValueEventArgs
 ///
 /// <summary>
 /// Provides Key-Value data to use for events.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class KeyValueEventArgs<T, U> : ValueEventArgs<U>
+public class KeyValueEventArgs<TKey, TValue> : ValueEventArgs<TValue>
 {
     #region Constructors
 
@@ -102,7 +103,7 @@ public class KeyValueEventArgs<T, U> : ValueEventArgs<U>
     /// <param name="value">Value to use for the event.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public KeyValueEventArgs(T key, U value) : base(value) => Key = key;
+    public KeyValueEventArgs(TKey key, TValue value) : base(value) => Key = key;
 
     #endregion
 
@@ -117,25 +118,25 @@ public class KeyValueEventArgs<T, U> : ValueEventArgs<U>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public T Key { get; }
+    public TKey Key { get; }
 
     #endregion
 }
 
 #endregion
 
-#region KeyValueCancelEventArgs<T, U>
+#region KeyValueCancelEventArgs<TKey, TValue>
 
 /* ------------------------------------------------------------------------- */
 ///
-/// KeyValueCancelEventArgs(T, U)
+/// KeyValueCancelEventArgs
 ///
 /// <summary>
 /// Provides data for a cancelable event with Key-Value data.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class KeyValueCancelEventArgs<T, U> : ValueCancelEventArgs<U>
+public class KeyValueCancelEventArgs<TKey, TValue> : ValueCancelEventArgs<TValue>
 {
     #region Constructors
 
@@ -153,7 +154,7 @@ public class KeyValueCancelEventArgs<T, U> : ValueCancelEventArgs<U>
     /// <param name="value">Value to use for the event.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public KeyValueCancelEventArgs(T key, U value) : this(key, value, false) { }
+    public KeyValueCancelEventArgs(TKey key, TValue value) : this(key, value, false) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -171,7 +172,7 @@ public class KeyValueCancelEventArgs<T, U> : ValueCancelEventArgs<U>
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public KeyValueCancelEventArgs(T key, U value, bool cancel) : base(value, cancel) => Key = key;
+    public KeyValueCancelEventArgs(TKey key, TValue value, bool cancel) : base(value, cancel) => Key = key;
 
     #endregion
 
@@ -186,7 +187,7 @@ public class KeyValueCancelEventArgs<T, U> : ValueCancelEventArgs<U>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public T Key { get; }
+    public TKey Key { get; }
 
     #endregion
 }
@@ -197,7 +198,7 @@ public class KeyValueCancelEventArgs<T, U> : ValueCancelEventArgs<U>
 
 /* ------------------------------------------------------------------------- */
 ///
-/// KeyValueEventHandler(T, U)
+/// KeyValueEventHandler
 ///
 /// <summary>
 /// Represents the method to invoke an event.
@@ -205,11 +206,11 @@ public class KeyValueCancelEventArgs<T, U> : ValueCancelEventArgs<U>
 ///
 /* ------------------------------------------------------------------------- */
 [Serializable]
-public delegate void KeyValueEventHandler<T, U>(object sender, KeyValueEventArgs<T, U> e);
+public delegate void KeyValueEventHandler<TKey, TValue>(object sender, KeyValueEventArgs<TKey, TValue> e);
 
 /* ------------------------------------------------------------------------- */
 ///
-/// KeyValueCanelEventHandler(T, U)
+/// KeyValueCancelEventHandler
 ///
 /// <summary>
 /// Represents the method to invoke an event.
@@ -217,6 +218,6 @@ public delegate void KeyValueEventHandler<T, U>(object sender, KeyValueEventArgs
 ///
 /* ------------------------------------------------------------------------- */
 [Serializable]
-public delegate void KeyValueCanelEventHandler<T, U>(object sender, KeyValueCancelEventArgs<T, U> e);
+public delegate void KeyValueCancelEventHandler<TKey, TValue>(object sender, KeyValueCancelEventArgs<TKey, TValue> e);
 
 #endregion

@@ -43,7 +43,7 @@ public class ActivateBehavior : MessageBehavior<ActivateMessage>
     /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public ActivateBehavior(Form view, IAggregator aggregator) : base(aggregator, e =>
+    public ActivateBehavior(Form view, IAggregator aggregator) : base(aggregator, _ =>
     {
         var tmp = view.TopMost;
         if (view.WindowState == FormWindowState.Minimized) view.WindowState = FormWindowState.Normal;

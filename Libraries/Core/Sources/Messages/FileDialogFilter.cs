@@ -132,8 +132,9 @@ public class FileDialogFilter
     public override string ToString()
     {
         var src = Targets.Select(e => $"*{e}");
-        var s0  = src.Join(", ");
-        var s1  = src.Join(";", e => Format(e));
+        var cvt = src as string[] ?? src.ToArray();
+        var s0  = cvt.Join(", ");
+        var s1  = cvt.Join(";", Format);
 
         return $"{Text} ({s0})|{s1}";
     }

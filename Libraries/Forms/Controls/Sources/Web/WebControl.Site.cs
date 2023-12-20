@@ -23,20 +23,20 @@ partial class WebControl
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowUIWebBrowserSite
+    /// ShowUiWebBrowserSite
     ///
     /// <summary>
     /// Provides functionality to show message dialogs.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected class ShowUIWebBrowserSite : WebBrowserSite, IDocHostShowUI
+    protected class ShowUiWebBrowserSite : WebBrowserSite, IDocHostShowUI
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ShowUIWebBrowserSite
+        /// ShowUiWebBrowserSite
         ///
         /// <summary>
         /// Initializes a new instance of the ShowUIWebBrowserSite class
@@ -46,7 +46,7 @@ partial class WebControl
         /// <param name="host">Host control.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ShowUIWebBrowserSite(WebControl host) : base(host) => Host = host;
+        public ShowUiWebBrowserSite(WebControl host) : base(host) => Host = host;
 
         #endregion
 
@@ -61,7 +61,7 @@ partial class WebControl
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public WebControl Host { get; private set; }
+        public WebControl Host { get; }
 
         #endregion
 
@@ -92,7 +92,7 @@ partial class WebControl
             };
             Host.OnMessageShowing(args);
             result = (int)args.Value;
-            return (args.Value != DialogStatus.Empty) ? 0 : 1;
+            return args.Value != DialogStatus.Empty ? 0 : 1;
         }
 
         /* ----------------------------------------------------------------- */

@@ -59,6 +59,22 @@ public static class Logger
     /// Debug
     ///
     /// <summary>
+    /// Logs the specified message as Trace level.
+    /// </summary>
+    ///
+    /// <param name="message">Message to be output as log.</param>
+    /// <param name="path">Caller file path.</param>
+    /// <param name="n">Caller line number.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Trace(string message, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+        _source.Log(path, n, LogLevel.Trace, message);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Debug
+    ///
+    /// <summary>
     /// Logs the specified message as Debug level.
     /// </summary>
     ///

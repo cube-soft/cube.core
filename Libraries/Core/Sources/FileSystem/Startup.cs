@@ -167,17 +167,16 @@ public class Startup : ObservableBase
     /* --------------------------------------------------------------------- */
     public void Save(bool checkExists)
     {
-        bool isadd()
+        bool isset()
         {
             if (!Enabled) return false;
             if (!checkExists) return true;
-            if (!Source.HasValue()) return false;
-            return Io.Exists(Source);
+            return Source.HasValue() && Io.Exists(Source);
         }
 
         using var sk = Open(true);
         if (sk is null) return;
-        if (isadd()) sk.SetValue(Name, Command);
+        if (isset()) sk.SetValue(Name, Command);
         else sk.DeleteValue(Name, false);
     }
 

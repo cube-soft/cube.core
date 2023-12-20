@@ -58,6 +58,10 @@ public class SoftwareVersionComparer :
     /* --------------------------------------------------------------------- */
     public int Compare(SoftwareVersion x, SoftwareVersion y)
     {
+        if (x is null && y is null) return 0;
+        if (x is null) return -1;
+        if (y is null) return 1;
+
         var e0 = CompareValue(x.Prefix, y.Prefix);
         if (e0 != 0) return e0;
 
@@ -190,9 +194,12 @@ public class SoftwareVersionComparer :
     /// <returns>Hash code for the specified object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public int GetHashCode(object obj) =>
-        obj is SoftwareVersion v ? GetHashCode(v) :
-        obj is string s ? GetHashCode(new(s)) : obj.GetHashCode();
+    public int GetHashCode(object obj) => obj switch
+    {
+        SoftwareVersion v => GetHashCode(v),
+        string s          => GetHashCode(new(s)),
+        _                 => obj.GetHashCode()
+    };
 
     #endregion
 

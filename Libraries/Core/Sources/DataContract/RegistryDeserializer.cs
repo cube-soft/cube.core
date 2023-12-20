@@ -114,6 +114,8 @@ internal class RegistryDeserializer
         if (type.GetArrayRank() != 1) return null;
 
         var elem = type.GetElementType();
+        if (elem is null) return null;
+
         var obj  = GetListCore(elem, src);
         var dest = Array.CreateInstance(elem, obj.Count);
         obj.CopyTo(dest, 0);
@@ -133,7 +135,7 @@ internal class RegistryDeserializer
     private IList GetList(Type type, RegistryKey src)
     {
         var ga = type.GetGenericArguments();
-        return (ga is not null && ga.Length == 1) ? GetListCore(ga[0], src) : null;
+        return ga.Length == 1 ? GetListCore(ga[0], src) : null;
     }
 
     /* --------------------------------------------------------------------- */
@@ -146,14 +148,15 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private IList GetListCore(Type elementType, RegistryKey src)
+    private IList GetListCore(Type type, RegistryKey src)
     {
         var dest = Activator.CreateInstance(typeof(List<>)
-                            .MakeGenericType(elementType)) as IList;
+                            .MakeGenericType(type)) as IList;
+        if (dest is null) return null;
 
         foreach (var name in src.GetSubKeyNames())
         {
-            var obj = OpenGet(src, name, e => GetListElement(elementType, e));
+            var obj = OpenGet(src, name, e => GetListElement(type, e));
             if (obj is not null) _ = dest.Add(obj);
         }
 

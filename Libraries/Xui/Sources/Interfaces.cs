@@ -97,7 +97,7 @@ public interface IElement : INotifyPropertyChanged
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public interface IElement<T> : IElement, IValue<T> { }
+public interface IElement<T> : IElement, IValue<T>;
 
 #endregion
 

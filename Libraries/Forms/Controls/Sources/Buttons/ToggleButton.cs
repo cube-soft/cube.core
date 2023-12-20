@@ -45,7 +45,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     public ToggleButton()
     {
         _painter = new ToggleButtonPainter(this);
-        _painter.Style.PropertyChanged += (s, e) => Invalidate();
+        _painter.Style.PropertyChanged += (_, _) => Invalidate();
     }
 
     #endregion
@@ -91,8 +91,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /// ShowFocusCues
     ///
     /// <summary>
-    /// Gets the value indicating whether or not to display a border
-    /// when focusing.
+    /// Gets the value indicating whether to display a border when focusing.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -332,7 +331,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /// CheckAlign
     ///
     /// <summary>
-    /// Gets or sets the location of the check box portion.
+    /// Gets or sets the location of the checkbox portion.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

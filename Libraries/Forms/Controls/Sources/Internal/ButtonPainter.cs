@@ -54,11 +54,11 @@ internal class ButtonPainter
         Source  = src;
         Content = src?.GetType().Name;
 
-        Source.Paint      += (s, e) => OnPaint(e);
-        Source.MouseEnter += (s, e) => OnMouseEnter(e);
-        Source.MouseLeave += (s, e) => OnMouseLeave(e);
-        Source.MouseDown  += (s, e) => OnMouseDown(e);
-        Source.MouseUp    += (s, e) => OnMouseUp(e);
+        Source.Paint      += (_, e) => OnPaint(e);
+        Source.MouseEnter += (_, e) => OnMouseEnter(e);
+        Source.MouseLeave += (_, e) => OnMouseLeave(e);
+        Source.MouseDown  += (_, e) => OnMouseDown(e);
+        Source.MouseUp    += (_, e) => OnMouseUp(e);
 
         DisableSystemStyle();
     }
@@ -76,7 +76,7 @@ internal class ButtonPainter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public System.Windows.Forms.ButtonBase Source { get; private set; } = null;
+    public System.Windows.Forms.ButtonBase Source { get; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -98,7 +98,7 @@ internal class ButtonPainter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public ButtonStyle Style { get; } = new ButtonStyle();
+    public ButtonStyle Style { get; } = new();
 
     /* --------------------------------------------------------------------- */
     ///

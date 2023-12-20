@@ -29,7 +29,7 @@ using System.Collections.Generic;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public delegate T Getter<T>();
+public delegate T Getter<out T>();
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -40,7 +40,7 @@ public delegate T Getter<T>();
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public delegate void Setter<T>(T value);
+public delegate void Setter<in T>(T value);
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -119,7 +119,7 @@ public class Accessor<T>
     ///
     /* --------------------------------------------------------------------- */
     public Accessor(Getter<T> getter) :
-        this(getter, e => throw new InvalidOperationException(nameof(Set))) { }
+        this(getter, _ => throw new InvalidOperationException(nameof(Set))) { }
 
     /* --------------------------------------------------------------------- */
     ///

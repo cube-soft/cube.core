@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>8.5.1</Version>
+        <Version>8.6.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>Private package to test Cube.* projects.</Description>
@@ -27,7 +27,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
         <ProjectReference Include="..\NLog\Cube.Logging.NLog.csproj" />
-        <PackageReference Include="NUnit" Version="3.13.3" />
+        <PackageReference Include="NUnit" Version="3.14.0" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\..\Icon.png" Pack="true" PackagePath="images" />

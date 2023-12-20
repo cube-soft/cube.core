@@ -81,7 +81,7 @@ internal static class NativeMethods
     ///
     /* --------------------------------------------------------------------- */
     [DllImport(LibName)]
-    public static extern int CoInternetSetFeatureEnabled(int FeatureEntry, int dwFlags, bool fEnable);
+    public static extern int CoInternetSetFeatureEnabled(int featureEntry, int dwFlags, bool fEnable);
 
     #endregion
 

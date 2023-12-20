@@ -36,37 +36,39 @@ public static class Query
     /// NewMessage
     ///
     /// <summary>
-    /// Creates a new instance of the QueryMessage(T, T) class with
-    /// the specified query.
+    /// Creates a new instance of the QueryMessage(TValue, TValue) class
+    /// with the specified query.
     /// </summary>
     ///
-    /// <typeparam name="T">type of source and result.</typeparam>
+    /// <typeparam name="TValue">type of source and result.</typeparam>
     ///
     /// <param name="src">Source information.</param>
     ///
-    /// <returns>QueryMessage(T, T) object.</returns>
+    /// <returns>QueryMessage(TValue, TValue) object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static QueryMessage<T, T> NewMessage<T>(T src) => NewMessage<T, T>(src);
+    public static QueryMessage<TValue, TValue> NewMessage<TValue>(TValue src) =>
+        NewMessage<TValue, TValue>(src);
 
     /* --------------------------------------------------------------------- */
     ///
     /// NewMessage
     ///
     /// <summary>
-    /// Creates a new instance of the QueryMessage(T, U) class with
-    /// the specified query.
+    /// Creates a new instance of the QueryMessage(TSource, TValue) class
+    /// with the specified query.
     /// </summary>
     ///
-    /// <typeparam name="T">type of query source.</typeparam>
-    /// <typeparam name="U">type of result value.</typeparam>
+    /// <typeparam name="TSource">type of query source.</typeparam>
+    /// <typeparam name="TValue">type of result value.</typeparam>
     ///
     /// <param name="src">Source information.</param>
     ///
-    /// <returns>QueryMessage(T, U) object.</returns>
+    /// <returns>QueryMessage(TSource, TValue) object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static QueryMessage<T, U> NewMessage<T, U>(T src) => NewMessage(src, default(U));
+    public static QueryMessage<TSource, TValue> NewMessage<TSource, TValue>(TSource src) =>
+        NewMessage(src, default(TValue));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -77,8 +79,8 @@ public static class Query
     /// the specified query and default value.
     /// </summary>
     ///
-    /// <typeparam name="T">type of query source.</typeparam>
-    /// <typeparam name="U">type of result value.</typeparam>
+    /// <typeparam name="TSource">type of query source.</typeparam>
+    /// <typeparam name="TValue">type of result value.</typeparam>
     ///
     /// <param name="src">Source information.</param>
     /// <param name="value">Default value of the message.</param>
@@ -86,7 +88,8 @@ public static class Query
     /// <returns>QueryMessage(T, U) object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static QueryMessage<T, U> NewMessage<T, U>(T src, U value) => new(src) { Value = value };
+    public static QueryMessage<TSource, TValue> NewMessage<TSource, TValue>(TSource src, TValue value) =>
+        new(src) { Value = value };
 
     #endregion
 }

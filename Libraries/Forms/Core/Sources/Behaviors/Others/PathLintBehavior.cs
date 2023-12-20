@@ -158,14 +158,13 @@ public class PathLintBehavior : DisposableBase
     {
         var index = _source.Text.IndexOfAny(InvalidChars);
         if (index == 1 && _source.Text[1] == ':') index = _source.Text.IndexOfAny(InvalidChars, 2);
-        if (index >= 0)
-        {
-            var pos = _source.SelectionStart;
-            var str = InvalidChars.Select(e => e.ToString()).Aggregate((x, y) => $"{x} {y}");
-            _source.Text = _source.Text.Remove(index, 1);
-            _source.SelectionStart = Math.Max(pos - 1, 0);
-            _tips.Show(str, _source, 3000);
-        }
+        if (index < 0) return;
+
+        var pos = _source.SelectionStart;
+        var str = InvalidChars.Select(c => c.ToString()).Aggregate((x, y) => $"{x} {y}");
+        _source.Text = _source.Text.Remove(index, 1);
+        _source.SelectionStart = Math.Max(pos - 1, 0);
+        _tips.Show(str, _source, 3000);
     }
 
     /* --------------------------------------------------------------------- */

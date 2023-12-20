@@ -41,7 +41,7 @@ public abstract class FileFixture : SourceFileFixture
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected FileFixture() : base()
+    protected FileFixture()
     {
         Name    = GetType().FullName;
         Results = Io.Combine(Root, nameof(Results), Name);

@@ -177,7 +177,7 @@ public static class Methods
         SynchronizationContext context)
     {
         var dest = new BindingSource { DataSource = src };
-        src.CollectionChanged += (s, e) => context.Send(_ => dest.ResetBindings(false), null);
+        src.CollectionChanged += (_, _) => context.Send(_ => dest.ResetBindings(false), null);
         return dest;
     }
 

@@ -109,9 +109,9 @@ public class FontButton : Button
     /// FontMustExist
     ///
     /// <summary>
-    /// Gets or sets a value indicating whether or not an error message
-    /// will be displayed in the dialog box if the user tries to select
-    /// a non-existent font or style.
+    /// Gets or sets a value indicating whether an error message will be
+    /// displayed in the dialog box if the user tries to select a
+    /// non-existent font or style.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -264,7 +264,7 @@ public class FontButton : Button
             ShowEffects         = ShowEffects,
         };
 
-        void handler(object s, EventArgs e) => OnApply(e);
+        void handler(object s, EventArgs ev) => OnApply(ev);
         dialog.Apply += handler;
         var result = dialog.ShowDialog();
         dialog.Apply -= handler;

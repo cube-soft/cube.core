@@ -68,7 +68,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static string Join<T>(this IEnumerable<T> src, string separator, Func<T, string> formatter) =>
-        src.Select(e => formatter(e)).Join(separator);
+        src.Select(formatter).Join(separator);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -85,8 +85,11 @@ public static class Methods
     /// <returns>Combined string.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string Join(this IEnumerable<string> src, string separator) =>
-        src.Any() ? src.Aggregate((x, y) => x + separator + y) : string.Empty;
+    public static string Join(this IEnumerable<string> src, string separator)
+    {
+        var cvt = src as string[] ?? src.ToArray();
+        return cvt.Any() ? cvt.Aggregate((x, y) => x + separator + y) : string.Empty;
+    }
 
     #endregion
 
@@ -94,7 +97,7 @@ public static class Methods
 
     /* --------------------------------------------------------------------- */
     ///
-    /// AddOrSet(T, U)
+    /// AddOrSet
     ///
     /// <summary>
     /// Adds or sets the specified key-value pair.
@@ -105,12 +108,12 @@ public static class Methods
     /// <param name="value">Value element to be set.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void AddOrSet<T, U>(this IDictionary<T, U> src, T key, U value) =>
-        src.AddOrSet(key, value, (x, y) => y);
+    public static void AddOrSet<TKey, TValue>(this IDictionary<TKey, TValue> src, TKey key, TValue value) =>
+        src.AddOrSet(key, value, (_, y) => y);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// AddOrSet(T, U)
+    /// AddOrSet
     ///
     /// <summary>
     /// Adds or sets the specified key-value pair.
@@ -124,7 +127,7 @@ public static class Methods
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void AddOrSet<T, U>(this IDictionary<T, U> src, T key, U value, Func<U, U, U> selector)
+    public static void AddOrSet<TKey, TValue>(this IDictionary<TKey, TValue> src, TKey key, TValue value, Func<TValue, TValue, TValue> selector)
     {
         if (src.TryGetValue(key, out var current)) src[key] = selector(current, value);
         else src.Add(key, value);

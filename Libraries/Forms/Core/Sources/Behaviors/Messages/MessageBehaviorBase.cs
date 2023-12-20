@@ -85,8 +85,8 @@ public abstract class MessageBehaviorBase<TMessage> : DisposableBase
     /// Dispose
     ///
     /// <summary>
-    /// Releases the unmanaged resources used by the object and
-    /// optionally releases the managed resources.
+    /// Releases the unmanaged resources used by the object and optionally
+    /// releases the managed resources.
     /// </summary>
     ///
     /// <param name="disposing">

@@ -46,7 +46,7 @@ internal static class NativeMethods
     public static extern IntPtr SHGetFileInfo(
         string pszPath,
         uint dwFileAttributes,
-        ref ShFileIinfo psfi,
+        ref ShFileInfo psfi,
         uint cbFileInfo,
         uint uFlags
     );

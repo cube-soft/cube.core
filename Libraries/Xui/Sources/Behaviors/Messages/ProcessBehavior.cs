@@ -44,7 +44,11 @@ public class ProcessBehavior : MessageBehavior<ProcessMessage>
     {
         try
         {
-            var proc = Process.Start(e.Value);
+            var proc = Process.Start(new ProcessStartInfo
+            {
+                FileName = e.Value,
+                UseShellExecute = true,
+            });
             e.Cancel = proc is null;
         }
         catch (Exception err)

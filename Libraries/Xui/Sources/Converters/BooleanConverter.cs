@@ -187,7 +187,7 @@ public class BooleanToValue<T> : SimplexConverter
     ///
     /* --------------------------------------------------------------------- */
     public BooleanToValue(T positive, T negative) :
-        this(positive, negative, (e, __, ___, ____) => (bool)e) { }
+        this(positive, negative, (e, _, _, _) => (bool)e) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -206,7 +206,7 @@ public class BooleanToValue<T> : SimplexConverter
     ///
     /* --------------------------------------------------------------------- */
     public BooleanToValue(T positive, T negative, Func<object, bool> predicate) :
-        this(positive, negative, (e, __, ___, ____) => predicate(e)) { }
+        this(positive, negative, (e, _, _, _) => predicate(e)) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -226,7 +226,7 @@ public class BooleanToValue<T> : SimplexConverter
     /* --------------------------------------------------------------------- */
     public BooleanToValue(T positive, T negative,
         Func<object, object, bool> func) :
-        this(positive, negative, (e, __, p, ___) => func(e, p)) { }
+        this(positive, negative, (e, _, p, _) => func(e, p)) { }
 
     /* --------------------------------------------------------------------- */
     ///

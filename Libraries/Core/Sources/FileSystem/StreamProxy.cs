@@ -236,6 +236,6 @@ public sealed class StreamProxy : Stream
     #region Fields
     private readonly bool _leave;
     private Stream _source;
-    private bool _disposed = false;
+    private bool _disposed;
     #endregion
 }

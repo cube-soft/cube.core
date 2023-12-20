@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Logging.NLog;
+
 using Cube.Text.Extensions;
 using System;
-
-namespace Cube.Logging.NLog;
 
 /* ------------------------------------------------------------------------- */
 ///

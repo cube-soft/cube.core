@@ -51,7 +51,7 @@ public class EventBehavior : DisposableBase
     ///
     /* --------------------------------------------------------------------- */
     public EventBehavior(object src, string name, Action action) :
-        this(src, name, new EventHandler((s, e) => action())) { }
+        this(src, name, new EventHandler((_, _) => action())) { }
 
     /* --------------------------------------------------------------------- */
     ///

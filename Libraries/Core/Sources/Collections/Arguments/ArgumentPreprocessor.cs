@@ -85,7 +85,7 @@ public class PosixArgumentPreprocessor : IArgumentPreprocessor
     ///
     /* --------------------------------------------------------------------- */
     public IEnumerable<ArgumentToken> Invoke(IEnumerable<string> src) =>
-        src.SelectMany(e => Convert(e));
+        src.SelectMany(Convert);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -167,7 +167,7 @@ public class DosArgumentPreprocessor : IArgumentPreprocessor
     ///
     /* --------------------------------------------------------------------- */
     public IEnumerable<ArgumentToken> Invoke(IEnumerable<string> src) =>
-        src.Select(e => Convert(e));
+        src.Select(Convert);
 
     /* --------------------------------------------------------------------- */
     ///

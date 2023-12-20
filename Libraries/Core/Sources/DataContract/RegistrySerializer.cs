@@ -25,7 +25,7 @@ using Microsoft.Win32;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// RegistrySserializer
+/// RegistrySerializer
 ///
 /// <summary>
 /// Provides functionality to serialize to the registry.
@@ -127,7 +127,8 @@ internal class RegistrySerializer
         foreach (var name in dest.GetSubKeyNames()) dest.DeleteSubKeyTree(name);
         for (var i = 0; i < src.Length; ++i)
         {
-            Create(dest, i.ToString($"D{n}"), e => SetListElement(t, e, src.GetValue(i)));
+            var capture = i;
+            Create(dest, i.ToString($"D{n}"), e => SetListElement(t, e, src.GetValue(capture)));
         }
     }
 
@@ -143,14 +144,15 @@ internal class RegistrySerializer
     private void SetList(Type type, RegistryKey dest, IList src)
     {
         var ga = type.GetGenericArguments();
-        if (ga is null || ga.Length != 1) return;
+        if (ga.Length != 1) return;
 
         var n = Digit(src.Count);
 
         foreach (var name in dest.GetSubKeyNames()) dest.DeleteSubKeyTree(name);
         for (var i = 0; i < src.Count; ++i)
         {
-            Create(dest, i.ToString($"D{n}"), e => SetListElement(ga[0], e, src[i]));
+            var capture = i;
+            Create(dest, i.ToString($"D{n}"), e => SetListElement(ga[0], e, src[capture]));
         }
     }
 

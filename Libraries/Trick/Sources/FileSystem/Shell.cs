@@ -49,7 +49,7 @@ public static class Shell
     {
         if (!src.HasValue()) return string.Empty;
 
-        var dest   = new ShFileIinfo();
+        var dest   = new ShFileInfo();
         var status = Shell32.NativeMethods.SHGetFileInfo(
             src,
             0x0080, // FILE_ATTRIBUTE_NORMAL
@@ -58,6 +58,6 @@ public static class Shell
             0x0410 // SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES
         );
 
-        return (status != IntPtr.Zero) ? dest.szTypeName : string.Empty;
+        return status != IntPtr.Zero ? dest.szTypeName : string.Empty;
     }
 }

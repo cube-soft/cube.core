@@ -25,6 +25,9 @@ namespace Cube.Forms.Controls;
 /// Specifies the version of the WebControl rendering engine.
 /// </summary>
 ///
+/// <remarks>
+/// ReSharper disable InconsistentNaming
+/// </remarks>
 /* ------------------------------------------------------------------------- */
 public enum WebControlVersion
 {

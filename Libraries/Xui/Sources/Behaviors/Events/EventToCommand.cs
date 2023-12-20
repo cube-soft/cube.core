@@ -47,9 +47,9 @@ public class EventToCommand : CommandBehavior<FrameworkElement>
     /* --------------------------------------------------------------------- */
     public EventToCommand()
     {
-        _handler = new RoutedEventHandler((s, e) => {
+        _handler = (_, _) => {
             if (Command?.CanExecute() ?? false) Command.Execute();
-        });
+        };
     }
 
     #endregion

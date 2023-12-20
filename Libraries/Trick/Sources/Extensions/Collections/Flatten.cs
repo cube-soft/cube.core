@@ -49,7 +49,7 @@ public static class FlattenMethods
     ///
     /* --------------------------------------------------------------------- */
     public static IEnumerable<T> Flatten<T>(this IEnumerable<T> src, Func<T, IEnumerable<T>> func) =>
-        src.Flatten((e, s) => func(e));
+        src.Flatten((e, _) => func(e));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -57,7 +57,7 @@ public static class FlattenMethods
     ///
     /// <summary>
     /// Convert a tree structure to a one-dimensional sequence with
-    /// breadth first search..
+    /// breadth first search.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

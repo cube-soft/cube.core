@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Forms;
 
-using System;
 using System.Runtime.InteropServices;
 
 /* ------------------------------------------------------------------------- */
@@ -43,14 +42,14 @@ internal interface DWebBrowserEvents2
     ///
     /// <summary>
     /// Fires before navigation occurs in the given object (on either
-    /// a window element or a frameset element).
+    /// a window element or a frame set element).
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [DispId(250)]
     void BeforeNavigate2(
         [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
-        [In] ref object URL,
+        [In] ref object url,
         [In] ref object flags,
         [In] ref object targetFrameName,
         [In] ref object postData,
@@ -73,8 +72,8 @@ internal interface DWebBrowserEvents2
         [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
         [In, Out] ref bool cancel,
         [In] ref object flags,
-        [In] ref object URLContext,
-        [In] ref object URL
+        [In] ref object context,
+        [In] ref object url
     );
 
     /* --------------------------------------------------------------------- */
@@ -89,7 +88,7 @@ internal interface DWebBrowserEvents2
     [DispId(271)]
     void NavigateError(
         [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
-        [In] ref object URL,
+        [In] ref object url,
         [In] ref object frame,
         [In] ref object statusCode,
         [In, Out] ref bool cancel

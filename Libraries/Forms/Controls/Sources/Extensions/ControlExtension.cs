@@ -121,7 +121,7 @@ public static class Methods
             if (mi is null && t.BaseType is not null) mi = method(t.BaseType);
             return mi;
         }
-        return method(obj.GetType())?.Invoke(obj, new object[0]) as EventHandlerList;
+        return method(obj.GetType())?.Invoke(obj, Array.Empty<object>()) as EventHandlerList;
     }
 
     /* --------------------------------------------------------------------- */

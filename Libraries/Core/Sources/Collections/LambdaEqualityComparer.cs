@@ -48,7 +48,7 @@ public class LambdaEqualityComparer<T> : EqualityComparer<T>
     /// <param name="src">Function to compare.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public LambdaEqualityComparer(Func<T, T, bool> src) : this(src, e => 0) { }
+    public LambdaEqualityComparer(Func<T, T, bool> src) : this(src, _ => 0) { }
 
     /* --------------------------------------------------------------------- */
     ///
