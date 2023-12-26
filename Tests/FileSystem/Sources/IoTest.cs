@@ -355,7 +355,7 @@ class IoTest : FileFixture
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Move_Throws
+    /// Move_IOException
     ///
     /// <summary>
     /// Confirms the exception when moving files.
@@ -363,12 +363,12 @@ class IoTest : FileFixture
     ///
     /* --------------------------------------------------------------------- */
     [TestCaseSource(nameof(TestCases))]
-    public void Move_Throws(int id, IoController controller)
+    public void Move_IOException(int id, IoController controller)
     {
         Io.Configure(controller);
 
         var src  = GetSource("Sample.txt");
-        var dest = Get($"{nameof(Move_Throws)}-{id}.txt");
+        var dest = Get($"{nameof(Move_IOException)}-{id}.txt");
 
         Io.Copy(src, dest, true);
         Assert.That(Io.Exists(dest), Is.True);
@@ -383,7 +383,26 @@ class IoTest : FileFixture
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Open_Throws
+    /// Move_FileNotFoundException
+    ///
+    /// <summary>
+    /// Tests when a FileNotFoundException exception occurs.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCaseSource(nameof(TestCases))]
+    public void Move_FileNotFoundException(int id, IoController controller)
+    {
+        Io.Configure(controller);
+
+        var src  = GetSource("FileNotFound.txt");
+        var dest = Get($"{nameof(Move_FileNotFoundException)}-{id}.txt");
+        Assert.That(() => Io.Move(src, dest, true), Throws.TypeOf<System.IO.FileNotFoundException>());
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Open_FileNotFoundException
     ///
     /// <summary>
     /// Confirms the exception when opening a file.
@@ -391,10 +410,10 @@ class IoTest : FileFixture
     ///
     /* --------------------------------------------------------------------- */
     [TestCaseSource(nameof(TestCases))]
-    public void Open_Throws(int id, IoController controller)
+    public void Open_FileNotFoundException(int id, IoController controller)
     {
         Io.Configure(controller);
-        var src = Get($"{nameof(Open_Throws)}-{id}.txt");
+        var src = Get($"{nameof(Open_FileNotFoundException)}-{id}.txt");
         Assert.That(() => Io.Open(src), Throws.TypeOf<System.IO.FileNotFoundException>());
     }
 
