@@ -148,9 +148,9 @@ class IoTest : FileFixture
 
         var empty = Get("Empty");
         Io.CreateDirectory(empty);
-        var result = Io.GetFiles(empty);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Count(), Is.EqualTo(0));
+        var dest = Io.GetFiles(empty).ToArray();
+        Assert.That(dest, Is.Not.Null);
+        Assert.That(dest.Count, Is.EqualTo(0));
     }
 
     /* --------------------------------------------------------------------- */
@@ -171,9 +171,9 @@ class IoTest : FileFixture
 
         var empty = Get("Empty");
         Io.CreateDirectory(empty);
-        var result = Io.GetDirectories(empty);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Count(), Is.EqualTo(0));
+        var dest = Io.GetDirectories(empty).ToArray();
+        Assert.That(dest, Is.Not.Null);
+        Assert.That(dest.Count, Is.EqualTo(0));
     }
 
     /* --------------------------------------------------------------------- */
@@ -304,20 +304,43 @@ class IoTest : FileFixture
     {
         Io.Configure(controller);
 
-        var name = "Sample.txt";
-        var src  = Io.Combine(Results, name);
+        var e0   = new Entity(GetSource("Sample.txt"));
+        var src  = Io.Combine(Results, e0.Name);
         var dest = Io.Combine(Results, $"{nameof(Move)}-{id}.txt");
 
-        Io.Copy(GetSource(name), src, false);
-        Io.Copy(src, dest, false);
-        Io.SetAttributes(src, System.IO.FileAttributes.ReadOnly);
-        Io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
-        Assert.That(Io.Exists(src), Is.True);
-        Assert.That(Io.Exists(dest), Is.True);
+        // Step 0
+        Io.Delete(src);
+        Io.Delete(dest);
+        Assert.That(Io.Exists(src), Is.False);
+        Assert.That(Io.Exists(dest), Is.False);
 
+        // Step 1
+        Io.Copy(e0.FullName, src, false);
+        Io.SetAttributes(src, System.IO.FileAttributes.ReadOnly);
+        var e1 = new Entity(src);
+        Assert.That(e1.Exists, Is.True);
+        Assert.That(e1.CreationTime, Is.EqualTo(e0.CreationTime));
+        Assert.That(e1.LastWriteTime, Is.EqualTo(e0.LastWriteTime));
+        Assert.That(e1.LastAccessTime, Is.Not.EqualTo(e0.LastAccessTime));
+
+        // Step 2
+        Io.Copy(src, dest, false);
+        Io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
+        var e2 = new Entity(dest);
+        Assert.That(e2.Exists, Is.True);
+        Assert.That(e2.CreationTime, Is.EqualTo(e0.CreationTime));
+        Assert.That(e2.LastWriteTime, Is.EqualTo(e0.LastWriteTime));
+        Assert.That(e2.LastAccessTime, Is.Not.EqualTo(e0.LastAccessTime));
+
+        // Step 3
         Io.Move(src, dest, true);
         Assert.That(Io.Exists(src), Is.False);
         Assert.That(Io.Exists(dest), Is.True);
+        var e3 = new Entity(dest);
+        Assert.That(e3.Exists, Is.True);
+        Assert.That(e3.CreationTime, Is.EqualTo(e0.CreationTime));
+        Assert.That(e3.LastWriteTime, Is.EqualTo(e0.LastWriteTime));
+        Assert.That(e3.LastAccessTime, Is.Not.EqualTo(e0.LastAccessTime));
     }
 
     /* --------------------------------------------------------------------- */
