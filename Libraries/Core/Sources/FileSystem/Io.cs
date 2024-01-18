@@ -652,28 +652,24 @@ public static class Io
             }
             catch (UnauthorizedAccessException err)
             {
-                Logger.Debug(err.Message);
+                Logger.Warn(err.Message);
                 Logger.Try(() => SetAttributes(dest, unlock));
                 Logger.Try(() => _controller.SetCreationTime(dest, e.CreationTime));
                 Logger.Try(() => _controller.SetLastWriteTime(dest, e.LastWriteTime));
-                Logger.Try(() => SetAttributes(dest, e.Attributes));
             }
             catch (Exception err) { Logger.Warn(err); }
         }
         catch (UnauthorizedAccessException err)
         {
-            Logger.Debug(err.Message);
+            Logger.Warn(err.Message);
             if (Exists(dest)) SetAttributes(dest, unlock);
-
-            try
-            {
-                action(src, dest);
-                Logger.Try(() => SetAttributes(dest, unlock));
-                Logger.Try(() => _controller.SetCreationTime(dest, e.CreationTime));
-                Logger.Try(() => _controller.SetLastWriteTime(dest, e.LastWriteTime));
-            }
-            finally { if (Exists(dest)) SetAttributes(dest, e.Attributes); }
+            action(src, dest);
+            Logger.Try(() => SetAttributes(dest, unlock));
+            Logger.Try(() => _controller.SetCreationTime(dest, e.CreationTime));
+            Logger.Try(() => _controller.SetLastWriteTime(dest, e.LastWriteTime));
         }
+
+        if (Exists(dest)) Logger.Try(() => SetAttributes(dest, e.Attributes));
     }
 
     #endregion
