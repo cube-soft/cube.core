@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>8.6.0</version>
+        <version>8.6.1</version>
         <id>Cube.Private.Tests</id>
         <title>Cube.Private.Tests</title>
         <authors>clown,cube-soft</authors>
@@ -15,18 +15,18 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net6.0-windows7.0">
-                <dependency id="Cube.Core" version="8.6.0" />
-                <dependency id="Cube.Logging.NLog" version="8.6.0" />
+                <dependency id="Cube.Core" version="8.6.1" />
+                <dependency id="Cube.Logging.NLog" version="8.6.1" />
                 <dependency id="NUnit" version="3.14.0" />
             </group>
             <group targetFramework="net46">
-                <dependency id="Cube.Core" version="8.6.0" />
-                <dependency id="Cube.Logging.NLog" version="8.6.0" />
+                <dependency id="Cube.Core" version="8.6.1" />
+                <dependency id="Cube.Logging.NLog" version="8.6.1" />
                 <dependency id="NUnit" version="3.14.0" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.Core" version="8.6.0" />
-                <dependency id="Cube.Logging.NLog" version="8.6.0" />
+                <dependency id="Cube.Core" version="8.6.1" />
+                <dependency id="Cube.Logging.NLog" version="8.6.1" />
                 <dependency id="NUnit" version="3.14.0" />
             </group>
         </dependencies>
