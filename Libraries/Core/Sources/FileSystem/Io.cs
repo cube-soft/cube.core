@@ -498,11 +498,10 @@ public static class Io
     private static void CreateDirectory(string path, Entity src)
     {
         CreateDirectory(path);
-        SetAttributes(path, FileAttributes.Normal | FileAttributes.Directory);
+        Logger.Try(() => SetAttributes(path, FileAttributes.Normal | FileAttributes.Directory));
         Logger.Try(() => _controller.SetCreationTime(path, src.CreationTime));
         Logger.Try(() => _controller.SetLastWriteTime(path, src.LastWriteTime));
-        Logger.Try(() => _controller.SetLastAccessTime(path, src.LastAccessTime));
-        SetAttributes(path, src.Attributes);
+        Logger.Try(() => SetAttributes(path, src.Attributes));
     }
 
     /* --------------------------------------------------------------------- */
@@ -532,11 +531,15 @@ public static class Io
     {
         if (!Exists(path)) return;
 
-        var e = new Entity(path);
-        SetAttributes(path, GetUnlockAttributes(e.Attributes));
-
         try { setter(path); }
-        finally { SetAttributes(path, e.Attributes); }
+        catch (UnauthorizedAccessException err)
+        {
+            Logger.Debug(err.Message);
+            var e = new Entity(path);
+            SetAttributes(path, GetUnlockAttributes(e.Attributes));
+            try { setter(path); }
+            finally { SetAttributes(path, e.Attributes); }
+        }
     }
 
     /* --------------------------------------------------------------------- */
@@ -639,16 +642,35 @@ public static class Io
         var e = new Entity(src);
         var unlock = GetUnlockAttributes(e.Attributes);
 
-        if (Exists(dest)) SetAttributes(dest, unlock);
-
         try
         {
             action(src, dest);
-            SetAttributes(dest, unlock);
+
+            try
+            {
+                _controller.SetCreationTime(dest, e.CreationTime);
+                _controller.SetLastWriteTime(dest, e.LastWriteTime);
+            }
+            catch (UnauthorizedAccessException err)
+            {
+                Logger.Warn(err.Message);
+                Logger.Try(() => SetAttributes(dest, unlock));
+                Logger.Try(() => _controller.SetCreationTime(dest, e.CreationTime));
+                Logger.Try(() => _controller.SetLastWriteTime(dest, e.LastWriteTime));
+            }
+            catch (Exception err) { Logger.Warn(err); }
+        }
+        catch (UnauthorizedAccessException err)
+        {
+            Logger.Warn(err.Message);
+            if (Exists(dest)) SetAttributes(dest, unlock);
+            action(src, dest);
+            Logger.Try(() => SetAttributes(dest, unlock));
             Logger.Try(() => _controller.SetCreationTime(dest, e.CreationTime));
             Logger.Try(() => _controller.SetLastWriteTime(dest, e.LastWriteTime));
         }
-        finally { if (Exists(dest)) SetAttributes(dest, e.Attributes); }
+
+        if (Exists(dest)) Logger.Try(() => SetAttributes(dest, e.Attributes));
     }
 
     #endregion
