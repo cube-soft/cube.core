@@ -17,7 +17,9 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Globalization;
 
+using System;
 using System.Globalization;
+using System.Linq;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -45,17 +47,13 @@ public static class LanguageExtension
     /// <returns>Language value.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Language ToLanguage(this CultureInfo src) => src.LCID switch
+    public static Language ToLanguage(this CultureInfo src)
     {
-        0x0407 => Language.German,
-        0x0409 => Language.English,
-        0x040A => Language.Spanish,
-        0x040C => Language.French,
-        0x0411 => Language.Japanese,
-        0x0419 => Language.Russian,
-        0x0816 => Language.Portuguese,
-        _ => Language.Unknown,
-    };
+        var dest = Enum.GetValues(typeof(Language))
+                       .Cast<Language>()
+                       .FirstOrDefault(e => (int)e == src.LCID);
+        return dest != Language.Auto ? dest : Language.Unknown;
+    }
 
     /* --------------------------------------------------------------------- */
     ///
