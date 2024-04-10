@@ -56,6 +56,7 @@ public abstract class LocalizableText : ILocalizable
     {
         _factory = factory;
         Fallback = fallback;
+        Exchange(Locale.GetDefaultLanguage());
     }
 
     #endregion
@@ -110,7 +111,7 @@ public abstract class LocalizableText : ILocalizable
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected virtual void OnReset(Language src) => Interlocked.Exchange(ref _current, _factory(src));
+    protected virtual void OnReset(Language src) => Exchange(src);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -127,6 +128,21 @@ public abstract class LocalizableText : ILocalizable
         if (Fallback is not null && Fallback.TryGetValue(name, out var s1)) return s1;
         return name;
     }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Exchange
+    ///
+    /// <summary>
+    /// Exchanges the new value with the specified language.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void Exchange(Language src) => Interlocked.Exchange(ref _current, _factory(src));
 
     #endregion
 
