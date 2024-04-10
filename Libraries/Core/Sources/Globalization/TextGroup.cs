@@ -28,4 +28,29 @@ using System.Collections.Generic;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class TextGroup : Dictionary<string, string> { }
+public class TextGroup : Dictionary<string, string>
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TextGroup
+    ///
+    /// <summary>
+    /// Initializes a new instance.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public TextGroup() { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TextGroup
+    ///
+    /// <summary>
+    /// Initializes a new instance with the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Text collection.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public TextGroup(Dictionary<string, string> src) : base(src) { }
+}
