@@ -56,7 +56,7 @@ public enum Language
     Hebrew = 0x040D,
     /// <summary>Hungarian (hu-HU)</summary>
     Hungarian = 0x040E,
-    /// <summary>Icelandi (is-IS)</summary>
+    /// <summary>Icelandic (is-IS)</summary>
     Icelandic = 0x040F,
     /// <summary>Italian (it-IT)</summary>
     Italian = 0x0410,

@@ -27,7 +27,7 @@ using Cube.Collections;
 /// Locale
 ///
 /// <summary>
-/// Provides the event trigger to changed the locale.
+/// Provides the event trigger to change the locale.
 /// </summary>
 ///
 /// <seealso href="https://msdn.microsoft.com/ja-jp/library/cc392381.aspx" />

@@ -68,9 +68,12 @@ public static class LanguageExtension
     /// <returns>CultureInfo object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static CultureInfo ToCultureInfo(this Language src) =>
-        src == Language.Unknown ? default :
-        src == Language.Auto    ? Locale.GetDefaultCultureInfo() : new((int)src);
+    public static CultureInfo ToCultureInfo(this Language src) => src switch
+    {
+        Language.Auto    => Locale.GetDefaultCultureInfo(),
+        Language.Unknown => default,
+        _ => new((int)src)
+    };
 
     #endregion
 }

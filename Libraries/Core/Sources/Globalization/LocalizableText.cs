@@ -83,7 +83,7 @@ public abstract class LocalizableText : ILocalizable
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected TextGroup Current { get => _current; }
+    protected TextGroup Current =>_current;
 
     #endregion
 
@@ -124,6 +124,7 @@ public abstract class LocalizableText : ILocalizable
     /* --------------------------------------------------------------------- */
     protected string Get([CallerMemberName] string name = null)
     {
+        if (name is null) return null;
         if (Current is not null && Current.TryGetValue(name, out var s0)) return s0;
         if (Fallback is not null && Fallback.TryGetValue(name, out var s1)) return s1;
         return name;
