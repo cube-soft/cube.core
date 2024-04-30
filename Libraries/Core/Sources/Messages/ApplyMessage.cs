@@ -27,16 +27,4 @@ namespace Cube;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public sealed class ApplyMessage : MessageBase
-{
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ApplyMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the ActivateMessage class.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public ApplyMessage() : base(nameof(ApplyMessage)) { }
-}
+public sealed class ApplyMessage() : MessageBase(nameof(ApplyMessage));

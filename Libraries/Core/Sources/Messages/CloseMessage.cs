@@ -26,16 +26,4 @@ namespace Cube;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public sealed class CloseMessage : MessageBase
-{
-    /* --------------------------------------------------------------------- */
-    ///
-    /// CloseMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the CloseMessage class.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public CloseMessage() : base(nameof(CloseMessage)) { }
-}
+public sealed class CloseMessage() : MessageBase(nameof(CloseMessage));

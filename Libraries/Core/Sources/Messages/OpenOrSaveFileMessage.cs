@@ -90,8 +90,7 @@ public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public IEnumerable<FileDialogFilter> Filters { get; set; } =
-        new[] { new FileDialogFilter("All Files", ".*") };
+    public IEnumerable<FileDialogFilter> Filters { get; set; } = [new FileDialogFilter("All Files", ".*")];
 
     #endregion
 
