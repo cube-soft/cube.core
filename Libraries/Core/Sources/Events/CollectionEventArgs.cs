@@ -83,27 +83,10 @@ public static class CollectionEventArgs
 /// Provides a value of type IEnumerable(T) to use for events.
 /// </summary>
 ///
+/// <param name="value">Value to use for the event.</param>
+///
 /* ------------------------------------------------------------------------- */
-public class CollectionEventArgs<T> : ValueEventArgs<IEnumerable<T>>
-{
-    #region Constructors
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// CollectionEventArgs(T)
-    ///
-    /// <summary>
-    /// Creates a new instance of the CollectionEventArgs class with
-    /// the specified value.
-    /// </summary>
-    ///
-    /// <param name="value">Value to use for the event.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public CollectionEventArgs(IEnumerable<T> value) : base(value) { }
-
-    #endregion
-}
+public class CollectionEventArgs<T>(IEnumerable<T> value) : ValueEventArgs<IEnumerable<T>>(value);
 
 #endregion
 
@@ -153,8 +136,7 @@ public class CollectionCancelEventArgs<T> : ValueCancelEventArgs<IEnumerable<T>>
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public CollectionCancelEventArgs(IEnumerable<T> value, bool cancel) :
-        base(value, cancel) { }
+    public CollectionCancelEventArgs(IEnumerable<T> value, bool cancel) : base(value, cancel) { }
 
     #endregion
 }
