@@ -109,6 +109,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
         if (name is null) return default;
 
         // ReSharper disable InconsistentlySynchronizedField
+        // ReSharper disable once InvertIf
         // for performance reasons.
         if (!_fields.ContainsKey(name))
         {
@@ -133,8 +134,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /// <returns>Value of the property.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected T Get<T>([CallerMemberName] string name = null) =>
-        Get(() => default(T), name);
+    protected T Get<T>([CallerMemberName] string name = null) => Get(() => default(T), name);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -244,7 +244,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     [OnDeserializing]
     private void OnDeserializing(StreamingContext context)
     {
-        if (_fields is null) _fields = new();
+        if (_fields is null) _fields = [];
         else _fields.Clear();
     }
 
@@ -268,6 +268,6 @@ public abstract class SerializableBase : INotifyPropertyChanged
     #endregion
 
     #region Fields
-    private Hashtable _fields = new();
+    private Hashtable _fields = [];
     #endregion
 }

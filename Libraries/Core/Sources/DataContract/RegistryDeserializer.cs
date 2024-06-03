@@ -66,7 +66,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private object Get(Type type, RegistryKey src)
+    private static object Get(Type type, RegistryKey src)
     {
         var dest = Activator.CreateInstance(type);
         if (src is null) return dest;
@@ -91,12 +91,12 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private object Get(Type type, RegistryKey src, string name)
+    private static object Get(Type type, RegistryKey src, string name)
     {
         if (type.IsGenericList()) return OpenGet(src, name, e => GetList(type, e));
-        else if (type.IsArray) return OpenGet(src, name, e => GetArray(type, e));
-        else if (type.IsObject()) return OpenGet(src, name, e => Get(type, e));
-        else return type.Parse(src.GetValue(name, null));
+        if (type.IsArray) return OpenGet(src, name, e => GetArray(type, e));
+        if (type.IsObject()) return OpenGet(src, name, e => Get(type, e));
+        return type.Parse(src.GetValue(name, null));
     }
 
     /* --------------------------------------------------------------------- */
@@ -109,7 +109,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private Array GetArray(Type type, RegistryKey src)
+    private static Array GetArray(Type type, RegistryKey src)
     {
         if (type.GetArrayRank() != 1) return null;
 
@@ -132,7 +132,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private IList GetList(Type type, RegistryKey src)
+    private static IList GetList(Type type, RegistryKey src)
     {
         var ga = type.GetGenericArguments();
         return ga.Length == 1 ? GetListCore(ga[0], src) : null;
@@ -148,7 +148,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private IList GetListCore(Type type, RegistryKey src)
+    private static IList GetListCore(Type type, RegistryKey src)
     {
         var dest = Activator.CreateInstance(typeof(List<>)
                             .MakeGenericType(type)) as IList;
@@ -173,7 +173,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private object GetListElement(Type type, RegistryKey src) =>
+    private static object GetListElement(Type type, RegistryKey src) =>
         type.IsObject() ? Get(type, src) : type.Parse(src.GetValue("", null));
 
     /* --------------------------------------------------------------------- */
@@ -186,7 +186,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private object OpenGet(RegistryKey src, string name, Func<RegistryKey, object> action)
+    private static object OpenGet(RegistryKey src, string name, Func<RegistryKey, object> action)
     {
         using var e = src.OpenSubKey(name, false);
         return e is not null ? action(e) : null;
