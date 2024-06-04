@@ -30,7 +30,7 @@ using NUnit.Framework;
 ///
 /* ------------------------------------------------------------------------- */
 [TestFixture]
-class SafePathTest
+internal class SafePathTest
 {
     #region Tests
 
@@ -86,8 +86,10 @@ class SafePathTest
     [TestCase(@"C:\C:\windows\dir\allow.txt", true,  ExpectedResult = @"C:\C_\windows\dir\allow.txt")]
     [TestCase(@"C:\windows\dir\deny.txt",     false, ExpectedResult = @"C_\windows\dir\deny.txt")]
     [TestCase(@"C:\C:\windows\dir\deny.txt",  false, ExpectedResult = @"C_\C_\windows\dir\deny.txt")]
-    public string Escape_DriveLetter(string src, bool drive) =>
-        new SafePath(src) { AllowDriveLetter = drive }.Value;
+    public string Escape_DriveLetter(string src, bool drive) => new SafePath(src)
+    {
+        AllowDriveLetter = drive
+    }.Value;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -100,12 +102,11 @@ class SafePathTest
     /* --------------------------------------------------------------------- */
     [TestCase(@"C:\windows\dir\.\allow.txt", true, ExpectedResult = @"C:\windows\dir\.\allow.txt")]
     [TestCase(@"C:\windows\dir\.\deny.txt", false, ExpectedResult = @"C:\windows\dir\deny.txt")]
-    public string Escape_CurrentDirectory(string src, bool allow) =>
-        new SafePath(src)
-        {
-            AllowInactivation     = false,
-            AllowCurrentDirectory = allow,
-        }.Value;
+    public string Escape_CurrentDirectory(string src, bool allow) => new SafePath(src)
+    {
+        AllowInactivation     = false,
+        AllowCurrentDirectory = allow,
+    }.Value;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -118,12 +119,11 @@ class SafePathTest
     /* --------------------------------------------------------------------- */
     [TestCase(@"C:\windows\dir\..\allow.txt", true, ExpectedResult = @"C:\windows\dir\..\allow.txt")]
     [TestCase(@"C:\windows\dir\..\deny.txt", false, ExpectedResult = @"C:\windows\dir\deny.txt")]
-    public string Escape_ParentDirectory(string src, bool allow) =>
-        new SafePath(src)
-        {
-            AllowInactivation    = false,
-            AllowParentDirectory = allow,
-        }.Value;
+    public string Escape_ParentDirectory(string src, bool allow) => new SafePath(src)
+    {
+        AllowInactivation    = false,
+        AllowParentDirectory = allow,
+    }.Value;
 
     /* --------------------------------------------------------------------- */
     ///
