@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT     = "Cube.Core"
-LATEST      = "v8"
+LATEST      = "v9"
 BRANCHES    = ["net47", "net60", "net35"]
 PLATFORMS   = ["Any CPU"]
 PACKAGES    = ["Libraries/Core/Cube.Core",
