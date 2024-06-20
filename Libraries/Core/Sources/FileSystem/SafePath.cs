@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.FileSystem;
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Collections;
@@ -34,27 +33,11 @@ using Cube.Text.Extensions;
 /// characters that cannot be used on Windows.
 /// </summary>
 ///
+/// <param name="src">Original path.</param>
+///
 /* ------------------------------------------------------------------------- */
-public sealed class SafePath
+public sealed class SafePath(string src)
 {
-    #region Constructors
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SafePath
-    ///
-    /// <summary>
-    /// Initializes a new instance of the SafePath class with the
-    /// specified path.
-    /// </summary>
-    ///
-    /// <param name="src">Original path.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public SafePath(string src) => Source = src;
-
-    #endregion
-
     #region Properties
 
     /* --------------------------------------------------------------------- */
@@ -66,7 +49,7 @@ public sealed class SafePath
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string Source { get; }
+    public string Source { get; } = src;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -188,7 +171,7 @@ public sealed class SafePath
     /// </summary>
     ///
     /// <remarks>
-    /// In deactivating a service function, ". and "..." are prohibited,
+    /// In deactivating a service function, "." and ".." are prohibited,
     /// so when set to true, these strings will be removed regardless of
     /// the AllowCurrentDirectory and AllowParentDirectory settings.
     /// Also, for implementation reasons, the AllowUnc setting is also
@@ -242,11 +225,11 @@ public sealed class SafePath
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static IEnumerable<char> SeparatorChars { get; } = new[]
-    {
+    public static IEnumerable<char> SeparatorChars { get; } =
+    [
         System.IO.Path.DirectorySeparatorChar,
         System.IO.Path.AltDirectorySeparatorChar,
-    };
+    ];
 
     /* --------------------------------------------------------------------- */
     ///
@@ -257,7 +240,7 @@ public sealed class SafePath
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static string CurrentDirectorySymbol { get; } = ".";
+    public static string CurrentDirectorySymbol => ".";
 
     /* --------------------------------------------------------------------- */
     ///
@@ -268,7 +251,7 @@ public sealed class SafePath
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static string ParentDirectorySymbol { get; } = "..";
+    public static string ParentDirectorySymbol => "..";
 
     /* --------------------------------------------------------------------- */
     ///
@@ -279,7 +262,7 @@ public sealed class SafePath
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static string UncSymbol { get; } = @"\\";
+    public static string UncSymbol => @"\\";
 
     /* --------------------------------------------------------------------- */
     ///
@@ -290,7 +273,7 @@ public sealed class SafePath
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static string InactivationSymbol { get; } = @"\\?\";
+    public static string InactivationSymbol => @"\\?\";
 
     /* --------------------------------------------------------------------- */
     ///
@@ -313,12 +296,12 @@ public sealed class SafePath
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static IEnumerable<string> ReservedNames { get; } = new[]
-    {
+    public static IEnumerable<string> ReservedNames { get; } =
+    [
         "CON",  "PRN",  "AUX",  "NUL",
         "COM0", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
         "LPT0", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
-    };
+    ];
 
     #endregion
 
@@ -333,12 +316,11 @@ public sealed class SafePath
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private bool Set<T>(ref T field, T value)
+    private void Set<T>(ref T field,T value)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value)) return;
         field = value;
         _obj = null;
-        return true;
     }
 
     /* --------------------------------------------------------------------- */
@@ -359,8 +341,7 @@ public sealed class SafePath
                     Source.FuzzyStartsWith(UncSymbol)          ? PathKind.Unc :
                     PathKind.Normal;
 
-            var v = !Source.HasValue() ?
-                    new string[0] :
+            var v = !Source.HasValue() ? [] :
                     Source.Split(SeparatorChars.ToArray())
                           .SkipWhile(s => !s.HasValue())
                           .Where((s, i) => !IsRemove(s, i))
@@ -389,7 +370,7 @@ public sealed class SafePath
         var seq  = name.Select(c => InvalidChars.Contains(c) ? EscapeChar : c);
         var esc  = new string(seq.ToArray());
         var dot  = esc == CurrentDirectorySymbol || esc == ParentDirectorySymbol;
-        var dest = dot ? esc : esc.TrimEnd(new[] { ' ', '.' });
+        var dest = dot ? esc : esc.TrimEnd([ ' ', '.' ]);
 
         return IsReserved(dest) ? $"{EscapeChar}{dest}" : dest;
     }
@@ -403,7 +384,7 @@ public sealed class SafePath
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private string Combine(PathKind kind, string[] parts)
+    private string Combine(PathKind kind, IEnumerable<string> parts)
     {
         var dest = parts.Join(SeparatorChar.ToString());
         var head = kind == PathKind.Inactivation && AllowInactivation ? InactivationSymbol :
@@ -439,11 +420,11 @@ public sealed class SafePath
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private bool IsReserved(string src)
+    private static bool IsReserved(string src)
     {
         var index = src.IndexOf('.');
         var name  = index < 0 ? src : src.Substring(0, index);
-        var cmp   = new LambdaEqualityComparer<string>((x, y) => string.Compare(x, y, true) == 0);
+        var cmp   = new LambdaEqualityComparer<string>((x, y) => x.FuzzyEquals(y));
         return ReservedNames.Contains(name, cmp);
     }
 
@@ -525,30 +506,13 @@ public sealed class SafePath
     /// Represents the escaped object.
     /// </summary>
     ///
+    /// <param name="k">Path kind.</param>
+    /// <param name="v">Collection of escaped names.</param>
+    /// <param name="s">Escaped path.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    private class EscapedObject
+    private class EscapedObject(PathKind k, IEnumerable<string> v, string s)
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// EscapedObject
-        ///
-        /// <summary>
-        /// Initializes a new instance of the EscapedObject with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="k">Path kind.</param>
-        /// <param name="v">Collection of escaped names.</param>
-        /// <param name="s">Escaped path.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public EscapedObject(PathKind k, string[] v, string s)
-        {
-            Kind  = k;
-            Parts = v;
-            Value = s;
-        }
-
         /* ----------------------------------------------------------------- */
         ///
         /// Kind
@@ -558,7 +522,7 @@ public sealed class SafePath
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public PathKind Kind  { get; }
+        public PathKind Kind { get; } = k;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -569,7 +533,7 @@ public sealed class SafePath
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string[] Parts { get; }
+        public IEnumerable<string> Parts { get; } = v;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -585,7 +549,7 @@ public sealed class SafePath
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public string Value { get; }
+        public string Value { get; } = s;
     }
 
     #endregion

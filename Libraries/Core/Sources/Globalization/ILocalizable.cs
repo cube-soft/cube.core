@@ -15,15 +15,29 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube;
+namespace Cube.Globalization;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// CloseMessage
+/// ILocalizable
 ///
 /// <summary>
-/// Represents the message to close the displayed window.
+/// Represents localizable resources.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public sealed class CloseMessage() : MessageBase(nameof(CloseMessage));
+public interface ILocalizable
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Reset
+    ///
+    /// <summary>
+    /// Reset the resource with the specified language value.
+    /// </summary>
+    ///
+    /// <param name="src">Language value.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    void Reset(Language src);
+}

@@ -186,8 +186,7 @@ public static class Proxy
     /// <returns>Deserialized object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static T Deserialize<T>(this RegistryKey src) =>
-        new RegistryDeserializer().Invoke<T>(src);
+    public static T Deserialize<T>(this RegistryKey src) => new RegistryDeserializer().Invoke<T>(src);
 
     #endregion
 

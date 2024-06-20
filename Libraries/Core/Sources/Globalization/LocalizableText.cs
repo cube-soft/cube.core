@@ -15,41 +15,49 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube;
+namespace Cube.Globalization;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Cube.Collections.Extensions;
-using Cube.Text.Extensions;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// OpenOrSaveFileMessage(TValue)
+/// LocalizableText
 ///
 /// <summary>
-/// Represents shared information to show either the OpenFileDialog
-/// or SaveFileDialog.
+/// Provides the functionality to manage the localizable text group.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
+public abstract class LocalizableText : ILocalizable
 {
     #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// OpenOrSaveFileMessage
+    /// LocalizableText
     ///
     /// <summary>
-    /// Initializes a new instance of the OpenOrSaveFileMessage class
-    /// with the specified text.
+    /// Initializes a new instance of the LocalizableText class with the
+    /// specified arguments.
     /// </summary>
     ///
-    /// <param name="text">Message text.</param>
+    /// <param name="factory">
+    /// Function to get a text group of the specified language.
+    /// </param>
+    ///
+    /// <param name="fallback">
+    /// Text group to be used if text in the specified language is not found.
+    /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    protected OpenOrSaveFileMessage(string text) : base(text) { }
+    protected LocalizableText(Func<Language, TextGroup> factory, TextGroup fallback)
+    {
+        _factory = factory;
+        Fallback = fallback;
+        Exchange(Locale.GetDefaultLanguage());
+    }
 
     #endregion
 
@@ -57,40 +65,25 @@ public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CheckPathExists
+    /// Fallback
     ///
     /// <summary>
-    /// Gets or sets a value indicating whether a file dialog
-    /// displays a warning if the user specifies a file name that
-    /// does not exist.
+    /// Text group to be used if text in the specified language is not found.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public bool CheckPathExists { get; set; }
+    protected TextGroup Fallback { get; }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// InitialDirectory
+    /// Current
     ///
     /// <summary>
-    /// Gets or sets the initial directory that is displayed by a file
-    /// dialog.
+    /// Text group corresponding to the currently specified language.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string InitialDirectory { get; set; } = string.Empty;
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Filter
-    ///
-    /// <summary>
-    /// Gets or sets the filter string that determines what types of
-    /// files are displayed from a from dialog.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public IEnumerable<FileDialogFilter> Filters { get; set; } = [new FileDialogFilter("All Files", ".*")];
+    protected TextGroup Current =>_current;
 
     #endregion
 
@@ -98,51 +91,64 @@ public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// GetFilterText
+    /// Reset
     ///
     /// <summary>
-    /// Gets the filter text.
+    /// Resets the resource with the specified language value.
     /// </summary>
     ///
-    /// <returns>Filter text.</returns>
+    /// <param name="src">Language value.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public string GetFilterText() => Filters.Select(e => e.ToString()).Join("|");
+    public void Reset(Language src) => OnReset(src);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// GetFilterIndex
+    /// OnReset
     ///
     /// <summary>
-    /// Gets the filter index.
+    /// Occurs when the Reset method is invoked.
     /// </summary>
     ///
-    /// <returns>Filter index.</returns>
+    /* --------------------------------------------------------------------- */
+    protected virtual void OnReset(Language src) => Exchange(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Get
+    ///
+    /// <summary>
+    /// Gets the text corresponding to the specified name.
+    /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public int GetFilterIndex()
+    protected string Get([CallerMemberName] string name = null)
     {
-        var src = GetValue();
-        if (!src.HasValue()) return 0;
-
-        var opt = StringComparison.InvariantCultureIgnoreCase;
-        return Filters.Select((e, i) => new KeyValuePair<int, IEnumerable<string>>(i + 1, e.Targets))
-                      .FirstOrDefault(e => e.Value.Any(e2 => src.EndsWith(e2, opt)))
-                      .Key;
+        if (name is null) return null;
+        if (Current is not null && Current.TryGetValue(name, out var s0)) return s0;
+        if (Fallback is not null && Fallback.TryGetValue(name, out var s1)) return s1;
+        return name;
     }
 
+    #endregion
+
+    #region Implementations
+
     /* --------------------------------------------------------------------- */
     ///
-    /// GetValue
+    /// Exchange
     ///
     /// <summary>
-    /// Gets the value.
+    /// Exchanges the new value with the specified language.
     /// </summary>
     ///
-    /// <returns>String value.</returns>
-    ///
     /* --------------------------------------------------------------------- */
-    protected abstract string GetValue();
+    private void Exchange(Language src) => Interlocked.Exchange(ref _current, _factory(src));
 
+    #endregion
+
+    #region Fields
+    private readonly Func<Language, TextGroup> _factory;
+    private TextGroup _current;
     #endregion
 }

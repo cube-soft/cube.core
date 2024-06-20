@@ -15,35 +15,36 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Collections;
+namespace Cube.FileSystem;
 
 using System;
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using Cube.Collections;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// NumericStringComparer
+/// PathComparer
 ///
 /// <summary>
-/// Represents a string comparison operation that considers numeric
-/// values.
+/// Represents a string comparison operation as a path.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class NumericStringComparer : StringComparer
+public class PathComparer : StringComparer
 {
     #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// NumericStringComparer
+    /// PathComparer
     ///
     /// <summary>
     /// Initializes a new instance.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public NumericStringComparer() : this(Ordinal) { }
+    public PathComparer() : this(Ordinal) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -56,7 +57,7 @@ public class NumericStringComparer : StringComparer
     /// <param name="src">Raw string comparer.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public NumericStringComparer(StringComparer src) => _inner = src;
+    public PathComparer(StringComparer src) => _inner = new(src);
 
     #endregion
 
@@ -81,13 +82,34 @@ public class NumericStringComparer : StringComparer
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public override int Compare(string x, string y)
+    public override int Compare(string x,string y)
     {
         if (x is null && y is null) return 0;
         if (x is null) return -1;
-        if (y is null) return 1;
+        if (y is null) return  1;
 
-        return Compare(x.GetEnumerator(), y.GetEnumerator());
+        var dx = Io.IsDirectory(x);
+        var dy = Io.IsDirectory(y);
+
+        var lx = Split(x).ToList();
+        var ly = Split(y).ToList();
+
+        for (var i = 0; i < Math.Max(lx.Count, ly.Count); ++i)
+        {
+            if (i >= lx.Count) return -1;
+            if (i >= ly.Count) return  1;
+
+            Get(lx, i, dx, out var fx, out var ex);
+            Get(ly, i, dy, out var fy, out var ey);
+
+            var n0 = _inner.Compare(fx, fy);
+            if (n0 != 0) return n0;
+
+            var n1 = _inner.Compare(ex, ey);
+            if (n1 != 0) return n1;
+        }
+
+        return 0;
     }
 
     /* --------------------------------------------------------------------- */
@@ -132,73 +154,50 @@ public class NumericStringComparer : StringComparer
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Compare
+    /// Split
     ///
     /// <summary>
-    /// Compares two objects and returns an indication of their relative
-    /// sort order.
+    /// Splits the specified path.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private int Compare(CharEnumerator x, CharEnumerator y)
+    private static IEnumerable<string> Split(string src) => new SafePath(src)
     {
-        while (true)
-        {
-            var zx = x.MoveNext();
-            var zy = y.MoveNext();
-
-            if (!zx && !zy) return  0;
-            if (!zx)        return -1;
-            if (!zy)        return  1;
-
-            if (char.IsDigit(x.Current) && char.IsDigit(y.Current))
-            {
-                var sx = GetNumericString(x);
-                var sy = GetNumericString(y);
-
-                // 1. compare as numeric
-                if (long.TryParse(sx, out var nx) && long.TryParse(sy, out var ny))
-                {
-                    var z0 = nx.CompareTo(ny);
-                    if (z0 != 0) return z0;
-                }
-
-                // 2. compare as string
-                var z1 = _inner.Compare(sx, sy);
-                if (z1 != 0) return z1;
-            }
-            else
-            {
-                var z = _inner.Compare(x.Current.ToString(), y.Current.ToString());
-                if (z != 0) return z;
-            }
-        }
-    }
+        AllowInactivation     = false,
+        AllowDriveLetter      = true,
+        AllowCurrentDirectory = false,
+        AllowParentDirectory  = false,
+        AllowUnc              = false,
+    }.Parts;
 
     /* --------------------------------------------------------------------- */
     ///
-    /// GetNumericString
+    /// Get
     ///
     /// <summary>
-    /// Gets a substring of the specified char enumerator object
-    /// that represents a numeric value.
+    /// Gets the basename and extension from the specified arguments.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private string GetNumericString(CharEnumerator src)
+    private static void Get(List<string> src, int i, bool dir, out string basename, out string extension)
     {
-        var dest = new StringBuilder();
-        while (char.IsNumber(src.Current))
+        var s = src[i];
+
+        if (!dir && i == src.Count - 1)
         {
-            _ = dest.Append(src.Current);
-            if (!src.MoveNext()) break;
+            basename  = Io.GetBaseName(s);
+            extension = Io.GetExtension(s);
         }
-        return dest.ToString();
+        else
+        {
+            basename  = s;
+            extension = string.Empty;
+        }
     }
 
     #endregion
 
     #region Fields
-    private readonly StringComparer _inner;
+    private readonly NumericStringComparer _inner;
     #endregion
 }

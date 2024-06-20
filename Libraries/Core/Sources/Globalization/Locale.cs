@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube;
+namespace Cube.Globalization;
 
 using System;
 using System.Globalization;
@@ -27,7 +27,7 @@ using Cube.Collections;
 /// Locale
 ///
 /// <summary>
-/// Provides the event trigger to changed the locale.
+/// Provides the event trigger to change the locale.
 /// </summary>
 ///
 /// <seealso href="https://msdn.microsoft.com/ja-jp/library/cc392381.aspx" />
@@ -55,54 +55,63 @@ public static class Locale
 
     #endregion
 
-    #region Properties
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Language
-    ///
-    /// <summary>
-    /// Gets the current language.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static Language Language => _accessor.Get();
-
-    #endregion
-
     #region Methods
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ToCultureInfo
+    /// GetCurrentLanguage
     ///
     /// <summary>
-    /// Gets the CultureInfo object from the specified value.
+    /// Gets the current Language value.
     /// </summary>
     ///
-    /// <param name="src">Language value.</param>
+    /// <returns>Language value.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Language GetCurrentLanguage() => _accessor.Get();
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetDefaultLanguage
+    ///
+    /// <summary>
+    /// Gets the default Language value.
+    /// </summary>
+    ///
+    /// <returns>Language value.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Language GetDefaultLanguage() => GetDefaultCultureInfo().ToLanguage();
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetDefaultCultureInfo
+    ///
+    /// <summary>
+    /// Gets the default CultureInfo object.
+    /// </summary>
     ///
     /// <returns>CultureInfo object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static CultureInfo ToCultureInfo(this Language src) =>
-        src == Language.Auto ? _culture : new((int)src);
+    public static CultureInfo GetDefaultCultureInfo() => _culture;
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Set
+    /// Reset
     ///
     /// <summary>
-    /// Sets the specified language as the current locale.
+    /// Resets the current locale with the specified Language value.
     /// </summary>
     ///
-    /// <param name="value">Language.</param>
+    /// <param name="value">Language value.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Set(Language value)
+    public static void Reset(Language value)
     {
         if (!_accessor.Set(value)) return;
-        foreach (var callback in _subscription) callback(value);
+        foreach (var e in _resource) e.Reset(value);
+        foreach (var e in _receiver) e(value);
     }
 
     /* --------------------------------------------------------------------- */
@@ -110,20 +119,30 @@ public static class Locale
     /// Subscribe
     ///
     /// <summary>
-    /// Adds the specified callback to the subscription.
+    /// Adds the specified localizable resource to the subscription.
     /// </summary>
     ///
-    /// <param name="callback">
-    /// Callback action when the locale changes.
-    /// </param>
+    /// <param name="src">Localizable resource.</param>
     ///
-    /// <returns>
-    /// Object to remove the registered callback.
-    /// </returns>
+    /// <returns>Object to remove the registered resource.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static IDisposable Subscribe(Action<Language> callback) =>
-        _subscription.Subscribe(callback);
+    public static IDisposable Subscribe(ILocalizable src) => _resource.Subscribe(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Subscribe
+    ///
+    /// <summary>
+    /// Adds the specified callback action to the subscription.
+    /// </summary>
+    ///
+    /// <param name="action">Action when the locale changes.</param>
+    ///
+    /// <returns>Object to remove the registered callback.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IDisposable Subscribe(Action<Language> action) => _receiver.Subscribe(action);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -156,6 +175,7 @@ public static class Locale
     private static Accessor<Language> _accessor;
     private static readonly CultureInfo _culture;
     private static readonly Accessor<Language> _default;
-    private static readonly Subscription<Action<Language>> _subscription = new();
+    private static readonly Subscription<ILocalizable> _resource = new();
+    private static readonly Subscription<Action<Language>> _receiver = new();
     #endregion
 }

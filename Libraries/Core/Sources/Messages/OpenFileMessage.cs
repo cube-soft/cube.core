@@ -59,7 +59,7 @@ public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>>
     /* --------------------------------------------------------------------- */
     public OpenFileMessage(string text) : base(text)
     {
-        Value = Enumerable.Empty<string>();
+        Value = [];
         CheckPathExists = true;
     }
 
@@ -98,7 +98,7 @@ public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>>
     public void Set(Entity src)
     {
         if (src is null) return;
-        Value = src.IsDirectory ? Enumerable.Empty<string>() : new[] { src.Name };
+        Value = src.IsDirectory ? [] : [src.Name];
         InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
     }
 
