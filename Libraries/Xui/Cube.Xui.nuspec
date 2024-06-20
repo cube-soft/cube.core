@@ -33,7 +33,7 @@
         <file src="Readme.md" target="docs" />
         <file src="..\..\Icon.png" target="images" />
         <file src="bin\Any CPU\Release\net6.0-windows\Cube.Xui.*" target="lib\net6.0-windows7.0" />
-        <file src="bin\Any CPU\Release\net462\Cube.Xui.*" target="lib\net46" />
+        <file src="bin\Any CPU\Release\net462\Cube.Xui.*" target="lib\net462" />
         <file src="bin\Any CPU\Release\net35\Cube.Xui.*" target="lib\net35" />
     </files>
 </package>

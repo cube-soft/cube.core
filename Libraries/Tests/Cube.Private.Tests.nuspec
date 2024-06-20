@@ -34,7 +34,7 @@
     <files>
         <file src="..\..\Icon.png" target="images" />
         <file src="bin\Any CPU\Release\net6.0-windows\Cube.Private.Tests.*" target="lib\net6.0-windows7.0" />
-        <file src="bin\Any CPU\Release\net46\Cube.Private.Tests.*" target="lib\net46" />
+        <file src="bin\Any CPU\Release\net462\Cube.Private.Tests.*" target="lib\net462" />
         <file src="bin\Any CPU\Release\net35\Cube.Private.Tests.*" target="lib\net35" />
     </files>
 </package>
