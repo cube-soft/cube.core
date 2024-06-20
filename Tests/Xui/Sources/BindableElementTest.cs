@@ -18,6 +18,7 @@
 namespace Cube.Xui.Tests;
 
 using System;
+using Cube.Globalization;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
@@ -121,9 +122,9 @@ class BindableElementTest
         using (var src = new BindableElement<int>(() => "Language", () => count, Dispatcher.Vanilla))
         {
             src.PropertyChanged += (s, e) => ++count;
-            Locale.Set(Language.French);
-            Locale.Set(Language.Russian);
-            Locale.Set(Language.Russian);
+            Locale.Reset(Language.French);
+            Locale.Reset(Language.Russian);
+            Locale.Reset(Language.Russian);
         }
         Assert.That(count, Is.EqualTo(4));
     }

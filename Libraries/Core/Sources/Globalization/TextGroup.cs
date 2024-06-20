@@ -15,15 +15,42 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube;
+namespace Cube.Globalization;
+
+using System.Collections.Generic;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// CloseMessage
+/// TextGroup
 ///
 /// <summary>
-/// Represents the message to close the displayed window.
+/// Represents a set of texts belonging to a specific language.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public sealed class CloseMessage() : MessageBase(nameof(CloseMessage));
+public class TextGroup : Dictionary<string, string>
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TextGroup
+    ///
+    /// <summary>
+    /// Initializes a new instance.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public TextGroup() { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TextGroup
+    ///
+    /// <summary>
+    /// Initializes a new instance with the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Text collection.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public TextGroup(Dictionary<string, string> src) : base(src) { }
+}

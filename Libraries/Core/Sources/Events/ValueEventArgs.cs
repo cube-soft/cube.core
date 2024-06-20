@@ -65,8 +65,7 @@ public static class ValueEventArgs
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public static ValueCancelEventArgs<T> Create<T>(T value, bool cancel) =>
-        new(value, cancel);
+    public static ValueCancelEventArgs<T> Create<T>(T value, bool cancel) => new(value, cancel);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -103,27 +102,11 @@ public static class ValueEventArgs
 /// Provides a value of type T to use for events.
 /// </summary>
 ///
+/// <param name="value">Value to use for the event.</param>
+///
 /* ------------------------------------------------------------------------- */
-public class ValueEventArgs<T> : EventArgs
+public class ValueEventArgs<T>(T value) : EventArgs
 {
-    #region Constructors
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ValueEventArgs
-    ///
-    /// <summary>
-    /// Initializes a new instance of the ValueEventArgs class with
-    /// the specified value.
-    /// </summary>
-    ///
-    /// <param name="value">Value to use for the event.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public ValueEventArgs(T value) => Value = value;
-
-    #endregion
-
     #region Properties
 
     /* --------------------------------------------------------------------- */
@@ -135,7 +118,7 @@ public class ValueEventArgs<T> : EventArgs
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public T Value { get; }
+    public T Value { get; } = value;
 
     #endregion
 }
@@ -220,32 +203,12 @@ public class ValueCancelEventArgs<T> : CancelEventArgs
 /// events.
 /// </summary>
 ///
+/// <param name="older">Value before changed.</param>
+/// <param name="newer">Value after changed.</param>
+///
 /* ------------------------------------------------------------------------- */
-public class ValueChangedEventArgs<T> : EventArgs
+public class ValueChangedEventArgs<T>(T older, T newer) : EventArgs
 {
-    #region Constructors
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ValueChangedEventArgs(T)
-    ///
-    /// <summary>
-    /// Initializes a new instance of the ValueChangedEventArgs class
-    /// with the specified arguments.
-    /// </summary>
-    ///
-    /// <param name="older">Value before changed.</param>
-    /// <param name="newer">Value after changed.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public ValueChangedEventArgs(T older, T newer)
-    {
-        OldValue = older;
-        NewValue = newer;
-    }
-
-    #endregion
-
     #region Properties
 
     /* --------------------------------------------------------------------- */
@@ -257,7 +220,7 @@ public class ValueChangedEventArgs<T> : EventArgs
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public T OldValue { get; }
+    public T OldValue { get; } = older;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -268,7 +231,7 @@ public class ValueChangedEventArgs<T> : EventArgs
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public T NewValue { get; }
+    public T NewValue { get; } = newer;
 
     #endregion
 }

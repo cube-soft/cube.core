@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Tests;
 
+using Cube.Globalization;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
@@ -35,7 +36,7 @@ class LocaleTest
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Set
+    /// Reset
     ///
     /// <summary>
     /// Executes the test to set the new value of Language.
@@ -43,25 +44,25 @@ class LocaleTest
     ///
     /* --------------------------------------------------------------------- */
     [Test]
-    public void Set()
+    public void Reset()
     {
         var count = 0;
         using (Locale.Subscribe(e => ++count))
         {
-            Locale.Set(Language.English);
-            Assert.That(Locale.Language, Is.EqualTo(Language.English));
+            Locale.Reset(Language.English);
+            Assert.That(Locale.GetCurrentLanguage(), Is.EqualTo(Language.English));
 
-            Locale.Set(Language.Japanese);
-            Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
+            Locale.Reset(Language.Japanese);
+            Assert.That(Locale.GetCurrentLanguage(), Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.Japanese);
-            Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
+            Locale.Reset(Language.Japanese);
+            Assert.That(Locale.GetCurrentLanguage(), Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.German);
-            Assert.That(Locale.Language, Is.EqualTo(Language.German));
+            Locale.Reset(Language.German);
+            Assert.That(Locale.GetCurrentLanguage(), Is.EqualTo(Language.German));
 
-            Locale.Set(Language.Auto);
-            Assert.That(Locale.Language, Is.EqualTo(Language.Auto));
+            Locale.Reset(Language.Auto);
+            Assert.That(Locale.GetCurrentLanguage(), Is.EqualTo(Language.Auto));
         }
         Assert.That(count, Is.EqualTo(4));
     }
@@ -83,20 +84,20 @@ class LocaleTest
         {
             Locale.Configure(new Accessor<Language>(() => Language.Japanese, e => { }));
 
-            Locale.Set(Language.English);
-            Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
+            Locale.Reset(Language.English);
+            Assert.That(Locale.GetCurrentLanguage(), Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.Japanese);
-            Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
+            Locale.Reset(Language.Japanese);
+            Assert.That(Locale.GetCurrentLanguage(), Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.Japanese);
-            Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
+            Locale.Reset(Language.Japanese);
+            Assert.That(Locale.GetCurrentLanguage(), Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.German);
-            Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
+            Locale.Reset(Language.German);
+            Assert.That(Locale.GetCurrentLanguage(), Is.EqualTo(Language.Japanese));
 
-            Locale.Set(Language.Auto);
-            Assert.That(Locale.Language, Is.EqualTo(Language.Japanese));
+            Locale.Reset(Language.Auto);
+            Assert.That(Locale.GetCurrentLanguage(), Is.EqualTo(Language.Japanese));
         }
         Assert.That(count, Is.EqualTo(3));
     }
@@ -117,21 +118,25 @@ class LocaleTest
     [TestCase(Language.Portuguese, ExpectedResult = "pt-pt")]
     [TestCase(Language.Russian,    ExpectedResult = "ru-ru")]
     [TestCase(Language.Spanish,    ExpectedResult = "es-es")]
-    public string GetCultureInfo(Language src) =>
-        src.ToCultureInfo().Name.ToLowerInvariant();
+    public string GetCultureInfo(Language src) => src.ToCultureInfo().Name.ToLowerInvariant();
 
     /* --------------------------------------------------------------------- */
     ///
-    /// GetCultureInfo_Auto
+    /// GetDefaultValues
     ///
     /// <summary>
-    /// Executes the test to get the language code from the Auto value.
+    /// Tests some methods about default values.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Test]
-    public void GetCultureInfo_Auto() =>
+    public void GetDefaultValues()
+    {
         Assert.That(Language.Auto.ToCultureInfo(), Is.Not.Null);
+        Assert.That(Language.Unknown.ToCultureInfo(), Is.Null);
+        Assert.That(Locale.GetDefaultCultureInfo(), Is.Not.Null);
+        Assert.That(Locale.GetDefaultLanguage(), Is.Not.EqualTo(Language.Unknown));
+    }
 
     #endregion
 

@@ -15,71 +15,65 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Forms.Globalization;
+namespace Cube.Globalization;
 
-using System.ComponentModel;
-using System.Threading;
-using System.Windows.Forms;
-using Cube.Globalization;
+using System;
+using System.Globalization;
+using System.Linq;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Methods
+/// LanguageExtension
 ///
 /// <summary>
-/// Provides the extended methods for i18n.
+/// Provides extended methods related to the Language class.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public static class Methods
+public static class LanguageExtension
 {
     #region Methods
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Update
+    /// ToLanguage
     ///
     /// <summary>
-    /// Updates the culture information corresponding to the specified
-    /// language.
+    /// Gets the Language value from the specified object.
     /// </summary>
     ///
-    /// <param name="src">Form object.</param>
-    /// <param name="value">Language to show.</param>
+    /// <param name="src">CultureInfo object.</param>
+    ///
+    /// <returns>Language value.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Update<TForm>(this TForm src, Language value) where TForm : Form
+    public static Language ToLanguage(this CultureInfo src)
     {
-        var ci = value.ToCultureInfo();
-        Thread.CurrentThread.CurrentCulture = ci;
-        Thread.CurrentThread.CurrentUICulture = ci;
-
-        var cm = new ComponentResourceManager(typeof(TForm));
-        cm.ApplyResources(src, "$this");
-        Update(src.Controls, cm);
+        var dest = Enum.GetValues(typeof(Language))
+                       .Cast<Language>()
+                       .FirstOrDefault(e => (int)e == src.LCID);
+        return dest != Language.Auto ? dest : Language.Unknown;
     }
 
-    #endregion
-
-    #region Implementations
-
     /* --------------------------------------------------------------------- */
     ///
-    /// Update
+    /// ToCultureInfo
     ///
     /// <summary>
-    /// Updates the culture information.
+    /// Gets the CultureInfo object from the specified value.
     /// </summary>
     ///
+    /// <param name="src">Language value.</param>
+    ///
+    /// <returns>CultureInfo object.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    private static void Update(Control.ControlCollection src, ComponentResourceManager cm)
+    public static CultureInfo ToCultureInfo(this Language src) => src switch
     {
-        foreach (Control e in src)
-        {
-            cm.ApplyResources(e, e.Name);
-            Update(e.Controls, cm);
-        }
-    }
+        Language.Auto    => Locale.GetDefaultCultureInfo(),
+        Language.Unknown => default,
+        _ => new((int)src)
+    };
 
     #endregion
 }

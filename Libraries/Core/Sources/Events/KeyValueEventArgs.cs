@@ -85,28 +85,12 @@ public static class KeyValueEventArgs
 /// Provides Key-Value data to use for events.
 /// </summary>
 ///
+/// <param name="key">Key to use for the event.</param>
+/// <param name="value">Value to use for the event.</param>
+///
 /* ------------------------------------------------------------------------- */
-public class KeyValueEventArgs<TKey, TValue> : ValueEventArgs<TValue>
+public class KeyValueEventArgs<TKey, TValue>(TKey key, TValue value) : ValueEventArgs<TValue>(value)
 {
-    #region Constructors
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// KeyValueEventArgs
-    ///
-    /// <summary>
-    /// Creates a new instance of the KeyValueEventArgs class with the
-    /// specified key and value.
-    /// </summary>
-    ///
-    /// <param name="key">Key to use for the event.</param>
-    /// <param name="value">Value to use for the event.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public KeyValueEventArgs(TKey key, TValue value) : base(value) => Key = key;
-
-    #endregion
-
     #region Properties
 
     /* --------------------------------------------------------------------- */
@@ -118,7 +102,7 @@ public class KeyValueEventArgs<TKey, TValue> : ValueEventArgs<TValue>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public TKey Key { get; }
+    public TKey Key { get; } = key;
 
     #endregion
 }

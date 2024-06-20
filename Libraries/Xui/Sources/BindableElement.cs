@@ -19,6 +19,7 @@ namespace Cube.Xui;
 
 using System;
 using System.Windows.Input;
+using Cube.Globalization;
 
 /* ------------------------------------------------------------------------- */
 ///

@@ -63,7 +63,7 @@ internal class RegistrySerializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void Set(Type type, RegistryKey dest, object src)
+    private static void Set(Type type, RegistryKey dest, object src)
     {
         if (dest is null || src is null) return;
         foreach (var pi in type.GetProperties())
@@ -92,7 +92,7 @@ internal class RegistrySerializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void Set(Type type, RegistryKey dest, string key, object value)
+    private static void Set(Type type, RegistryKey dest, string key, object value)
     {
         switch (Type.GetTypeCode(type))
         {
@@ -117,7 +117,7 @@ internal class RegistrySerializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void SetArray(Type type, RegistryKey dest, Array src)
+    private static void SetArray(Type type, RegistryKey dest, Array src)
     {
         if (src.Rank != 1) return;
 
@@ -141,7 +141,7 @@ internal class RegistrySerializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void SetList(Type type, RegistryKey dest, IList src)
+    private static void SetList(Type type, RegistryKey dest, IList src)
     {
         var ga = type.GetGenericArguments();
         if (ga.Length != 1) return;
@@ -165,7 +165,7 @@ internal class RegistrySerializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void SetListElement(Type type, RegistryKey dest, object src)
+    private static void SetListElement(Type type, RegistryKey dest, object src)
     {
         if (type.IsObject()) Set(type, dest, src);
         else Set(type, dest, "", src);
@@ -181,7 +181,7 @@ internal class RegistrySerializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void Create(RegistryKey dest, string name, Action<RegistryKey> callback)
+    private static void Create(RegistryKey dest, string name, Action<RegistryKey> callback)
     {
         using var e = dest.CreateSubKey(name);
         if (e is not null) callback(e);
@@ -196,7 +196,7 @@ internal class RegistrySerializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private int Digit(int n) => n.ToString().Length;
+    private static int Digit(int n) => n.ToString().Length;
 
     #endregion
 }
