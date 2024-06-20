@@ -27,7 +27,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
-        <PackageReference Include="NLog" Version="5.2.8" />
+        <PackageReference Include="NLog" Version="5.3.2" />
     </ItemGroup>
     <ItemGroup>
         <None Include="Readme.md" Pack="true" PackagePath="docs" />

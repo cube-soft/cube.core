@@ -10,7 +10,7 @@
         <PackageProjectUrl>https://github.com/cube-soft/Cube.Xui</PackageProjectUrl>
         <PackageReadmeFile>docs\Readme.md</PackageReadmeFile>
         <PackageIcon>images\Icon.png</PackageIcon>
-        <TargetFramework>net46</TargetFramework>
+        <TargetFramework>net462</TargetFramework>
         <UseWpf>true</UseWpf>
         <UseWindowsForms>true</UseWindowsForms>
         <LangVersion>latest</LangVersion>
@@ -29,7 +29,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
     </ItemGroup>
     <ItemGroup>
         <None Include="Readme.md" Pack="true" PackagePath="docs" />
