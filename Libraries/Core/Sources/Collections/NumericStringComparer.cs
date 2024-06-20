@@ -39,7 +39,7 @@ public class NumericStringComparer : StringComparer
     /// NumericStringComparer
     ///
     /// <summary>
-    /// Initializes a new instance of the NumericAwareComparer class.
+    /// Initializes a new instance.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -50,8 +50,7 @@ public class NumericStringComparer : StringComparer
     /// NumericStringComparer
     ///
     /// <summary>
-    /// Initializes a new instance of the NumericAwareComparer class
-    /// with the specified arguments.
+    /// Initializes a new instance with the specified arguments.
     /// </summary>
     ///
     /// <param name="src">Raw string comparer.</param>
