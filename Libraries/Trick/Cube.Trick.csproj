@@ -28,7 +28,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
-        <PackageReference Include="System.Drawing.Common" Version="8.0.1" />
+        <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\..\Readme.md" Pack="true" PackagePath="docs" />

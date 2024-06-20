@@ -28,7 +28,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
         <ProjectReference Include="..\NLog\Cube.Logging.NLog.csproj" />
-        <PackageReference Include="NUnit" Version="3.14.0" />
+        <PackageReference Include="NUnit" Version="4.1.0" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\..\Icon.png" Pack="true" PackagePath="images" />
