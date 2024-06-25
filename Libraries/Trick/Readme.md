@@ -1,9 +1,9 @@
 Cube.Trick
 ====
 
-[![Package](https://badgen.net/nuget/v/cube.forms)](https://www.nuget.org/packages/cube.trick/)
-[![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
-[![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
+[![Package](https://img.shields.io/nuget/v/cube.trick)](https://www.nuget.org/packages/cube.trick/)
+[![AppVeyor](https://img.shields.io/appveyor/build/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
+[![Codecov](https://img.shields.io/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
 The Cube.Trick package contains experimental and undocumented functions. The package is used by Cube Windows applications.
 

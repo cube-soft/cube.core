@@ -1,9 +1,9 @@
 Cube.Logging.NLog
 ====
 
-[![Package](https://badgen.net/nuget/v/cube.logging.nlog)](https://www.nuget.org/packages/cube.logging.nlog/)
-[![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
-[![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
+[![Package](https://img.shields.io/nuget/v/cube.logging.nlog)](https://www.nuget.org/packages/cube.logging.nlog/)
+[![AppVeyor](https://img.shields.io/appveyor/build/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
+[![Codecov](https://img.shields.io/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
 The Cube.Logging.NLog package uses the [NLog](https://nlog-project.org/) library to implement Cube.ILoggerSource interface. When you use the NLog for logging operations, describe the following statement at first.
 
