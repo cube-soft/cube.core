@@ -1,9 +1,9 @@
 Cube.FileSystem.AlphaFS
 ====
 
-[![Package](https://badgen.net/nuget/v/cube.filesystem.alphafs)](https://www.nuget.org/packages/cube.filesystem.alphafs/)
-[![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
-[![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
+[![Package](https://img.shields.io/nuget/v/cube.filesystem.alphafs)](https://www.nuget.org/packages/cube.filesystem.alphafs/)
+[![AppVeyor](https://img.shields.io/appveyor/build/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
+[![Codecov](https://img.shields.io/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
 The Cube.FileSystem.AlphaFS package uses the [AlphaFS](https://alphafs.alphaleonis.com/) library to provide I/O operations such as move, copy, and delete. These functions are available via the Cube.FileSystem.Io class. When you use the AlphaFS for I/O operations, describe the following statement at first.
 
@@ -14,7 +14,7 @@ Io.Configure(new Cube.FileSystem.AlphaFS.IoController());
 
 All I/O operations of the Cube.* projects also are performed via the Cube.FileSystem.Io class and therefore affected by its configuration.
 
-The package is available for .NET Framework 3.5, 4.5, or later. 
+The package is available for .NET Framework 3.5, 4.6, or later. 
 
 ## Installation
 

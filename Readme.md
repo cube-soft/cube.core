@@ -1,14 +1,14 @@
 Cube.Core
 ====
 
-[![Core](https://badgen.net/nuget/v/cube.core?label=core)](https://www.nuget.org/packages/cube.core/)
-[![Forms](https://badgen.net/nuget/v/cube.forms?label=forms)](https://www.nuget.org/packages/cube.forms/)
-[![Forms.Controls](https://badgen.net/nuget/v/cube.forms.controls?label=forms.controls)](https://www.nuget.org/packages/cube.forms.controls/)
-[![Xui](https://badgen.net/nuget/v/cube.xui?label=xui)](https://www.nuget.org/packages/cube.xui/)
-[![AlphaFS](https://badgen.net/nuget/v/cube.filesystem.alphafs?label=alphafs)](https://www.nuget.org/packages/cube.filesystem.alphafs/)
-[![NLog](https://badgen.net/nuget/v/cube.logging.nlog?label=nlog)](https://www.nuget.org/packages/cube.logging.nlog/)
-[![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
-[![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
+[![Core](https://img.shields.io/nuget/v/cube.core?label=core)](https://www.nuget.org/packages/cube.core/)
+[![Forms](https://img.shields.io/nuget/v/cube.forms?label=forms)](https://www.nuget.org/packages/cube.forms/)
+[![Forms.Controls](https://img.shields.io/nuget/v/cube.forms.controls?label=forms.controls)](https://www.nuget.org/packages/cube.forms.controls/)
+[![Xui](https://img.shields.io/nuget/v/cube.xui?label=xui)](https://www.nuget.org/packages/cube.xui/)
+[![AlphaFS](https://img.shields.io/nuget/v/cube.filesystem.alphafs?label=alphafs)](https://www.nuget.org/packages/cube.filesystem.alphafs/)
+[![NLog](https://img.shields.io/nuget/v/cube.logging.nlog?label=nlog)](https://www.nuget.org/packages/cube.logging.nlog/)
+[![AppVeyor](https://img.shields.io/appveyor/build/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
+[![Codecov](https://img.shields.io/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
 The project provides support the MVVM pattern in WinForms or WPF (or possibly other frameworks) applications. This project can be roughly divided into the three packages as follows:
 

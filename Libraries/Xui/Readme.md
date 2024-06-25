@@ -1,9 +1,9 @@
 Cube.Xui
 ====
 
-[![Package](https://badgen.net/nuget/v/cube.xui)](https://www.nuget.org/packages/cube.xui/)
-[![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
-[![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
+[![Package](https://img.shields.io/nuget/v/cube.xui)](https://www.nuget.org/packages/cube.xui/)
+[![AppVeyor](https://img.shields.io/appveyor/build/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
+[![Codecov](https://img.shields.io/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
 The Cube.Xui package has bindings, converters, commands, behaviors, and other components to provide support the MVVM pattern in WPF applications. The package is available for .NET Framework 3.5, 4.6.2, .NET 6.0, or later. Note that basic components to practice the MVVM pattern is implemented in the [Cube.Core](https://www.nuget.org/packages/cube.core/) package, and the WinForms part is in the [Cube.Forms](https://www.nuget.org/packages/cube.forms/) package.
 
