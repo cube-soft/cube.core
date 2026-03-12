@@ -35,6 +35,32 @@ PACKAGES    = ["Libraries/Core/Cube.Core",
                "Libraries/Tests/Cube.Private.Tests"]
 
 # --------------------------------------------------------------------------- #
+# tests
+# --------------------------------------------------------------------------- #
+TEST_TOOL   = '..\\packages\\OpenCover\\4.7.1221\\tools\\OpenCover.Console.exe'
+TEST_RESULT = "Tmp\\TestResults.xml"
+TEST_DIR    = "Tmp"
+TEST_FILTER = [
+    "+[Cube*]*",
+    "-[*]*.NativeMethods",
+    "-[*]*.Properties.*",
+    "-[*]*.Program",
+    "-[*]*.Program/*",
+    "-[*]*.App",
+    "-[*]*.App/*",
+    "-[*]*Window",
+    "-[*]*Window/*",
+    "-[*]*Control",
+    "-[*]*Control/*",
+].join(" ")
+
+# --------------------------------------------------------------------------- #
+# reports
+# --------------------------------------------------------------------------- #
+REPORT_TOOL = '..\\packages\\reportgenerator\\5.5.3\\tools\\net47\\ReportGenerator.exe'
+REPORT_DIR  = 'Tmp\\TestReports'
+
+# --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
 CLEAN.include(["*.nupkg", "**/bin", "**/obj"])
@@ -108,6 +134,30 @@ end
 desc "Test projects in the current branch."
 task :test => [:build] do
     cmd("dotnet test -c Release --no-restore --no-build #{PROJECT}.sln")
+end
+
+# --------------------------------------------------------------------------- #
+# cover
+# --------------------------------------------------------------------------- #
+desc "Report the coverage of the latest test."
+task :cover => [:build] do
+    cmd("nuget install OpenCover")
+    cmd("nuget install ReportGenerator")
+
+    RakeFileUtils::mkdir_p(TEST_DIR)
+
+    cmd([
+        "\"#{TEST_TOOL}\"",
+        "-register:user",
+        "-target:dotnet.exe",
+        "-targetargs:\"test --no-restore --no-build -c Release\"",
+        "-returntargetcode",
+        "-hideskipped:All",
+        "-output:\"#{TEST_RESULT}\"",
+        "-filter:\"#{TEST_FILTER}\"",
+    ].join(" "))
+
+    cmd(["\"#{REPORT_TOOL}\"", "-reports:\"#{TEST_RESULT}\"", "-targetdir:\"#{REPORT_DIR}\""].join(" "))
 end
 
 # --------------------------------------------------------------------------- #
