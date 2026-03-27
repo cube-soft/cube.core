@@ -103,7 +103,9 @@ public abstract class ObservableCollectionBase<T> : EnumerableBase<T>, INotifyCo
     /* --------------------------------------------------------------------- */
     protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
-        if (CollectionChanged is not null) Dispatcher.Invoke(() => CollectionChanged(this, e));
+        var handler = CollectionChanged;
+        if (handler is null) return;
+        Dispatcher.Invoke(() => handler(this, e));
     }
 
     #endregion

@@ -156,8 +156,9 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     /* --------------------------------------------------------------------- */
     protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
     {
-        if (PropertyChanged is null) return;
-        Dispatcher.Invoke(() => PropertyChanged(this, e));
+        var handler = PropertyChanged;
+        if (handler is null) return;
+        Dispatcher.Invoke(() => handler(this, e));
     }
 
     #endregion
