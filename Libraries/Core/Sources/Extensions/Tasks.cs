@@ -18,6 +18,7 @@
 namespace Cube.Tasks.Extensions;
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 /* ------------------------------------------------------------------------- */
@@ -61,9 +62,11 @@ public static class Methods
     /* --------------------------------------------------------------------- */
     public static async Task Timeout(this Task src, TimeSpan value)
     {
-        var timeout = Task.Delay(value);
+        using var cts = new CancellationTokenSource();
+        var timeout = Task.Delay(value, cts.Token);
         var dest = await Task.WhenAny(src, timeout).ConfigureAwait(false);
         if (dest == timeout) throw new TimeoutException();
+        cts.Cancel();
     }
 
     /* --------------------------------------------------------------------- */
