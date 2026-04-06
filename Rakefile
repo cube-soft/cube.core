@@ -37,22 +37,23 @@ PACKAGES    = ["Libraries/Core/Cube.Core",
 # --------------------------------------------------------------------------- #
 # tests
 # --------------------------------------------------------------------------- #
-TEST_TOOL   = '..\\packages\\OpenCover\\4.7.1221\\tools\\OpenCover.Console.exe'
-TEST_RESULT = "Tmp\\TestResults.xml"
+#TEST_TOOL   = '..\\packages\\OpenCover\\4.7.1221\\tools\\OpenCover.Console.exe'
+#TEST_RESULT = "Tmp\\TestResults.xml"
+TEST_RESULT = "Tmp\\**\\coverage.cobertura.xml"
 TEST_DIR    = "Tmp"
-TEST_FILTER = [
-    "+[Cube*]*",
-    "-[*]*.NativeMethods",
-    "-[*]*.Properties.*",
-    "-[*]*.Program",
-    "-[*]*.Program/*",
-    "-[*]*.App",
-    "-[*]*.App/*",
-    "-[*]*Window",
-    "-[*]*Window/*",
-    "-[*]*Control",
-    "-[*]*Control/*",
-].join(" ")
+#TEST_FILTER = [
+#    "+[Cube*]*",
+#    "-[*]*.NativeMethods",
+#    "-[*]*.Properties.*",
+#    "-[*]*.Program",
+#    "-[*]*.Program/*",
+#    "-[*]*.App",
+#    "-[*]*.App/*",
+#    "-[*]*Window",
+#    "-[*]*Window/*",
+#    "-[*]*Control",
+#    "-[*]*Control/*",
+#].join(" ")
 
 # --------------------------------------------------------------------------- #
 # reports
@@ -131,33 +132,49 @@ end
 # --------------------------------------------------------------------------- #
 # test
 # --------------------------------------------------------------------------- #
-desc "Test projects in the current branch."
-task :test => [:build] do
-    cmd("dotnet test -c Release --no-restore --no-build #{PROJECT}.sln")
-end
+#desc "Test projects in the current branch."
+#task :test => [:build] do
+#    cmd("dotnet test -c Release --no-restore --no-build #{PROJECT}.sln")
+#end
 
 # --------------------------------------------------------------------------- #
 # cover
 # --------------------------------------------------------------------------- #
 desc "Report the coverage of the latest test."
 task :cover => [:build] do
-    cmd("nuget install OpenCover")
+#    cmd("nuget install OpenCover")
     cmd("nuget install ReportGenerator")
 
     RakeFileUtils::mkdir_p(TEST_DIR)
 
-    cmd([
-        "\"#{TEST_TOOL}\"",
-        "-register:user",
-        "-target:dotnet.exe",
-        "-targetargs:\"test --no-restore --no-build -c Release\"",
-        "-returntargetcode",
-        "-hideskipped:All",
-        "-output:\"#{TEST_RESULT}\"",
-        "-filter:\"#{TEST_FILTER}\"",
-    ].join(" "))
+    tests = [
+	    "\"dotnet test -c Release --no-restore --no-build",
+        "--results-directory #{TEST_DIR}",
+        "--settings coverlet.runsettings",
+        %(--collect:"XPlat code coverage"),
+        "#{PROJECT}.sln",
+#        "\"\"#{TEST_TOOL}\"",
+#        "-register:user",
+#        "-target:dotnet.exe",
+#        "-targetargs:\"test --no-restore --no-build -c Release\"",
+#        "-returntargetcode",
+#        "-hideskipped:All",
+#        "-output:\"#{TEST_RESULT}\"",
+#        "-filter:\"#{TEST_FILTER}\"\"",
+    ]
 
-    cmd(["\"#{REPORT_TOOL}\"", "-reports:\"#{TEST_RESULT}\"", "-targetdir:\"#{REPORT_DIR}\""].join(" "))
+    report = [
+	    "\"\"#{REPORT_TOOL}\"",
+	    "-reports:\"#{TEST_RESULT}\"",
+	    "-targetdir:\"#{REPORT_DIR}\"\"",
+#        "dotnet tool run reportgenerator",
+#        %(-reports:"#{TEST_REPORTS}"),
+#        %(-targetdir:"#{TEST_COVERAGE}"),
+#        %(-reporttypes:"HtmlInline;Cobertura;TextSummary"),
+    ]
+
+    cmd(tests.join(" "))
+    cmd(report.join(" "))
 end
 
 # --------------------------------------------------------------------------- #

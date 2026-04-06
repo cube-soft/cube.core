@@ -1,8 +1,6 @@
 version: 9.5.0.{build}
 environment:
     PROJECT_NAME:  'Cube.Core'
-    TEST_TOOL:     '..\packages\OpenCover\4.7.1221\tools\OpenCover.Console.exe'
-    TEST_FILTERS:  '+[Cube*]* -[*]*NativeMethods -[*]*Properties.* -[*]*.Program'
     TEST_COVERAGE: 'Coverage.xml'
     TEST_RESULTS:  'TestResults'
 clone_folder: 'C:\Cube\%PROJECT_NAME%'
@@ -13,12 +11,12 @@ skip_tags: true
 branches:
     only:
         - master
+        - test_coverlet
 nuget:
     project_feed: true
     disable_publish_on_pr: true
 before_build:
     - nuget restore "%PROJECT_NAME%.sln"
-    - nuget install OpenCover
 build:
     project: '%PROJECT_NAME%.sln'
     parallel: true
@@ -26,16 +24,27 @@ build:
     verbosity: minimal
 test_script:
     - >
-      "%TEST_TOOL%"
-      -log:Error
-      -register:appveyor
-      -target:dotnet.exe
-      -targetargs:"test --no-restore --no-build --logger:Appveyor %PROJECT_NAME%.sln"
-      -returntargetcode
-      -hideskipped:All
-      -mergeoutput
-      -output:"%TEST_COVERAGE%"
-      -filter:"%TEST_FILTERS%"
+      dotnet test
+      --no-restore
+      --no-build
+      -c Release
+      --settings coverlet.runsettings
+      --results-directory "%TEST_RESULTS%"
+      --collect:"XPlat Code Coverage"
+      --logger:Appveyor
+      %PROJECT_NAME%.sln
+
+
+#      "%TEST_TOOL%"
+#      -log:Error
+#      -register:appveyor
+#      -target:dotnet.exe
+#      -targetargs:"test --no-restore --no-build --logger:Appveyor %PROJECT_NAME%.sln"
+#      -returntargetcode
+#      -hideskipped:All
+#      -mergeoutput
+#      -output:"%TEST_COVERAGE%"
+#      -filter:"%TEST_FILTERS%"
 after_test:
     - choco install codecov
     - codecov -f "%TEST_COVERAGE%"
