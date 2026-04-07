@@ -35,16 +35,6 @@ test_script:
       %PROJECT_NAME%.sln
 
 
-#      "%TEST_TOOL%"
-#      -log:Error
-#      -register:appveyor
-#      -target:dotnet.exe
-#      -targetargs:"test --no-restore --no-build --logger:Appveyor %PROJECT_NAME%.sln"
-#      -returntargetcode
-#      -hideskipped:All
-#      -mergeoutput
-#      -output:"%TEST_COVERAGE%"
-#      -filter:"%TEST_FILTERS%"
 after_test:
     - choco install codecov
     - codecov -f "%TEST_COVERAGE%"
