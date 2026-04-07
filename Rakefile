@@ -37,23 +37,9 @@ PACKAGES    = ["Libraries/Core/Cube.Core",
 # --------------------------------------------------------------------------- #
 # tests
 # --------------------------------------------------------------------------- #
-#TEST_TOOL   = '..\\packages\\OpenCover\\4.7.1221\\tools\\OpenCover.Console.exe'
 #TEST_RESULT = "Tmp\\TestResults.xml"
 TEST_RESULT = "Tmp\\**\\coverage.cobertura.xml"
 TEST_DIR    = "Tmp"
-#TEST_FILTER = [
-#    "+[Cube*]*",
-#    "-[*]*.NativeMethods",
-#    "-[*]*.Properties.*",
-#    "-[*]*.Program",
-#    "-[*]*.Program/*",
-#    "-[*]*.App",
-#    "-[*]*.App/*",
-#    "-[*]*Window",
-#    "-[*]*Window/*",
-#    "-[*]*Control",
-#    "-[*]*Control/*",
-#].join(" ")
 
 # --------------------------------------------------------------------------- #
 # reports
@@ -148,29 +134,20 @@ task :cover => [:build] do
     RakeFileUtils::mkdir_p(TEST_DIR)
 
     tests = [
-	    "\"dotnet test -c Release --no-restore --no-build",
+        "dotnet test",
+        "-c Release",
+        "--no-restore",
+        "--no-build",
         "--results-directory #{TEST_DIR}",
         "--settings coverlet.runsettings",
-        %(--collect:"XPlat code coverage"),
+        '--collect:"XPlat code coverage"',
         "#{PROJECT}.sln",
-#        "\"\"#{TEST_TOOL}\"",
-#        "-register:user",
-#        "-target:dotnet.exe",
-#        "-targetargs:\"test --no-restore --no-build -c Release\"",
-#        "-returntargetcode",
-#        "-hideskipped:All",
-#        "-output:\"#{TEST_RESULT}\"",
-#        "-filter:\"#{TEST_FILTER}\"\"",
     ]
 
     report = [
-	    "\"\"#{REPORT_TOOL}\"",
-	    "-reports:\"#{TEST_RESULT}\"",
-	    "-targetdir:\"#{REPORT_DIR}\"\"",
-#        "dotnet tool run reportgenerator",
-#        %(-reports:"#{TEST_REPORTS}"),
-#        %(-targetdir:"#{TEST_COVERAGE}"),
-#        %(-reporttypes:"HtmlInline;Cobertura;TextSummary"),
+        "#{REPORT_TOOL}",
+        "-reports:\"#{TEST_RESULT}\"",
+        "-targetdir:\"#{REPORT_DIR}\"",
     ]
 
     cmd(tests.join(" "))
