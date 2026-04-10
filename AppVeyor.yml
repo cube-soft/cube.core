@@ -1,8 +1,11 @@
 version: 9.5.0.{build}
 environment:
     PROJECT_NAME:  'Cube.Core'
-    TEST_COVERAGE: 'Coverage.xml'
     TEST_RESULTS:  'TestResults'
+    TEST_REPORT:   '%TEST_RESULTS%\Coverage'
+    TEST_COVERAGE: '%TEST_RESULTS%\Coverage\Coverage.xml'
+    TEST_REPORTS:  '%TEST_RESULTS%\**\coverage.cobertura.xml'
+
 clone_folder: 'C:\Cube\%PROJECT_NAME%'
 image: Visual Studio 2022
 platform: Any CPU
@@ -17,6 +20,7 @@ nuget:
     disable_publish_on_pr: true
 before_build:
     - nuget restore "%PROJECT_NAME%.sln"
+    - nuget install ReportGenerator -Version 5.5.3
 build:
     project: '%PROJECT_NAME%.sln'
     parallel: true
@@ -36,6 +40,11 @@ test_script:
 
 
 after_test:
+    - >
+      ".\packages\ReportGenerator.5.5.3\tools\net47\ReportGenerator.exe"
+      "-reports:%TEST_REPORTS%"
+      "-targetdir:%TEST_REPORT%"
+      "-reporttypes:HtmlInline;Cobertura;TextSummary"    
     - choco install codecov
     - codecov -f "%TEST_COVERAGE%"
     - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULTS%\"
