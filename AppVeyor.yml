@@ -41,7 +41,7 @@ test_script:
 
 after_test:
     - >
-      ".\packages\ReportGenerator.5.5.3\tools\net47\ReportGenerator.exe"
+      "..\packages\ReportGenerator.5.5.3\tools\net47\ReportGenerator.exe"
       "-reports:%TEST_REPORTS%"
       "-targetdir:%TEST_REPORT%"
       "-reporttypes:HtmlInline;Cobertura;TextSummary"    
