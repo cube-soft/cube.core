@@ -3,7 +3,7 @@ environment:
     PROJECT_NAME:  'Cube.Core'
     TEST_RESULTS:  'TestResults'
     TEST_REPORT:   '%TEST_RESULTS%\Coverage'
-    TEST_COVERAGE: '%TEST_RESULTS%\Coverage\Coverage.xml'
+    TEST_COVERAGE: '%TEST_RESULTS%\Coverage\Cobertura.xml'
     TEST_REPORTS:  '%TEST_RESULTS%\**\coverage.cobertura.xml'
 
 clone_folder: 'C:\Cube\%PROJECT_NAME%'
