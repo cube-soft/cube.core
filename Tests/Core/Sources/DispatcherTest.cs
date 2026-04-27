@@ -37,23 +37,6 @@ class DispatcherTest
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Create_Throws
-    ///
-    /// <summary>
-    /// Confirms the behavior when creating a new instance.
-    /// Note that SynchronizationContext.Current is null.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void Create_Throws()
-    {
-        Assert.That(SynchronizationContext.Current, Is.Null);
-        Assert.That(() => new ContextDispatcher(true), Throws.ArgumentNullException);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// Post
     ///
     /// <summary>

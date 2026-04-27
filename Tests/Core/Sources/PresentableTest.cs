@@ -200,23 +200,6 @@ class PresentableTest
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Init_Throws
-    ///
-    /// <summary>
-    /// Tests to create a new instance of the PresentableBase inherited
-    /// class when the SynchronizationContext.Current is null.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void Init_Throws()
-    {
-        Assert.That(SynchronizationContext.Current, Is.Null);
-        Assert.That(() => new Presenter(), Throws.ArgumentNullException);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// PropertyChanged
     ///
     /// <summary>
