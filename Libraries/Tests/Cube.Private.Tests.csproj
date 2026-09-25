@@ -10,7 +10,7 @@
         <PackageProjectUrl>https://github.com/cube-soft/Cube.Core</PackageProjectUrl>
         <PackageIcon>images\Icon.png</PackageIcon>
         <RootNamespace>Cube.Tests</RootNamespace>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Optimize>true</Optimize>
         <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>

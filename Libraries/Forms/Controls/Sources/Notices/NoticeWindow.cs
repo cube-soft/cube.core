@@ -93,6 +93,7 @@ public class NoticeWindow : BorderlessWindow
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("Use SetTopMost extended method, instead of this.")]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new bool TopMost
     {
         get => base.TopMost;

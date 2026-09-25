@@ -168,14 +168,14 @@ class OrderedDictionaryTest
     public void CopyFrom()
     {
         var src  = Create();
-        var dest = new OrderedDictionary<string, string>(src);
+        var dest = new Cube.Collections.OrderedDictionary<string, string>(src);
         Assert.That(dest.Count, Is.EqualTo(src.Count));
 
         src["Brian"] = "Kay";
         Assert.That(src["Brian"],  Is.EqualTo("Kay"));
         Assert.That(dest["Brian"], Is.EqualTo("Kernighan"));
 
-        Assert.That(new OrderedDictionary<string, string>(null).Count, Is.EqualTo(0));
+        Assert.That(new Cube.Collections.OrderedDictionary<string, string>(null).Count, Is.EqualTo(0));
     }
 
     /* --------------------------------------------------------------------- */
@@ -324,7 +324,7 @@ class OrderedDictionaryTest
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private OrderedDictionary<string, string> Create() => new()
+    private Cube.Collections.OrderedDictionary<string, string> Create() => new()
     {
         { "Dennis",  "Ritchie"   },
         { "Brian",   "Kernighan" },
