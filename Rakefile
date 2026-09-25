@@ -22,8 +22,8 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT     = "Cube.Core"
-LATEST      = "v9"
-BRANCHES    = ["net47", "net60", "net35"]
+LATEST      = "v10"
+BRANCHES    = ["net48", "net99", "net35"]
 PLATFORMS   = ["Any CPU"]
 PACKAGES    = ["Libraries/Core/Cube.Core",
                "Libraries/Forms/Core/Cube.Forms",
@@ -104,12 +104,8 @@ desc "Build projects in the current branch."
 task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
 
-    branch = %x(git rev-parse --abbrev-ref HEAD).chomp
-    build  = branch.include?("net60") ?
-             "dotnet build -c Release" :
-             "msbuild -v:m -p:Configuration=Release"
-
     Rake::Task[:restore].execute
+    build = File.read(".build").strip
     cmd(%(#{build} -p:Platform="#{e.platform}" #{PROJECT}.sln))
 end
 
