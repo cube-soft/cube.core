@@ -43,6 +43,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public bool Active
     {
         get => _active;
@@ -65,6 +66,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public System.Windows.Forms.FormWindowState WindowState
     {
         get => _state;

@@ -74,6 +74,7 @@ public class VersionControl : ControlBase
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public Image Image
     {
         get => _image.Image;
@@ -99,6 +100,7 @@ public class VersionControl : ControlBase
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string Product
     {
         get => _product;
@@ -115,6 +117,7 @@ public class VersionControl : ControlBase
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string Version
     {
         get => _version;
@@ -150,6 +153,7 @@ public class VersionControl : ControlBase
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string Description
     {
         get => _others.Text;
@@ -166,6 +170,7 @@ public class VersionControl : ControlBase
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string Copyright
     {
         get => _copyright.Text;
@@ -183,6 +188,7 @@ public class VersionControl : ControlBase
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public Uri Uri { get; set; }
 
     /* --------------------------------------------------------------------- */

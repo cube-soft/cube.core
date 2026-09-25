@@ -75,6 +75,7 @@ public class FlatButton : System.Windows.Forms.Button
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string Content
     {
         get => _painter.Content;
@@ -110,6 +111,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new Color BackColor
     {
         get => base.BackColor;
@@ -127,6 +129,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new Image BackgroundImage
     {
         get => base.BackgroundImage;
@@ -158,6 +161,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new System.Windows.Forms.FlatStyle FlatStyle
     {
         get => base.FlatStyle;
@@ -175,6 +179,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new Color ForeColor
     {
         get => base.ForeColor;
@@ -192,6 +197,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new Image Image
     {
         get => base.Image;
@@ -210,6 +216,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new int ImageIndex
     {
         get => base.ImageIndex;
@@ -227,6 +234,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new string ImageKey
     {
         get => base.ImageKey;
@@ -245,6 +253,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new System.Windows.Forms.ImageList ImageList
     {
         get => base.ImageList;
@@ -262,6 +271,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new string Text
     {
         get => base.Text;
@@ -280,6 +290,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new System.Windows.Forms.TextImageRelation TextImageRelation
     {
         get => base.TextImageRelation;
@@ -298,6 +309,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new bool UseVisualStyleBackColor
     {
         get => base.UseVisualStyleBackColor;

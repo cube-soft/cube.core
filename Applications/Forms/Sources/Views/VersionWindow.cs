@@ -60,6 +60,7 @@ public class VersionWindow : Window
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public Image Image
     {
         get => _control.Image;
@@ -76,6 +77,7 @@ public class VersionWindow : Window
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string Product
     {
         get => _control.Product;
@@ -92,6 +94,7 @@ public class VersionWindow : Window
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string Version
     {
         get => _control.Version;
@@ -108,6 +111,7 @@ public class VersionWindow : Window
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string Description
     {
         get => _control.Description;
@@ -124,6 +128,7 @@ public class VersionWindow : Window
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string Copyright
     {
         get => _control.Copyright;
@@ -141,6 +146,7 @@ public class VersionWindow : Window
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public Uri Uri
     {
         get => _control.Uri;

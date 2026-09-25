@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 using System.Text;
 using Cube.Tests;
 using NUnit.Framework;
@@ -95,24 +95,28 @@ class IoTest : FileFixture
         Io.Configure(controller);
 
         var src = new Entity(GetSource("Sample.txt"));
-        var bin = Get($"{nameof(Serialize)}-{id}.bin");
-        var fmt = new BinaryFormatter();
+        var xml = Get($"{nameof(Serialize)}-{id}.xml");
+        var fmt = new DataContractSerializer(typeof(Entity));
 
-        using (var fs = Io.Create(bin)) fmt.Serialize(fs, src);
-        using (var fs = Io.Open(bin))
+        using (var fs = Io.Create(xml)) fmt.WriteObject(fs, src);
+        using (var fs = Io.Open(xml))
         {
-            var dest = (Entity)fmt.Deserialize(fs);
-            var cmp  = new DateTime(2017, 6, 5);
+            var dest = (Entity)fmt.ReadObject(fs);
 
-            Assert.That(dest.RawName,        Is.EqualTo(GetSource("Sample.txt")));
-            Assert.That(dest.FullName,       Is.EqualTo(dest.RawName));
-            Assert.That(dest.Name,           Is.EqualTo("Sample.txt"));
-            Assert.That(dest.BaseName,       Is.EqualTo("Sample"));
-            Assert.That(dest.Extension,      Is.EqualTo(".txt"));
-            Assert.That(dest.DirectoryName,  Is.EqualTo(Examples));
-            Assert.That(dest.CreationTime,   Is.GreaterThan(cmp));
-            Assert.That(dest.LastWriteTime,  Is.GreaterThan(cmp));
-            Assert.That(dest.LastAccessTime, Is.GreaterThan(cmp));
+            Assert.That(dest,                Is.Not.SameAs(src));
+            Assert.That(dest.RawName,        Is.EqualTo(src.RawName));
+            Assert.That(dest.FullName,       Is.EqualTo(src.FullName));
+            Assert.That(dest.Name,           Is.EqualTo(src.Name));
+            Assert.That(dest.BaseName,       Is.EqualTo(src.BaseName));
+            Assert.That(dest.Extension,      Is.EqualTo(src.Extension));
+            Assert.That(dest.DirectoryName,  Is.EqualTo(src.DirectoryName));
+            Assert.That(dest.Exists,         Is.EqualTo(src.Exists));
+            Assert.That(dest.IsDirectory,    Is.EqualTo(src.IsDirectory));
+            Assert.That(dest.Length,         Is.EqualTo(src.Length));
+            Assert.That(dest.Attributes,     Is.EqualTo(src.Attributes));
+            Assert.That(dest.CreationTime,   Is.EqualTo(src.CreationTime));
+            Assert.That(dest.LastWriteTime,  Is.EqualTo(src.LastWriteTime));
+            Assert.That(dest.LastAccessTime, Is.EqualTo(src.LastAccessTime));
         }
     }
 
