@@ -22,9 +22,6 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\Xui\Cube.Xui.csproj" />
         <ProjectReference Include="..\..\Libraries\Tests\Cube.Private.Tests.csproj" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />
-        <PackageReference Include="NUnit3TestAdapter" Version="*" />
-        <PackageReference Include="Appveyor.TestLogger" Version="*" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\Resources.Designer.cs" DependentUpon="Resources.resx" AutoGen="True" DesignTime="True" />

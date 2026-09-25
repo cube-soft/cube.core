@@ -21,9 +21,6 @@
         <ProjectReference Include="..\..\Libraries\AlphaFS\Cube.FileSystem.AlphaFS.csproj" />
         <ProjectReference Include="..\..\Libraries\Trick\Cube.Trick.csproj" />
         <ProjectReference Include="..\..\Libraries\Tests\Cube.Private.Tests.csproj" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />
-        <PackageReference Include="NUnit3TestAdapter" Version="*" />
-        <PackageReference Include="Appveyor.TestLogger" Version="*" />
     </ItemGroup>
     <ItemGroup>
         <None Include="NLog.config" CopyToOutputDirectory="Always" />
