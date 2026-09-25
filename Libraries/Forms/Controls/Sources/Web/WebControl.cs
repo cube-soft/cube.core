@@ -18,6 +18,7 @@
 namespace Cube.Forms.Controls;
 
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 using Cube.Text.Extensions;
@@ -45,6 +46,7 @@ public partial class WebControl : WF.WebBrowser
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string UserAgent
     {
         get

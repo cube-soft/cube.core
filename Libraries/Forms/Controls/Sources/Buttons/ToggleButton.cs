@@ -75,6 +75,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public string Content
     {
         get => _painter.Content;
@@ -112,6 +113,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new Color BackColor
     {
         get => base.BackColor;
@@ -129,6 +131,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new Image BackgroundImage
     {
         get => base.BackgroundImage;
@@ -160,6 +163,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new System.Windows.Forms.FlatStyle FlatStyle
     {
         get => base.FlatStyle;
@@ -177,6 +181,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new Color ForeColor
     {
         get => base.ForeColor;
@@ -194,6 +199,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new Image Image
     {
         get => base.Image;
@@ -212,6 +218,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new int ImageIndex
     {
         get => base.ImageIndex;
@@ -229,6 +236,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new string ImageKey
     {
         get => base.ImageKey;
@@ -247,6 +255,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new System.Windows.Forms.ImageList ImageList
     {
         get => base.ImageList;
@@ -264,6 +273,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new string Text
     {
         get => base.Text;
@@ -282,6 +292,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new System.Windows.Forms.TextImageRelation TextImageRelation
     {
         get => base.TextImageRelation;
@@ -300,6 +311,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new bool UseVisualStyleBackColor
     {
         get => base.UseVisualStyleBackColor;
@@ -320,6 +332,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new System.Windows.Forms.Appearance Appearance
     {
         get => base.Appearance;
@@ -336,6 +349,7 @@ public class ToggleButton : System.Windows.Forms.CheckBox
     ///
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new ContentAlignment CheckAlign
     {
         get => base.CheckAlign;

@@ -295,6 +295,7 @@ public class BorderlessWindow : Window
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public new FormBorderStyle FormBorderStyle
     {
         get => base.FormBorderStyle;
