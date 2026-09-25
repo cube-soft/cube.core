@@ -39,6 +39,7 @@
 
 .svn
 .vs
+.claude
 
 ~$*
 _ReSharper*/

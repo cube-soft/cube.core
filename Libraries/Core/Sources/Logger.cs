@@ -209,28 +209,34 @@ public static class Logger
     /// Try
     ///
     /// <summary>
-    /// Logs as Warning level when the specified action throws an exception.
+    /// Invokes the specified action and logs at Warning level if an
+    /// exception is thrown. The action will be retried up to the
+    /// specified number of times upon failure.
     /// </summary>
     ///
-    /// <param name="action">Action to monitor.</param>
-    /// <param name="path">Caller file path.</param>
-    /// <param name="n">Caller line number.</param>
+    /// <param name="action">The action to invoke and monitor.</param>
+    /// <param name="retry">The maximum number of retries.</param>
+    /// <param name="path">The file path of the caller.</param>
+    /// <param name="n">The line number of the caller.</param>
     ///
-    /// <returns>true if no exception is sent.</returns>
+    /// <returns>
+    /// true if the action completes without throwing an exception within
+    /// the allowed attempts.
+    /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static bool Try(Action action, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
+    public static bool Try(Action action, uint retry = 0, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
     {
-        try
+        for (var i = 0; i < retry + 1; ++i)
         {
-            action();
-            return true;
+            try
+            {
+                action();
+                return true;
+            }
+            catch (Exception err) { Warn(err, path, n); }
         }
-        catch (Exception err)
-        {
-            Warn(err, path, n);
-            return false;
-        }
+        return false;
     }
 
     /* --------------------------------------------------------------------- */
@@ -238,30 +244,40 @@ public static class Logger
     /// TryGet
     ///
     /// <summary>
-    /// Logs as Warning level when the specified function throws an exception.
+    /// Invokes the specified function and logs at Warning level if an
+    /// exception is thrown. The function will be retried up to the specified
+    /// number of times upon failure.
     /// </summary>
     ///
-    /// <param name="func">Function object to monitor.</param>
-    /// <param name="dest">Result of executing the specified function.</param>
-    /// <param name="path">Caller file path.</param>
-    /// <param name="n">Caller line number.</param>
+    /// <param name="func">The function to execute and monitor.</param>
+    /// <param name="dest">
+    /// When successful, contains the result returned by the function;
+    /// otherwise, the default value of type T.
+    /// </param>
+    /// <param name="retry">The maximum number of retries.</param>
+    /// <param name="path">The file path of the caller.</param>
+    /// <param name="n">The line number of the caller.</param>
     ///
-    /// <returns>true if no exception is sent.</returns>
+    /// <returns>
+    /// true if the function completes without throwing an exception within
+    /// the allowed attempts.
+    /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static bool TryGet<T>(Func<T> func, out T dest, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
+    public static bool TryGet<T>(Func<T> func, out T dest, uint retry = 0, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
     {
-        try
+        for (var i = 0; i < retry + 1; ++i)
         {
-            dest = func();
-            return true;
+            try
+            {
+                dest = func();
+                return true;
+            }
+            catch (Exception err) { Warn(err, path, n); }
         }
-        catch (Exception err)
-        {
-            Warn(err, path, n);
-            dest = default;
-            return false;
-        }
+
+        dest = default;
+        return false;
     }
 
     /* --------------------------------------------------------------------- */
@@ -279,7 +295,7 @@ public static class Logger
     /* --------------------------------------------------------------------- */
     [Obsolete("Use the Try method instead.")]
     public static void Warn(Action action, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
-        Try(action, path, n);
+        Try(action, 0, path, n);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -296,7 +312,7 @@ public static class Logger
     /* --------------------------------------------------------------------- */
     [Obsolete("Use the Try method instead.")]
     public static void Error(Action action, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
-        Try(action, path, n);
+        Try(action, 0, path, n);
 
     #endregion
 

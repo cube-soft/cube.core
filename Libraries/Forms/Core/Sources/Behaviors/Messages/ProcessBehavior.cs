@@ -47,7 +47,7 @@ public class ProcessBehavior : MessageBehavior<ProcessMessage>
     {
         try
         {
-            var proc = Process.Start(new ProcessStartInfo
+            using var proc = Process.Start(new ProcessStartInfo
             {
                 FileName = e.Value,
                 UseShellExecute = true,

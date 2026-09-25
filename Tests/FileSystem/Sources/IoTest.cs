@@ -19,8 +19,10 @@ namespace Cube.FileSystem.Tests;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using Cube.Tests;
 using NUnit.Framework;
 
@@ -425,6 +427,64 @@ class IoTest : FileFixture
 
     /* --------------------------------------------------------------------- */
     ///
+    /// Copy_NameTooLong
+    ///
+    /// <summary>
+    /// Tests when too long file name is specified.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCaseSource(nameof(TestCases))]
+    public void Copy_NameTooLong(int id, IoController controller)
+    {
+        Io.Configure(controller);
+
+        var ss = new StringBuilder();
+        ss.Append($"{nameof(Copy_NameTooLong)}-{id}-");
+        for (var i = 0; i < 250; ++i) ss.Append(0);
+        ss.Append(".txt");
+
+        var dest = Get(ss.ToString());
+        var src  = GetSource("Sample.txt");
+        Assert.That(() => Io.Copy(src, dest, true), Throws.TypeOf<PathTooLongException>());
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Copy_PathTooLong
+    ///
+    /// <summary>
+    /// Tests when too long file name is specified.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCaseSource(nameof(TestCases))]
+    public void Copy_PathTooLong(int id, IoController controller)
+    {
+        Io.Configure(controller);
+
+        try
+        {
+            var root = $"{nameof(Copy_PathTooLong)}-{id}";
+            var ss = new StringBuilder();
+            ss.Append($@"{root}\");
+            for (var i = 0; i < 9; ++i) ss.Append($@"{i}000000000000000000000000000000\");
+            ss.Append("Sample.txt");
+
+            var dest = Get(ss.ToString());
+            var src  = GetSource("Sample.txt");
+            Io.Copy(src, dest, true);
+            Io.Delete(Get(root));
+            Assert.That(id, Is.EqualTo(2)); // AlphaFS
+        }
+        catch (Exception e) {
+            Assert.That(id, Is.EqualTo(1)); // System.IO
+            Assert.That(e,  Is.TypeOf<DirectoryNotFoundException>());
+        }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// Open_FileNotFoundException
     ///
     /// <summary>
@@ -476,8 +536,8 @@ class IoTest : FileFixture
         get
         {
             var n = 0;
-            yield return new TestCaseData(n++, new IoController());
-            yield return new TestCaseData(n++, new AlphaFS.IoController());
+            yield return new TestCaseData(++n, new IoController());
+            yield return new TestCaseData(++n, new AlphaFS.IoController());
         }
     }
 
