@@ -305,11 +305,14 @@ public class VersionControl : ControlBase
         _copyright.LinkClicked += (_, _) =>
         {
             if (Uri is null) return;
-            Logger.Try(() => Process.Start(new ProcessStartInfo
+            Logger.Try(() =>
             {
-                FileName = Uri.ToString(),
-                UseShellExecute = true,
-            }));
+                using var proc = Process.Start(new ProcessStartInfo
+                {
+                    FileName = Uri.ToString(),
+                    UseShellExecute = true,
+                });
+            });
         };
 
         _contents.Controls.Add(_info);

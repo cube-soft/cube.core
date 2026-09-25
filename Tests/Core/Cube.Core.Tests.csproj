@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>9.0.0</Version>
+        <Version>10.0.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft, Inc.</Company>
         <Product>Cube.Tests</Product>
@@ -9,12 +9,13 @@
         <RootNamespace>Cube.Tests</RootNamespace>
         <AssemblyTitle>Cube.Core UnitTest</AssemblyTitle>
         <AssemblyName>Cube.Core.Tests</AssemblyName>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
         <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
         <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <SatelliteResourceLanguages>_</SatelliteResourceLanguages>
         <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">

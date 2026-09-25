@@ -1,7 +1,6 @@
 Cube.Trick
 ====
 
-[![Package](https://img.shields.io/nuget/v/cube.trick)](https://www.nuget.org/packages/cube.trick/)
 [![AppVeyor](https://img.shields.io/appveyor/build/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
 [![Codecov](https://img.shields.io/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 

@@ -652,7 +652,7 @@ public static class Io
             }
             catch (UnauthorizedAccessException err)
             {
-                Logger.Warn(err.Message);
+                Logger.Warn(err);
                 Logger.Try(() => SetAttributes(dest, unlock));
                 Logger.Try(() => _controller.SetCreationTime(dest, e.CreationTime));
                 Logger.Try(() => _controller.SetLastWriteTime(dest, e.LastWriteTime));
