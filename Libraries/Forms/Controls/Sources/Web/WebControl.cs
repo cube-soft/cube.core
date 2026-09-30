@@ -77,7 +77,7 @@ public partial class WebControl : WF.WebBrowser
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler<NavigatingEventArgs> BeforeNavigating;
+    public event EventHandler<NavigatingEventArgs>? BeforeNavigating;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -104,7 +104,7 @@ public partial class WebControl : WF.WebBrowser
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler<NavigatingEventArgs> BeforeNewWindow;
+    public event EventHandler<NavigatingEventArgs>? BeforeNewWindow;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -131,7 +131,7 @@ public partial class WebControl : WF.WebBrowser
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler<NavigatingErrorEventArgs> NavigatingError;
+    public event EventHandler<NavigatingErrorEventArgs>? NavigatingError;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -158,7 +158,7 @@ public partial class WebControl : WF.WebBrowser
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler<DialogMessage> MessageShowing;
+    public event EventHandler<DialogMessage>? MessageShowing;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -278,7 +278,7 @@ public partial class WebControl : WF.WebBrowser
     {
         base.CreateSink();
         _ax = new(this);
-        _cookie = new(ActiveXInstance, _ax, typeof(DWebBrowserEvents2));
+        _cookie = new(ActiveXInstance!, _ax, typeof(DWebBrowserEvents2));
     }
 
     /* --------------------------------------------------------------------- */
@@ -366,7 +366,7 @@ public partial class WebControl : WF.WebBrowser
 
     #region Fields
     private string _agent = string.Empty;
-    private WF.AxHost.ConnectionPointCookie _cookie;
-    private ActiveXControlEvents _ax;
+    private WF.AxHost.ConnectionPointCookie? _cookie;
+    private ActiveXControlEvents? _ax;
     #endregion
 }

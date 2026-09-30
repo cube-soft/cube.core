@@ -54,7 +54,7 @@ public static class DependencyFactory
     public static DependencyProperty Create<TOwner, TProperty>(
         string name,
         Action<TOwner, TProperty> callback
-    ) where TOwner : DependencyObject => Create(name, default, callback);
+    ) where TOwner : DependencyObject => Create(name, default(TProperty)!, callback);
 
     /* --------------------------------------------------------------------- */
     ///

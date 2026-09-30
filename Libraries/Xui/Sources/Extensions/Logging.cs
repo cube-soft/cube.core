@@ -56,7 +56,7 @@ public static class Methods
             }));
         }
 
-        static void f1(object s, UnhandledExceptionEventArgs e) => Logger.Error(e.ExceptionObject as Exception);
+        static void f1(object s, UnhandledExceptionEventArgs e) => Logger.Error((Exception)e.ExceptionObject);
         if (AppDomain.CurrentDomain is not null) {
             AppDomain.CurrentDomain.UnhandledException += f1;
             _disposable.Add(Disposable.Create(() => {

@@ -84,7 +84,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static IDisposable Subscribe(this INotifyPropertyChanged src,
-        ObservableHandlerDictionary map, ObservableHandler others)
+        ObservableHandlerDictionary map, ObservableHandler? others)
     {
         void f(object s, PropertyChangedEventArgs e)
         {

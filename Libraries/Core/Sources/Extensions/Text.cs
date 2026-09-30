@@ -18,6 +18,7 @@
 namespace Cube.Text.Extensions;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -44,7 +45,7 @@ public static class Methods
     /// <returns>true for containing one or more character.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static bool HasValue(this string src) => !string.IsNullOrEmpty(src);
+    public static bool HasValue([NotNullWhen(true)] this string? src) => !string.IsNullOrEmpty(src);
 
     /* --------------------------------------------------------------------- */
     ///

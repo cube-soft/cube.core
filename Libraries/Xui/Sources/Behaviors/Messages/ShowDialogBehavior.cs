@@ -67,7 +67,7 @@ public class ShowDialogBehavior<TView, TViewModel> :
     /// <returns>Object to dispose.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected override IDisposable OnSubscribe(IAggregator src) =>
+    protected override IDisposable? OnSubscribe(IAggregator? src) =>
         src is null ? default :
         new DisposableContainer(
             src.Subscribe<CancelMessage<TViewModel>>(Invoke),

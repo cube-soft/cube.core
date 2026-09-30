@@ -46,7 +46,7 @@ public class ClosingEventBehavior : DisposableProxy
     /* --------------------------------------------------------------------- */
     public ClosingEventBehavior(Form src, Action<FormClosingEventArgs> action) : base(() =>
     {
-        void invoke(object s, FormClosingEventArgs e) => action(e);
+        void invoke(object? s, FormClosingEventArgs e) => action(e);
         src.FormClosing += invoke;
         return Disposable.Create(() => src.FormClosing -= invoke);
     }) { }

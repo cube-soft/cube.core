@@ -69,7 +69,7 @@ public class NoticeBehavior : MessageBehaviorBase<NoticeMessage>
     /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public NoticeBehavior(NoticeWindow view, IAggregator aggregator) :
+    public NoticeBehavior(NoticeWindow? view, IAggregator aggregator) :
         base(aggregator) => View = view;
 
     #endregion
@@ -86,7 +86,7 @@ public class NoticeBehavior : MessageBehaviorBase<NoticeMessage>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected NoticeWindow View { get; }
+    protected NoticeWindow? View { get; }
 
     #endregion
 

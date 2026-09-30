@@ -123,7 +123,7 @@ public class SizeHacker : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenControlAdded(object s, ControlEventArgs e) => StartMonitor(e.Control);
+    private void WhenControlAdded(object? s, ControlEventArgs e) => StartMonitor(e.Control!);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -134,7 +134,7 @@ public class SizeHacker : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenControlRemoved(object s, ControlEventArgs e) => EndMonitor(e.Control);
+    private void WhenControlRemoved(object? s, ControlEventArgs e) => EndMonitor(e.Control!);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -145,7 +145,7 @@ public class SizeHacker : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenMouseMove(object s, MouseEventArgs e)
+    private void WhenMouseMove(object? s, MouseEventArgs e)
     {
         if (e.Button != MouseButtons.None || s is not Control control) return;
 
@@ -167,7 +167,7 @@ public class SizeHacker : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenMouseDown(object s, MouseEventArgs e)
+    private void WhenMouseDown(object? s, MouseEventArgs e)
     {
         if (s is not Control control) return;
 

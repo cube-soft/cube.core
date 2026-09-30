@@ -113,9 +113,9 @@ public static class Methods
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static EventHandlerList GetEventHandlers(object obj)
+    private static EventHandlerList? GetEventHandlers(object obj)
     {
-        static MethodInfo method(Type t)
+        static MethodInfo? method(Type t)
         {
             var mi = t.GetMethod("get_Events", GetAllFlags());
             if (mi is null && t.BaseType is not null) mi = method(t.BaseType);
@@ -133,9 +133,9 @@ public static class Methods
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static object GetEventKey(object obj, string name)
+    private static object? GetEventKey(object obj, string name)
     {
-        static FieldInfo method(Type t, string n)
+        static FieldInfo? method(Type t, string n)
         {
             var fi = t.GetField($"Event{n}", GetAllFlags());
             if (fi is null && t.BaseType is not null) fi = method(t.BaseType, n);

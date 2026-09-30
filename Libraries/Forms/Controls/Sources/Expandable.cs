@@ -51,7 +51,7 @@ public class ExpandableOnlyConverter : ExpandableObjectConverter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public override bool CanConvertTo(ITypeDescriptorContext context, Type type)
+    public override bool CanConvertTo(ITypeDescriptorContext? context, Type? type)
     {
         if (type == typeof(string)) return false;
         return base.CanConvertTo(context, type);
@@ -67,7 +67,7 @@ public class ExpandableOnlyConverter : ExpandableObjectConverter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type type)
+    public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type type)
     {
         if (type == typeof(string)) return string.Empty;
         return base.ConvertTo(context, culture, value, type);
@@ -84,7 +84,7 @@ public class ExpandableOnlyConverter : ExpandableObjectConverter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public override bool CanConvertFrom(ITypeDescriptorContext context, Type type)
+    public override bool CanConvertFrom(ITypeDescriptorContext? context, Type type)
     {
         if (type == typeof(string)) return false;
         return base.CanConvertFrom(context, type);

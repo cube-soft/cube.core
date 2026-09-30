@@ -49,7 +49,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -82,7 +82,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /// <param name="more">More property names.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Refresh(string name, params string[] more)
+    public void Refresh(string? name, params string[] more)
     {
         OnPropertyChanged(new(name));
         foreach (var s in more) OnPropertyChanged(new(s));
@@ -103,8 +103,12 @@ public abstract class SerializableBase : INotifyPropertyChanged
     ///
     /// <returns>Value of the property.</returns>
     ///
+    /// <remarks>
+    /// If name is null, returns default(T) without invoking creator.
+    /// </remarks>
+    ///
     /* --------------------------------------------------------------------- */
-    protected T Get<T>(Func<T> creator, [CallerMemberName] string name = null)
+    protected T? Get<T>(Func<T> creator, [CallerMemberName] string? name = null)
     {
         if (name is null) return default;
 
@@ -134,7 +138,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /// <returns>Value of the property.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected T Get<T>([CallerMemberName] string name = null) => Get(() => default(T), name);
+    protected T? Get<T>([CallerMemberName] string? name = null) => Get(() => default(T), name);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -151,7 +155,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /// <returns>True for done; false for cancel.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected bool Set<T>(T value, [CallerMemberName] string name = null) =>
+    protected bool Set<T>(T value, [CallerMemberName] string? name = null) =>
         Set(value, EqualityComparer<T>.Default, name);
 
     /* --------------------------------------------------------------------- */
@@ -170,11 +174,11 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /// <returns>True for done; false for cancel.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected bool Set<T>(T value, IEqualityComparer<T> compare, [CallerMemberName] string name = null)
+    protected bool Set<T>(T value, IEqualityComparer<T> compare, [CallerMemberName] string? name = null)
     {
         if (name is null) return false;
 
-        var src = Get<T>(name);
+        var src = Get<T>(name)!;
         var set = SetCore(ref src, value, compare);
         if (set)
         {
@@ -200,7 +204,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /// <returns>True for done; false for cancel.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected bool Set<T>(ref T field, T value, [CallerMemberName] string name = null) =>
+    protected bool Set<T>(ref T field, T value, [CallerMemberName] string? name = null) =>
         Set(ref field, value, EqualityComparer<T>.Default, name);
 
     /* --------------------------------------------------------------------- */
@@ -221,7 +225,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     ///
     /* --------------------------------------------------------------------- */
     protected bool Set<T>(ref T field, T value, IEqualityComparer<T> compare,
-        [CallerMemberName] string name = null)
+        [CallerMemberName] string? name = null)
     {
         var set = SetCore(ref field, value, compare);
         if (set) Refresh(name);

@@ -47,7 +47,7 @@ public sealed class LoggerSource : ILoggerSource
     /// <param name="message">Logging message.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Log(string path, int number, LogLevel level, string message)
+    public void Log(string? path, int number, LogLevel level, string message)
     {
         var e = global::NLog.LogManager.GetLogger(GetLoggerName(path));
         var m = $"({number}) {message}";
@@ -75,7 +75,7 @@ public sealed class LoggerSource : ILoggerSource
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static string GetLoggerName(string path)
+    private static string GetLoggerName(string? path)
     {
         if (!path.HasValue()) return "None";
 

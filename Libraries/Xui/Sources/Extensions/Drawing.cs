@@ -48,7 +48,7 @@ public static class Methods
     /// <returns>BitmapImage object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static BitmapImage ToBitmapImage(this Source src) =>
+    public static BitmapImage? ToBitmapImage(this Source? src) =>
         src.ToBitmapImage(false);
 
     /* --------------------------------------------------------------------- */
@@ -65,7 +65,7 @@ public static class Methods
     /// <returns>BitmapImage object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static BitmapImage ToBitmapImage(this Source src, bool dispose)
+    public static BitmapImage? ToBitmapImage(this Source? src, bool dispose)
     {
         if (src is null) return default;
         try
@@ -90,7 +90,7 @@ public static class Methods
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static bool TryGetObject(Source src, bool icp, out BitmapImage dest)
+    private static bool TryGetObject(Source src, bool icp, out BitmapImage? dest)
     {
         try
         {

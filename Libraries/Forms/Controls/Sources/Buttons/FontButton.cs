@@ -216,7 +216,7 @@ public class FontButton : Button
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler Apply;
+    public event EventHandler? Apply;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -264,7 +264,7 @@ public class FontButton : Button
             ShowEffects         = ShowEffects,
         };
 
-        void handler(object s, EventArgs ev) => OnApply(ev);
+        void handler(object? s, EventArgs ev) => OnApply(ev);
         dialog.Apply += handler;
         var result = dialog.ShowDialog();
         dialog.Apply -= handler;

@@ -154,7 +154,7 @@ public class PathLintBehavior : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenTextChanged(object s, EventArgs e)
+    private void WhenTextChanged(object? s, EventArgs e)
     {
         var index = _source.Text.IndexOfAny(InvalidChars);
         if (index == 1 && _source.Text[1] == ':') index = _source.Text.IndexOfAny(InvalidChars, 2);
@@ -176,7 +176,7 @@ public class PathLintBehavior : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenClick(object s, EventArgs e)
+    private void WhenClick(object? s, EventArgs e)
     {
         if (!_focus && _source.TextLength > 0)
         {
@@ -197,7 +197,7 @@ public class PathLintBehavior : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenLeave(object s, EventArgs e) => _focus = false;
+    private void WhenLeave(object? s, EventArgs e) => _focus = false;
 
     #endregion
 

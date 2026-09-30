@@ -17,6 +17,8 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Xui;
 
+using System.Diagnostics.CodeAnalysis;
+
 using System.Windows.Input;
 
 /* ------------------------------------------------------------------------- */
@@ -62,7 +64,7 @@ public class BindableElement<T> : BindableElement, IElement<T>
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public BindableElement(Getter<string> gettext, ICommand command, Dispatcher dispatcher) :
+    public BindableElement(Getter<string> gettext, ICommand? command, Dispatcher dispatcher) :
         this(gettext, new Accessor<T>(), command, dispatcher) { }
 
     /* --------------------------------------------------------------------- */
@@ -97,7 +99,7 @@ public class BindableElement<T> : BindableElement, IElement<T>
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public BindableElement(Getter<string> gettext, Getter<T> getvalue, ICommand command, Dispatcher dispatcher) :
+    public BindableElement(Getter<string> gettext, Getter<T> getvalue, ICommand? command, Dispatcher dispatcher) :
         this(gettext, new Accessor<T>(getvalue), command, dispatcher) { }
 
     /* --------------------------------------------------------------------- */
@@ -116,7 +118,7 @@ public class BindableElement<T> : BindableElement, IElement<T>
     ///
     /* --------------------------------------------------------------------- */
     public BindableElement(Getter<string> gettext, Getter<T> getvalue, Setter<T> setvalue, Dispatcher dispatcher) :
-        this(gettext, getvalue, setvalue, default, dispatcher) { }
+        this(gettext, getvalue, setvalue, default(ICommand), dispatcher) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -134,7 +136,7 @@ public class BindableElement<T> : BindableElement, IElement<T>
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public BindableElement(Getter<string> gettext, Getter<T> getvalue, Setter<T> setvalue, ICommand command, Dispatcher dispatcher) :
+    public BindableElement(Getter<string> gettext, Getter<T> getvalue, Setter<T> setvalue, ICommand? command, Dispatcher dispatcher) :
         this(gettext, new Accessor<T>(getvalue, setvalue), command, dispatcher) { }
 
     /* --------------------------------------------------------------------- */
@@ -152,7 +154,7 @@ public class BindableElement<T> : BindableElement, IElement<T>
     ///
     /* --------------------------------------------------------------------- */
     public BindableElement(Getter<string> gettext, Accessor<T> accessor, Dispatcher dispatcher) :
-        this(gettext, accessor, default, dispatcher) { }
+        this(gettext, accessor, default(ICommand), dispatcher) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -169,7 +171,7 @@ public class BindableElement<T> : BindableElement, IElement<T>
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public BindableElement(Getter<string> gettext, Accessor<T> accessor, ICommand command, Dispatcher dispatcher) :
+    public BindableElement(Getter<string> gettext, Accessor<T> accessor, ICommand? command, Dispatcher dispatcher) :
         base(gettext, command, dispatcher) => _accessor = accessor;
 
     #endregion
@@ -185,6 +187,7 @@ public class BindableElement<T> : BindableElement, IElement<T>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [MaybeNull]
     public T Value
     {
         get => _accessor.Get();

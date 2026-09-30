@@ -55,7 +55,7 @@ public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
         };
 
         if (e.Text.HasValue() && e.Text != nameof(OpenFileMessage)) view.Title = e.Text;
-        if (e.Value.Any()) view.FileName = e.Value.First();
+        if (e.Value is { } values && values.Any()) view.FileName = values.First();
         if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
         e.Cancel = view.ShowDialog() != DialogResult.OK;

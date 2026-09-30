@@ -317,7 +317,7 @@ public static class Methods
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static T Get<T>(this Assembly src) where T : class =>
+    private static T? Get<T>(this Assembly src) where T : class =>
         src is not null ?
         Attribute.GetCustomAttribute(src, typeof(T)) as T :
         default;
@@ -332,7 +332,7 @@ public static class Methods
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static string GetOrEmpty(string src) => src ?? string.Empty;
+    private static string GetOrEmpty(string? src) => src ?? string.Empty;
 
     #endregion
 }

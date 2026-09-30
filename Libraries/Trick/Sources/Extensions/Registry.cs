@@ -48,7 +48,7 @@ public static class Methods
     public static void SetValue<T>(this RegistryKey src, string subkey, string name, T value)
     {
         using var sk = src.CreateSubKey(subkey);
-        sk?.SetValue(name, value);
+        sk?.SetValue(name, value!);
     }
 
     /* --------------------------------------------------------------------- */
@@ -66,7 +66,7 @@ public static class Methods
     /// <returns>Value of type T.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static T GetValue<T>(this RegistryKey src, string subkey, string name) =>
+    public static T? GetValue<T>(this RegistryKey src, string subkey, string name) =>
         src.GetValue(subkey, name, default(T));
 
     /* --------------------------------------------------------------------- */

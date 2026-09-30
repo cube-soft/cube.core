@@ -95,7 +95,7 @@ public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>>
     /// <param name="src">File or directory path information.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Set(Entity src)
+    public void Set(Entity? src)
     {
         if (src is null) return;
         Value = src.IsDirectory ? [] : [src.Name];
@@ -113,7 +113,7 @@ public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>>
     /// <returns>String value.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected override string GetValue() => Value.FirstOrDefault();
+    protected override string? GetValue() => Value?.FirstOrDefault();
 
     #endregion
 }

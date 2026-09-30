@@ -70,7 +70,7 @@ public class NoticeQueue : IEnumerable<NoticeMessage>, INotifyCollectionChanged
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event NotifyCollectionChangedEventHandler CollectionChanged;
+    public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -122,7 +122,7 @@ public class NoticeQueue : IEnumerable<NoticeMessage>, INotifyCollectionChanged
     /// <returns>null if empty, others notice item.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public NoticeMessage Dequeue()
+    public NoticeMessage? Dequeue()
     {
         if (_inner.Count <= 0) return null;
 
@@ -142,7 +142,7 @@ public class NoticeQueue : IEnumerable<NoticeMessage>, INotifyCollectionChanged
     /// <returns>null if empty, others notice item.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public NoticeMessage Peek() =>
+    public NoticeMessage? Peek() =>
         _inner.Count > 0 ? _inner.First().Value.Peek() : null;
 
     /* --------------------------------------------------------------------- */

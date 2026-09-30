@@ -101,14 +101,14 @@ public class CaptionControl : ControlBase
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public System.Windows.Forms.Control MaximizeControl
+    public System.Windows.Forms.Control? MaximizeControl
     {
         get => _maximize;
         protected set
         {
             if (_maximize == value) return;
 
-            void handler(object s, EventArgs e) => OnMaximizeRequested(e);
+            void handler(object? s, EventArgs e) => OnMaximizeRequested(e);
             if (_maximize is not null) _maximize.Click -= handler;
             _maximize = value;
             if (_maximize is not null) _maximize.Click += handler;
@@ -126,14 +126,14 @@ public class CaptionControl : ControlBase
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public System.Windows.Forms.Control MinimizeControl
+    public System.Windows.Forms.Control? MinimizeControl
     {
         get => _minimize;
         protected set
         {
             if (_minimize == value) return;
 
-            void handler(object s, EventArgs e) => OnMinimizeRequested(e);
+            void handler(object? s, EventArgs e) => OnMinimizeRequested(e);
             if (_minimize is not null) _minimize.Click -= handler;
             _minimize = value;
             if (_minimize is not null) _minimize.Click += handler;
@@ -151,14 +151,14 @@ public class CaptionControl : ControlBase
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public System.Windows.Forms.Control CloseControl
+    public System.Windows.Forms.Control? CloseControl
     {
         get => _close;
         protected set
         {
             if (_close == value) return;
 
-            void handler(object s, EventArgs e) => OnCloseRequested(e);
+            void handler(object? s, EventArgs e) => OnCloseRequested(e);
             if (_close is not null) _close.Click -= handler;
             _close = value;
             if (_close is not null) _close.Click += handler;
@@ -180,7 +180,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler CloseRequested;
+    public event EventHandler? CloseRequested;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -206,7 +206,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler MaximizeRequested;
+    public event EventHandler? MaximizeRequested;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -232,7 +232,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler Maximized;
+    public event EventHandler? Maximized;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -258,7 +258,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler MinimizeRequested;
+    public event EventHandler? MinimizeRequested;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -284,7 +284,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler Minimized;
+    public event EventHandler? Minimized;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -311,7 +311,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler Normalized;
+    public event EventHandler? Normalized;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -337,7 +337,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler Activated;
+    public event EventHandler? Activated;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -363,7 +363,7 @@ public class CaptionControl : ControlBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler Deactivate;
+    public event EventHandler? Deactivate;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -383,8 +383,8 @@ public class CaptionControl : ControlBase
     #region Fields
     private bool _active = true;
     private System.Windows.Forms.FormWindowState _state = System.Windows.Forms.FormWindowState.Normal;
-    private System.Windows.Forms.Control _maximize;
-    private System.Windows.Forms.Control _minimize;
-    private System.Windows.Forms.Control _close;
+    private System.Windows.Forms.Control? _maximize;
+    private System.Windows.Forms.Control? _minimize;
+    private System.Windows.Forms.Control? _close;
     #endregion
 }

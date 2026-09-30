@@ -13,6 +13,7 @@
         <RootNamespace>Cube</RootNamespace>
         <TargetFramework>net46</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
         <Optimize>true</Optimize>
         <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>

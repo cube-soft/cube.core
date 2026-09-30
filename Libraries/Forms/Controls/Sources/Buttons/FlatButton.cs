@@ -76,7 +76,7 @@ public class FlatButton : System.Windows.Forms.Button
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public string Content
+    public string? Content
     {
         get => _painter.Content;
         set
@@ -130,7 +130,7 @@ public class FlatButton : System.Windows.Forms.Button
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public new Image BackgroundImage
+    public new Image? BackgroundImage
     {
         get => base.BackgroundImage;
         set => base.BackgroundImage = value;
@@ -198,7 +198,7 @@ public class FlatButton : System.Windows.Forms.Button
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public new Image Image
+    public new Image? Image
     {
         get => base.Image;
         set => base.Image = value;
@@ -254,7 +254,7 @@ public class FlatButton : System.Windows.Forms.Button
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public new System.Windows.Forms.ImageList ImageList
+    public new System.Windows.Forms.ImageList? ImageList
     {
         get => base.ImageList;
         set => base.ImageList = value;
@@ -331,7 +331,7 @@ public class FlatButton : System.Windows.Forms.Button
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event QueryEventHandler<Point, Position> NcHitTest;
+    public event QueryEventHandler<Point, Position>? NcHitTest;
 
     /* --------------------------------------------------------------------- */
     ///

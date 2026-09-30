@@ -57,7 +57,7 @@ public static class Proxy
     /* --------------------------------------------------------------------- */
     public static RegistryKey RootRegistryKey
     {
-        get => _root ??= Registry.CurrentUser.OpenSubKey("Software", true);
+        get => _root ??= Registry.CurrentUser.OpenSubKey("Software", true)!;
         set => Interlocked.Exchange(ref _root, value)?.Dispose();
     }
 
@@ -158,7 +158,7 @@ public static class Proxy
     /// <returns>Deserialized object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static T Deserialize<T>(this Format format, string src)
+    public static T? Deserialize<T>(this Format format, string src)
     {
         switch (format)
         {
@@ -185,7 +185,7 @@ public static class Proxy
     /// <returns>Deserialized object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static T Deserialize<T>(this RegistryKey src) => new RegistryDeserializer().Invoke<T>(src);
+    public static T Deserialize<T>(this RegistryKey? src) => new RegistryDeserializer().Invoke<T>(src);
 
     #endregion
 
@@ -244,6 +244,6 @@ public static class Proxy
     #endregion
 
     #region Fields
-    private static RegistryKey _root;
+    private static RegistryKey? _root;
     #endregion
 }

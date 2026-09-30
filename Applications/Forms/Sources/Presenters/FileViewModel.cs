@@ -64,7 +64,7 @@ public class FileViewModel : PresentableBase
     /* --------------------------------------------------------------------- */
     public string Value
     {
-        get => Get(() => string.Empty);
+        get => Get(() => string.Empty)!;
         set => Set(value);
     }
 
@@ -83,7 +83,7 @@ public class FileViewModel : PresentableBase
     /* --------------------------------------------------------------------- */
     public void ShowOpenFileDialog() => Send(
         new OpenFileMessage() { Value = new[] { Value } },
-        e => Value = e.First(),
+        e => { if (e is not null) Value = e.First(); },
         true
     );
 
@@ -98,7 +98,7 @@ public class FileViewModel : PresentableBase
     /* --------------------------------------------------------------------- */
     public void ShowSaveFileDialog() => Send(
         new SaveFileMessage() { Value = Value },
-        e => Value = e,
+        e => { if (e is not null) Value = e; },
         true
     );
 
@@ -113,7 +113,7 @@ public class FileViewModel : PresentableBase
     /* --------------------------------------------------------------------- */
     public void ShowOpenDirectoryDialog() => Send(
         new OpenDirectoryMessage() { Value = Value },
-        e => Value = e,
+        e => { if (e is not null) Value = e; },
         true
     );
 

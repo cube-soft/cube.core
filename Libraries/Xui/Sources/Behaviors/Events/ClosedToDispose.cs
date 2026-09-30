@@ -79,7 +79,7 @@ public class ClosedToDispose : Behavior<Window>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void OnClosed(object s, EventArgs e)
+    private void OnClosed(object? s, EventArgs e)
     {
         if (AssociatedObject?.DataContext is IDisposable dc) dc.Dispose();
     }

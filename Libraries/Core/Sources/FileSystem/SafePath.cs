@@ -555,7 +555,7 @@ public sealed class SafePath(string src)
     #endregion
 
     #region Fields
-    private EscapedObject _obj;
+    private EscapedObject? _obj;
     private char _escapeChar = '_';
     private bool _allowDriveLetter = true;
     private bool _allowCurrentDirectory = true;

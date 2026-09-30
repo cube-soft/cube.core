@@ -69,7 +69,7 @@ public sealed class BindingLogger : TraceListener
     /// <param name="message">Message to write.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public override void WriteLine(string message) => Logger.Debug(message);
+    public override void WriteLine(string? message) => Logger.Debug(message!);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -82,7 +82,7 @@ public sealed class BindingLogger : TraceListener
     /// <param name="message">Message to write.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public override void Write(string message) { }
+    public override void Write(string? message) { }
 
     #endregion
 

@@ -63,7 +63,7 @@ public abstract class DelegateCommandBase : ObserverBase, ICommand
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler CanExecuteChanged;
+    public event EventHandler? CanExecuteChanged;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -106,7 +106,7 @@ public abstract class DelegateCommandBase : ObserverBase, ICommand
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Execute(object parameter) => OnExecute(parameter);
+    public void Execute(object? parameter) => OnExecute(parameter);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -123,7 +123,7 @@ public abstract class DelegateCommandBase : ObserverBase, ICommand
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public bool CanExecute(object parameter) => OnCanExecute(parameter);
+    public bool CanExecute(object? parameter) => OnCanExecute(parameter);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -139,7 +139,7 @@ public abstract class DelegateCommandBase : ObserverBase, ICommand
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    protected abstract void OnExecute(object parameter);
+    protected abstract void OnExecute(object? parameter);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -155,7 +155,7 @@ public abstract class DelegateCommandBase : ObserverBase, ICommand
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    protected abstract bool OnCanExecute(object parameter);
+    protected abstract bool OnCanExecute(object? parameter);
 
     /* --------------------------------------------------------------------- */
     ///

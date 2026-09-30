@@ -52,7 +52,7 @@ internal class ButtonPainter
     public ButtonPainter(System.Windows.Forms.ButtonBase src)
     {
         Source  = src;
-        Content = src?.GetType().Name;
+        Content = src.GetType().Name;
 
         Source.Paint      += (_, e) => OnPaint(e);
         Source.MouseEnter += (_, e) => OnMouseEnter(e);
@@ -87,7 +87,7 @@ internal class ButtonPainter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string Content { get; set; } = string.Empty;
+    public string? Content { get; set; } = string.Empty;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -277,11 +277,11 @@ internal class ButtonPainter
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    private T Select<T>(T normal, T check, T over, T down, T ignore = default)
+    private T Select<T>(T normal, T check, T over, T down, T? ignore = default)
     {
-        var x0 = !EqualityComparer<T>.Default.Equals(check, ignore) && Checked ? check : normal;
-        var x1 = !EqualityComparer<T>.Default.Equals(over,  ignore) ? over : x0;
-        var x2 = !EqualityComparer<T>.Default.Equals(down,  ignore) ? down : x1;
+        var x0 = !EqualityComparer<T>.Default.Equals(check, ignore!) && Checked ? check : normal;
+        var x1 = !EqualityComparer<T>.Default.Equals(over,  ignore!) ? over : x0;
+        var x2 = !EqualityComparer<T>.Default.Equals(down,  ignore!) ? down : x1;
 
         return MouseDown ? x2 :
                MouseOver ? x1 : x0;
@@ -378,7 +378,7 @@ internal class ButtonPainter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private Image GetImage() => Select(
+    private Image? GetImage() => Select(
         Style.Default.Image,
         Style.Checked.Image,
         Style.MouseOver.Image,
@@ -394,7 +394,7 @@ internal class ButtonPainter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private Image GetBackgroundImage() => Select(
+    private Image? GetBackgroundImage() => Select(
         Style.Default.BackgroundImage,
         Style.Checked.BackgroundImage,
         Style.MouseOver.BackgroundImage,
@@ -472,7 +472,7 @@ internal sealed class RadioButtonPainter : ButtonPainter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenCheckedChanged(object s, EventArgs e)
+    private void WhenCheckedChanged(object? s, EventArgs e)
     {
         if (Source is not System.Windows.Forms.RadioButton control) return;
         Checked = control.Checked;
@@ -531,7 +531,7 @@ internal sealed class ToggleButtonPainter : ButtonPainter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenCheckedChanged(object s, EventArgs e)
+    private void WhenCheckedChanged(object? s, EventArgs e)
     {
         if (Source is not System.Windows.Forms.CheckBox control) return;
         Checked = control.Checked;

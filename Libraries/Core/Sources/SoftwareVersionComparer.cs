@@ -56,7 +56,7 @@ public class SoftwareVersionComparer :
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public int Compare(SoftwareVersion x, SoftwareVersion y)
+    public int Compare(SoftwareVersion? x, SoftwareVersion? y)
     {
         if (x is null && y is null) return 0;
         if (x is null) return -1;
@@ -99,7 +99,7 @@ public class SoftwareVersionComparer :
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public int Compare(object x, object y)
+    public int Compare(object? x, object? y)
     {
         if (x == y) return 0;
         if (x is null) return -1;
@@ -126,7 +126,7 @@ public class SoftwareVersionComparer :
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public bool Equals(SoftwareVersion x, SoftwareVersion y) => Compare(x, y) == 0;
+    public bool Equals(SoftwareVersion? x, SoftwareVersion? y) => Compare(x, y) == 0;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -144,7 +144,7 @@ public class SoftwareVersionComparer :
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public new bool Equals(object x, object y)
+    public new bool Equals(object? x, object? y)
     {
         if (x == y) return true;
         if (x is null || y is null) return false;

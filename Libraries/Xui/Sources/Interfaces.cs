@@ -17,6 +17,8 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Xui;
 
+using System.Diagnostics.CodeAnalysis;
+
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -42,6 +44,7 @@ public interface IValue<T> : INotifyPropertyChanged
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [MaybeNull]
     T Value { get; set; }
 }
 
@@ -80,7 +83,7 @@ public interface IElement : INotifyPropertyChanged
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    ICommand Command { get; set; }
+    ICommand? Command { get; set; }
 }
 
 #endregion

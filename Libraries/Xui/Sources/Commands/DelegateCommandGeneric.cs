@@ -83,7 +83,7 @@ public class DelegateCommand<T> : DelegateCommandBase
     /// <param name="parameter">Data used by the command.</param>
     ///
     /* --------------------------------------------------------------------- */
-    protected override void OnExecute(object parameter) => _execute?.Invoke((T)parameter);
+    protected override void OnExecute(object? parameter) => _execute?.Invoke((T)parameter!);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -96,7 +96,7 @@ public class DelegateCommand<T> : DelegateCommandBase
     /// <param name="parameter">Data used by the command.</param>
     ///
     /* --------------------------------------------------------------------- */
-    protected override bool OnCanExecute(object parameter) => _canExecute?.Invoke((T)parameter) ?? false;
+    protected override bool OnCanExecute(object? parameter) => _canExecute?.Invoke((T)parameter!) ?? false;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -126,7 +126,7 @@ public class DelegateCommand<T> : DelegateCommandBase
     #endregion
 
     #region Fields
-    private Action<T> _execute;
-    private Func<T, bool> _canExecute;
+    private Action<T>? _execute;
+    private Func<T, bool>? _canExecute;
     #endregion
 }

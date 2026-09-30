@@ -68,7 +68,7 @@ public class Message<TValue> : MessageBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public TValue Value { get; set; }
+    public TValue? Value { get; set; }
 
     #endregion
 }

@@ -63,7 +63,7 @@ internal class RegistrySerializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void Set(Type type, RegistryKey dest, object src)
+    private static void Set(Type type, RegistryKey dest, object? src)
     {
         if (dest is null || src is null) return;
         foreach (var pi in type.GetProperties())
@@ -165,10 +165,10 @@ internal class RegistrySerializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static void SetListElement(Type type, RegistryKey dest, object src)
+    private static void SetListElement(Type type, RegistryKey dest, object? src)
     {
         if (type.IsObject()) Set(type, dest, src);
-        else Set(type, dest, "", src);
+        else Set(type, dest, "", src!);
     }
 
     /* --------------------------------------------------------------------- */
