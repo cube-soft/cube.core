@@ -44,7 +44,7 @@ public class PasswordBehavior : Behavior<PasswordBox>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string Password
+    public string? Password
     {
         get => GetValue(PasswordProperty) as string;
         set
@@ -116,9 +116,9 @@ public class PasswordBehavior : Behavior<PasswordBox>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void SetViewPassword(PasswordBox src, string value)
+    private void SetViewPassword(PasswordBox src, string? value)
     {
-        if (!EqualityComparer<string>.Default.Equals(value, src.Password))
+        if (!EqualityComparer<string?>.Default.Equals(value, src.Password))
         {
             src.Password = value;
         }

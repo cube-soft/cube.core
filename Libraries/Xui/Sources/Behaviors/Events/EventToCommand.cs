@@ -65,7 +65,7 @@ public class EventToCommand : CommandBehavior<FrameworkElement>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string Event
+    public string? Event
     {
         get => GetValue(EventProperty) as string;
         set
@@ -137,7 +137,7 @@ public class EventToCommand : CommandBehavior<FrameworkElement>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void Exchange(string name)
+    private void Exchange(string? name)
     {
         if (AssociatedObject is null) return;
 
@@ -151,6 +151,6 @@ public class EventToCommand : CommandBehavior<FrameworkElement>
 
     #region Fields
     private readonly RoutedEventHandler _handler;
-    private EventBehavior _behavior;
+    private EventBehavior? _behavior;
     #endregion
 }

@@ -18,6 +18,7 @@
 namespace Cube;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
@@ -67,7 +68,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Trace(string message, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Trace(string message, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0) =>
         _source.Log(path, n, LogLevel.Trace, message);
 
     /* --------------------------------------------------------------------- */
@@ -83,7 +84,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Debug(string message, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Debug(string message, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0) =>
         _source.Log(path, n, LogLevel.Debug, message);
 
     #endregion
@@ -103,7 +104,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Info(string message, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Info(string message, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0) =>
         _source.Log(path, n, LogLevel.Information, message);
 
     /* --------------------------------------------------------------------- */
@@ -119,7 +120,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Info(Assembly src, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
+    public static void Info(Assembly src, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0)
     {
         var fw   = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
         var os   = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
@@ -148,7 +149,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Warn(string message, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Warn(string message, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0) =>
         _source.Log(path, n, LogLevel.Warning, message);
 
     /* --------------------------------------------------------------------- */
@@ -164,7 +165,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Warn(Exception error, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Warn(Exception error, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0) =>
         Warn(GetErrorMessage(error), path, n);
 
     #endregion
@@ -184,7 +185,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Error(string message, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Error(string message, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0) =>
         _source.Log(path, n, LogLevel.Error, message);
 
     /* --------------------------------------------------------------------- */
@@ -200,7 +201,7 @@ public static class Logger
     /// <param name="n">Caller line number.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Error(Exception error, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Error(Exception error, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0) =>
         Error(GetErrorMessage(error), path, n);
 
     #endregion
@@ -228,7 +229,7 @@ public static class Logger
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static bool Try(Action action, uint retry = 0, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
+    public static bool Try(Action action, uint retry = 0, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0)
     {
         for (var i = 0; i < retry + 1; ++i)
         {
@@ -267,7 +268,7 @@ public static class Logger
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static bool TryGet<T>(Func<T> func, out T dest, uint retry = 0, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0)
+    public static bool TryGet<T>(Func<T> func, [MaybeNullWhen(false)] out T dest, uint retry = 0, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0)
     {
         for (var i = 0; i < retry + 1; ++i)
         {
@@ -297,7 +298,7 @@ public static class Logger
     ///
     /* --------------------------------------------------------------------- */
     [Obsolete("Use the Try method instead.")]
-    public static void Warn(Action action, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Warn(Action action, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0) =>
         Try(action, 0, path, n);
 
     /* --------------------------------------------------------------------- */
@@ -314,7 +315,7 @@ public static class Logger
     ///
     /* --------------------------------------------------------------------- */
     [Obsolete("Use the Try method instead.")]
-    public static void Error(Action action, [CallerFilePath] string path = default, [CallerLineNumber] int n = 0) =>
+    public static void Error(Action action, [CallerFilePath] string? path = default, [CallerLineNumber] int n = 0) =>
         Try(action, 0, path, n);
 
     #endregion

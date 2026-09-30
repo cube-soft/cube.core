@@ -84,7 +84,7 @@ public sealed class ShowVersionBehavior : MessageBehaviorBase<AboutMessage>
     #endregion
 
     #region Fields
-    private readonly Icon _icon;
+    private readonly Icon? _icon;
     private readonly string _text;
     #endregion
 }

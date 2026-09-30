@@ -42,7 +42,7 @@ public class Panel : System.Windows.Forms.Panel
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event QueryEventHandler<Point, Position> NcHitTest;
+    public event QueryEventHandler<Point, Position>? NcHitTest;
 
     /* --------------------------------------------------------------------- */
     ///

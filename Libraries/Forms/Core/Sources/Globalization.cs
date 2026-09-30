@@ -51,8 +51,8 @@ public static class Methods
     public static void Update<TForm>(this TForm src, Language value) where TForm : Form
     {
         var ci = value.ToCultureInfo();
-        Thread.CurrentThread.CurrentCulture = ci;
-        Thread.CurrentThread.CurrentUICulture = ci;
+        Thread.CurrentThread.CurrentCulture = ci!;
+        Thread.CurrentThread.CurrentUICulture = ci!;
 
         var cm = new ComponentResourceManager(typeof(TForm));
         cm.ApplyResources(src, "$this");

@@ -48,7 +48,7 @@ public class BindableElement : BindableBase, IElement
     ///
     /* --------------------------------------------------------------------- */
     public BindableElement(Getter<string> gettext, Dispatcher dispatcher) :
-        this(gettext, default, dispatcher) { }
+        this(gettext, default(ICommand), dispatcher) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -64,7 +64,7 @@ public class BindableElement : BindableBase, IElement
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public BindableElement(Getter<string> gettext, ICommand command, Dispatcher dispatcher) : base(dispatcher)
+    public BindableElement(Getter<string> gettext, ICommand? command, Dispatcher dispatcher) : base(dispatcher)
     {
         _gettext = gettext;
         _locale  = Locale.Subscribe(_ => React());
@@ -95,7 +95,7 @@ public class BindableElement : BindableBase, IElement
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public ICommand Command
+    public ICommand? Command
     {
         get => Get<ICommand>();
         set => Set(value);

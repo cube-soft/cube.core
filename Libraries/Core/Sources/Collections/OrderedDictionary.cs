@@ -18,6 +18,7 @@
 namespace Cube.Collections;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -61,7 +62,7 @@ public class OrderedDictionary<TKey, TValue> :
     /// <param name="cp">Collection to be copied.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public OrderedDictionary(IDictionary<TKey, TValue> cp)
+    public OrderedDictionary(IDictionary<TKey, TValue>? cp)
     {
         if (cp is null) return;
         foreach (var kv in cp) _core.Add(kv.Key, kv.Value);
@@ -109,14 +110,14 @@ public class OrderedDictionary<TKey, TValue> :
         {
             if (Equals(key, default(TKey))) throw new ArgumentNullException(nameof(key));
             if (ContainsKey(key)) return (TValue)_core[key];
-            else throw new KeyNotFoundException(key.ToString());
+            else throw new KeyNotFoundException(key?.ToString());
         }
 
         set
         {
             if (Equals(key, default(TKey))) throw new ArgumentNullException(nameof(key));
             if (ContainsKey(key)) _core[key] = value;
-            else throw new KeyNotFoundException(key.ToString());
+            else throw new KeyNotFoundException(key?.ToString());
         }
     }
 
@@ -352,7 +353,7 @@ public class OrderedDictionary<TKey, TValue> :
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public bool TryGetValue(TKey key, out TValue dest)
+    public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue dest)
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
         var result = key is not null && ContainsKey(key);
@@ -381,6 +382,24 @@ public class OrderedDictionary<TKey, TValue> :
     #endregion
 
     #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TryGetValue
+    ///
+    /// <summary>
+    /// Implements the dictionary contract for callers using the interface.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// The legacy IDictionary contract has no nullable flow annotations.
+    /// This implementation delegates to the public method, preserving its
+    /// nullable result on failure.
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    bool IDictionary<TKey, TValue>.TryGetValue(TKey key, out TValue dest) =>
+        TryGetValue(key, out dest!);
 
     /* --------------------------------------------------------------------- */
     ///

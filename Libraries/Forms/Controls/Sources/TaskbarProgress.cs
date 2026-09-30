@@ -132,7 +132,7 @@ public class TaskbarProgress : ObservableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private ITaskbarList3 Core
+    private ITaskbarList3? Core
     {
         get
         {
@@ -190,7 +190,7 @@ public class TaskbarProgress : ObservableBase
 
     #region Fields
     private readonly IntPtr _handle;
-    private ITaskbarList3 _core;
+    private ITaskbarList3? _core;
     #endregion
 }
 

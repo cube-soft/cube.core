@@ -79,7 +79,7 @@ internal static class GraphicsExtension
     ///
     /* --------------------------------------------------------------------- */
     public static void DrawText(this Graphics gs,
-        Rectangle bounds, string text, Font font, Color color, ContentAlignment align)
+        Rectangle bounds, string? text, Font font, Color color, ContentAlignment align)
     {
         using var brush = new SolidBrush(color);
         var format = GetStringFormat(align);
@@ -96,7 +96,7 @@ internal static class GraphicsExtension
     ///
     /* --------------------------------------------------------------------- */
     public static void DrawImage(this Graphics gs,
-        Rectangle bounds, Image image, ContentAlignment align)
+        Rectangle bounds, Image? image, ContentAlignment align)
     {
         if (image is null) return;
         var rect = GetDrawBounds(bounds, image, align);
@@ -113,7 +113,7 @@ internal static class GraphicsExtension
     ///
     /* --------------------------------------------------------------------- */
     public static void DrawImage(this Graphics gs,
-        Rectangle bounds, Image image, ImageLayout layout)
+        Rectangle bounds, Image? image, ImageLayout layout)
     {
         if (image is null) return;
 

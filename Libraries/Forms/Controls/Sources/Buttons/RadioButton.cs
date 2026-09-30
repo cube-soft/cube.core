@@ -76,7 +76,7 @@ public class RadioButton : System.Windows.Forms.RadioButton
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public string Content
+    public string? Content
     {
         get => _painter.Content;
         set
@@ -132,7 +132,7 @@ public class RadioButton : System.Windows.Forms.RadioButton
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public new Image BackgroundImage
+    public new Image? BackgroundImage
     {
         get => base.BackgroundImage;
         set => base.BackgroundImage = value;
@@ -200,7 +200,7 @@ public class RadioButton : System.Windows.Forms.RadioButton
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public new Image Image
+    public new Image? Image
     {
         get => base.Image;
         set => base.Image = value;
@@ -256,7 +256,7 @@ public class RadioButton : System.Windows.Forms.RadioButton
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public new System.Windows.Forms.ImageList ImageList
+    public new System.Windows.Forms.ImageList? ImageList
     {
         get => base.ImageList;
         set => base.ImageList = value;
@@ -375,7 +375,7 @@ public class RadioButton : System.Windows.Forms.RadioButton
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event QueryEventHandler<Point, Position> NcHitTest;
+    public event QueryEventHandler<Point, Position>? NcHitTest;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -392,6 +392,6 @@ public class RadioButton : System.Windows.Forms.RadioButton
     #endregion
 
     #region Fields
-    private readonly ButtonPainter _painter = null;
+    private readonly ButtonPainter _painter;
     #endregion
 }

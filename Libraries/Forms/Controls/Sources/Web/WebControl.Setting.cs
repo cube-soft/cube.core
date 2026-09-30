@@ -279,7 +279,7 @@ partial class WebControl
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static RegistryKey OpenFeatureControl(bool writable = false)
+    private static RegistryKey? OpenFeatureControl(bool writable = false)
     {
         var name = Path.Combine(_RegRoot, @"Main\FeatureControl");
         return writable ?
@@ -336,6 +336,6 @@ partial class WebControl
     private static readonly string _RegRendering = "FEATURE_GPU_RENDERING ";
     private static readonly string _RegMaxConnections = "FEATURE_MAXCONNECTIONSPERSERVER";
     private static readonly string _RegMaxConnections10 = "FEATURE_MAXCONNECTIONSPER1_0SERVER";
-    private static Dictionary<int, WebControlVersion> _vmap;
+    private static Dictionary<int, WebControlVersion>? _vmap;
     #endregion
 }

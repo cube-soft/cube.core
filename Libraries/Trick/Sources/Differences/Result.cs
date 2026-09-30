@@ -74,7 +74,7 @@ public class Result<T>
     /// <param name="newer">Target part of the newer sequence.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public Result(Condition condition, IEnumerable<T> older, IEnumerable<T> newer)
+    public Result(Condition condition, IEnumerable<T>? older, IEnumerable<T>? newer)
     {
         Condition = condition;
         Older     = older;
@@ -105,7 +105,7 @@ public class Result<T>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public IEnumerable<T> Older { get; }
+    public IEnumerable<T>? Older { get; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -116,7 +116,7 @@ public class Result<T>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public IEnumerable<T> Newer { get; }
+    public IEnumerable<T>? Newer { get; }
 
     #endregion
 }

@@ -44,7 +44,7 @@ public interface ILoggerSource
     /// <param name="message">Logging message.</param>
     ///
     /* --------------------------------------------------------------------- */
-    void Log(string path, int number, LogLevel level, string message);
+    void Log(string? path, int number, LogLevel level, string message);
 }
 
 #endregion
@@ -76,7 +76,7 @@ public sealed class NullLoggerSource : ILoggerSource
     /// <param name="message">Logging message.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Log(string path, int number, LogLevel level, string message) { }
+    public void Log(string? path, int number, LogLevel level, string message) { }
 }
 
 #endregion

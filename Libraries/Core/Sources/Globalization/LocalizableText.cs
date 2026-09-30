@@ -52,7 +52,7 @@ public abstract class LocalizableText : ILocalizable
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    protected LocalizableText(Func<Language, TextGroup> factory, TextGroup fallback)
+    protected LocalizableText(Func<Language, TextGroup?> factory, TextGroup fallback)
     {
         _factory = factory;
         Fallback = fallback;
@@ -83,7 +83,7 @@ public abstract class LocalizableText : ILocalizable
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected TextGroup Current =>_current;
+    protected TextGroup? Current =>_current;
 
     #endregion
 
@@ -122,7 +122,7 @@ public abstract class LocalizableText : ILocalizable
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected string Get([CallerMemberName] string name = null)
+    protected string? Get([CallerMemberName] string? name = null)
     {
         if (name is null) return null;
         if (Current is not null && Current.TryGetValue(name, out var s0)) return s0;
@@ -148,7 +148,7 @@ public abstract class LocalizableText : ILocalizable
     #endregion
 
     #region Fields
-    private readonly Func<Language, TextGroup> _factory;
-    private TextGroup _current;
+    private readonly Func<Language, TextGroup?> _factory;
+    private TextGroup? _current;
     #endregion
 }

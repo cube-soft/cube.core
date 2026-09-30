@@ -119,7 +119,7 @@ public static class Methods
         src.ValueMember   = "Value";
 
         if (obj is T v && data.Any(e => cmp.Equals(e.Value, v))) src.SelectedValue = v;
-        else if (data.Any()) src.SelectedValue = data.First().Value;
+        else if (data.Any()) src.SelectedValue = data.First().Value!;
     }
 
     #endregion
@@ -148,7 +148,7 @@ public static class Methods
     ///
     /* --------------------------------------------------------------------- */
     public static BindingSource ToBindingSource(this INotifyCollectionChanged src) =>
-        ToBindingSource(src, SynchronizationContext.Current);
+        ToBindingSource(src, SynchronizationContext.Current!);
 
     /* --------------------------------------------------------------------- */
     ///

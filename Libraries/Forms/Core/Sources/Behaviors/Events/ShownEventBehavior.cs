@@ -46,7 +46,7 @@ public class ShownEventBehavior : DisposableProxy
     /* --------------------------------------------------------------------- */
     public ShownEventBehavior(Form src, Action action) : base(() =>
     {
-        void invoke(object s, EventArgs e) => action();
+        void invoke(object? s, EventArgs e) => action();
         src.Shown += invoke;
         return Disposable.Create(() => src.Shown -= invoke);
     }) { }

@@ -63,8 +63,13 @@ public class Accessor<T>
     /// Initializes a new instance of the Accessor class.
     /// </summary>
     ///
+    /// <remarks>
+    /// The initial value is default(T), which may be null even when T is a
+    /// non-nullable reference type.
+    /// </remarks>
+    ///
     /* --------------------------------------------------------------------- */
-    public Accessor() : this(default(T)) { }
+    public Accessor() : this(default(T)!) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -173,7 +178,7 @@ public class Accessor<T>
     /// <returns>Result of the provided Getter(T) delegation.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public T Get() => _getter();
+    public T? Get() => _getter();
 
     /* --------------------------------------------------------------------- */
     ///
@@ -193,7 +198,7 @@ public class Accessor<T>
     /* --------------------------------------------------------------------- */
     public bool Set(T value)
     {
-        if (_comparer.Equals(Get(), value)) return false;
+        if (_comparer.Equals(Get()!, value)) return false;
         _setter(value);
         return true;
     }

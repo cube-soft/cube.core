@@ -50,7 +50,7 @@ internal class RegistryDeserializer
     /// <returns>Deserialized object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public T Invoke<T>(RegistryKey src) => (T)Get(typeof(T), src);
+    public T Invoke<T>(RegistryKey? src) => (T)Get(typeof(T), src);
 
     #endregion
 
@@ -66,7 +66,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static object Get(Type type, RegistryKey src)
+    private static object Get(Type type, RegistryKey? src)
     {
         var dest = Activator.CreateInstance(type);
         if (src is null) return dest;
@@ -91,7 +91,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static object Get(Type type, RegistryKey src, string name)
+    private static object? Get(Type type, RegistryKey src, string name)
     {
         if (type.IsGenericList()) return OpenGet(src, name, e => GetList(type, e));
         if (type.IsArray) return OpenGet(src, name, e => GetArray(type, e));
@@ -109,7 +109,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static Array GetArray(Type type, RegistryKey src)
+    private static Array? GetArray(Type type, RegistryKey src)
     {
         if (type.GetArrayRank() != 1) return null;
 
@@ -132,7 +132,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static IList GetList(Type type, RegistryKey src)
+    private static IList? GetList(Type type, RegistryKey src)
     {
         var ga = type.GetGenericArguments();
         return ga.Length == 1 ? GetListCore(ga[0], src) : null;
@@ -150,9 +150,8 @@ internal class RegistryDeserializer
     /* --------------------------------------------------------------------- */
     private static IList GetListCore(Type type, RegistryKey src)
     {
-        var dest = Activator.CreateInstance(typeof(List<>)
-                            .MakeGenericType(type)) as IList;
-        if (dest is null) return null;
+        var dest = (IList)Activator.CreateInstance(typeof(List<>)
+                            .MakeGenericType(type))!;
 
         foreach (var name in src.GetSubKeyNames())
         {
@@ -173,7 +172,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static object GetListElement(Type type, RegistryKey src) =>
+    private static object? GetListElement(Type type, RegistryKey src) =>
         type.IsObject() ? Get(type, src) : type.Parse(src.GetValue("", null));
 
     /* --------------------------------------------------------------------- */
@@ -186,7 +185,7 @@ internal class RegistryDeserializer
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static object OpenGet(RegistryKey src, string name, Func<RegistryKey, object> action)
+    private static object? OpenGet(RegistryKey src, string name, Func<RegistryKey, object?> action)
     {
         using var e = src.OpenSubKey(name, false);
         return e is not null ? action(e) : null;

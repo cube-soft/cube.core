@@ -46,7 +46,7 @@ public class ClickEventBehavior : DisposableProxy
     /* --------------------------------------------------------------------- */
     public ClickEventBehavior(Control src, Action action) : base(() =>
     {
-        void invoke(object s, EventArgs e) => action();
+        void invoke(object? s, EventArgs e) => action();
         src.Click += invoke;
         return Disposable.Create(() => src.Click -= invoke);
     }) { }
@@ -65,7 +65,7 @@ public class ClickEventBehavior : DisposableProxy
     ///
     /* --------------------------------------------------------------------- */
     public ClickEventBehavior(ToolStripItem src, Action action) : base(() => {
-        void invoke(object s, EventArgs e) => action();
+        void invoke(object? s, EventArgs e) => action();
         src.Click += invoke;
         return Disposable.Create(() => src.Click -= invoke);
     }) { }

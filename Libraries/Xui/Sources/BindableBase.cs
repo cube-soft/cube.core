@@ -66,9 +66,9 @@ public abstract class BindableBase : ObservableBase, IObservePropertyChanged
     public void Observe(INotifyPropertyChanged src, params string[] names)
     {
         var set = new HashSet<string>(names);
-        void handler(object s, PropertyChangedEventArgs e)
+        void handler(object? s, PropertyChangedEventArgs e)
         {
-            if (set.Count <= 0 || set.Contains(e.PropertyName)) React();
+            if (set.Count <= 0 || set.Contains(e.PropertyName!)) React();
         }
 
         src.PropertyChanged += handler;

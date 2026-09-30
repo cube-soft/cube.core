@@ -77,7 +77,7 @@ public class ClosingToCommand : CommandBehavior<Window>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenClosing(object s, CancelEventArgs e)
+    private void WhenClosing(object? s, CancelEventArgs e)
     {
         if (Command?.CanExecute(e) ?? false) Command.Execute(e);
     }

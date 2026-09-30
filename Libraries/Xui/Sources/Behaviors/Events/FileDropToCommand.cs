@@ -111,7 +111,7 @@ public class FileDropToCommand<T> : CommandBehavior<T> where T : FrameworkElemen
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private string[] GetData(IDataObject src) =>
+    private string[]? GetData(IDataObject src) =>
         src.GetDataPresent(DataFormats.FileDrop) ?
         src.GetData(DataFormats.FileDrop).TryCast<string[]>() :
         null;

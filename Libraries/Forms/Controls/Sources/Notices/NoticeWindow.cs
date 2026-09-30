@@ -113,7 +113,7 @@ public class NoticeWindow : BorderlessWindow
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event ValueEventHandler<NoticeResult> Selected;
+    public event ValueEventHandler<NoticeResult>? Selected;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -142,7 +142,7 @@ public class NoticeWindow : BorderlessWindow
     /// <param name="title">Title of the window.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Set(string text, string title)
+    public void Set(string text, string? title)
     {
         _text.Content  = text;
         _title.Content = title;
@@ -183,7 +183,7 @@ public class NoticeWindow : BorderlessWindow
     /// <param name="src">User defined style.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Set(NoticeStyle src)
+    public void Set(NoticeStyle? src)
     {
         if (src is null) return;
 

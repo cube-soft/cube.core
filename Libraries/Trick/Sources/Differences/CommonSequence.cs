@@ -48,7 +48,7 @@ internal class CommonSequence<T>
     /// <param name="next">Next sequence.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public CommonSequence(int older, int newer, int count, CommonSequence<T> next)
+    public CommonSequence(int older, int newer, int count, CommonSequence<T>? next)
     {
         OlderStart = older;
         NewerStart = newer;
@@ -102,7 +102,7 @@ internal class CommonSequence<T>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public CommonSequence<T> Next { get; set; }
+    public CommonSequence<T>? Next { get; set; }
 
     #endregion
 
@@ -129,7 +129,7 @@ internal class CommonSequence<T>
             top = current;
             current = next;
         }
-        return top;
+        return top!;
     }
 
     /* --------------------------------------------------------------------- */
@@ -141,7 +141,7 @@ internal class CommonSequence<T>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public IEnumerable<Result<T>> ToResult(T[] older, T[] newer, Condition mask, bool swap)
+    public IEnumerable<Result<T>> ToResult(T[]? older, T[]? newer, Condition mask, bool swap)
     {
         var none   = Condition.None;
         var dest   = new List<Result<T>>();
@@ -197,8 +197,8 @@ internal class CommonSequence<T>
     ///
     /* --------------------------------------------------------------------- */
     private Result<T> Create(Condition condition,
-        T[] older, int ostart, int ocount,
-        T[] newer, int nstart, int ncount) => new(
+        T[]? older, int ostart, int ocount,
+        T[]? newer, int nstart, int ncount) => new(
         condition,
         Slice(older, ostart, ocount),
         Slice(newer, nstart, ncount)
@@ -213,7 +213,7 @@ internal class CommonSequence<T>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private IEnumerable<T> Slice(T[] src, int start, int count)
+    private IEnumerable<T>? Slice(T[]? src, int start, int count)
     {
         if (src is null) return null;
         var n = Math.Min(count, src.Length - start);

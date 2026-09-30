@@ -41,7 +41,7 @@ public static class Methods
     /// <param name="src">Command object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Execute(this ICommand src) => src?.Execute(null);
+    public static void Execute(this ICommand? src) => src?.Execute(null);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -60,5 +60,5 @@ public static class Methods
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static bool CanExecute(this ICommand src) => src?.CanExecute(null) ?? false;
+    public static bool CanExecute(this ICommand? src) => src?.CanExecute(null) ?? false;
 }

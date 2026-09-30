@@ -199,7 +199,7 @@ public class ButtonStyleElement : ObservableBase
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
     [DefaultValue(null)]
-    public Image BackgroundImage
+    public Image? BackgroundImage
     {
         get => Get<Image>();
         set => Set(value);
@@ -250,7 +250,7 @@ public class ButtonStyleElement : ObservableBase
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
     [DefaultValue(null)]
-    public Image Image
+    public Image? Image
     {
         get => Get<Image>();
         set => Set(value);

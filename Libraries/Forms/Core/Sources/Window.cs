@@ -58,7 +58,7 @@ public class Window : Form, IBinder
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected IBindable Bindable { get; private set; }
+    protected IBindable? Bindable { get; private set; }
 
     /* --------------------------------------------------------------------- */
     ///

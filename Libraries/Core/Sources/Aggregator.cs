@@ -168,7 +168,7 @@ public sealed class Aggregator : IAggregator
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private Subscription<Action<object>> Get(Type key) =>
+    private Subscription<Action<object>>? Get(Type key) =>
         _subscription[key] as Subscription<Action<object>>;
 
     /* --------------------------------------------------------------------- */
@@ -192,7 +192,7 @@ public sealed class Aggregator : IAggregator
                 }
             }
         }
-        return Get(key);
+        return Get(key)!;
     }
 
     #endregion

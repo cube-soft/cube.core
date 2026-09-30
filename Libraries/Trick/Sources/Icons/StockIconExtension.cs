@@ -49,7 +49,7 @@ public static class StockIconExtension
     /// <returns>Icon object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Icon Get(this StockIcon src, IconSize size)
+    public static Icon? Get(this StockIcon src, IconSize size)
     {
         var s0 = new ShStockIconInfo();
         var f0 = 0x4000u; // SHGFI_SYSICONINDEX
@@ -81,7 +81,7 @@ public static class StockIconExtension
     /// <returns>Image object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Image GetImage(this StockIcon src, IconSize size)
+    public static Image? GetImage(this StockIcon src, IconSize size)
     {
         using var icon = Get(src, size);
         return icon?.ToBitmap();

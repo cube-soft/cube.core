@@ -43,7 +43,7 @@ public static class Methods
     /// <returns>Cast object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static T TryCast<T>(this object src) => TryCast(src, default(T));
+    public static T? TryCast<T>(this object? src) => TryCast(src, default(T));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -63,5 +63,5 @@ public static class Methods
     /// <returns>Cast object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static T TryCast<T>(this object src, T error) => src is T dest ? dest : error;
+    public static T TryCast<T>(this object? src, T error) => src is T dest ? dest : error;
 }

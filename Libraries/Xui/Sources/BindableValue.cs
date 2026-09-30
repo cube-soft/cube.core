@@ -17,6 +17,8 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Xui;
 
+using System.Diagnostics.CodeAnalysis;
+
 /* ------------------------------------------------------------------------- */
 ///
 /// BindableValue(T)
@@ -41,7 +43,7 @@ public class BindableValue<T> : BindableBase, IValue<T>
     /// <param name="dispatcher">Dispatcher object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public BindableValue(Dispatcher dispatcher) : this(default(T), dispatcher) { }
+    public BindableValue(Dispatcher dispatcher) : this(default(T)!, dispatcher) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -121,6 +123,7 @@ public class BindableValue<T> : BindableBase, IValue<T>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [MaybeNull]
     public T Value
     {
         get => _accessor.Get();

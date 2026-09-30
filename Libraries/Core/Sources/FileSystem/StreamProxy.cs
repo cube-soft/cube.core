@@ -132,7 +132,7 @@ public sealed class StreamProxy : Stream
     public override long Position
     {
         get => _source?.Position ?? 0;
-        set => _source.Position = value;
+        set => _source!.Position = value;
     }
 
     #endregion
@@ -149,7 +149,7 @@ public sealed class StreamProxy : Stream
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public override void Flush() => _source.Flush();
+    public override void Flush() => _source!.Flush();
 
     /* --------------------------------------------------------------------- */
     ///
@@ -160,7 +160,7 @@ public sealed class StreamProxy : Stream
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public override long Seek(long offset, SeekOrigin origin) => _source.Seek(offset, origin);
+    public override long Seek(long offset, SeekOrigin origin) => _source!.Seek(offset, origin);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -171,7 +171,7 @@ public sealed class StreamProxy : Stream
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public override void SetLength(long value) => _source.SetLength(value);
+    public override void SetLength(long value) => _source!.SetLength(value);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -184,7 +184,7 @@ public sealed class StreamProxy : Stream
     ///
     /* --------------------------------------------------------------------- */
     public override int Read(byte[] buffer, int offset, int count) =>
-        _source.Read(buffer, offset, count);
+        _source!.Read(buffer, offset, count);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -198,7 +198,7 @@ public sealed class StreamProxy : Stream
     ///
     /* --------------------------------------------------------------------- */
     public override void Write(byte[] buffer, int offset, int count) =>
-        _source.Write(buffer, offset, count);
+        _source!.Write(buffer, offset, count);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -235,7 +235,7 @@ public sealed class StreamProxy : Stream
 
     #region Fields
     private readonly bool _leave;
-    private Stream _source;
+    private Stream? _source;
     private bool _disposed;
     #endregion
 }

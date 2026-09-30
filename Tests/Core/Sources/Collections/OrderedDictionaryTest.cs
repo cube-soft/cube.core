@@ -292,6 +292,46 @@ class OrderedDictionaryTest
 
     /* --------------------------------------------------------------------- */
     ///
+    /// TryGetValue_Interface
+    ///
+    /// <summary>
+    /// Tests lookup through IDictionary, including missing keys and null values.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase("Linus",  true,  "Torvalds")]
+    [TestCase("Null",   true,  null)]
+    [TestCase("Absent", false, null)]
+    [TestCase(null,     false, null)]
+    public void TryGetValue_Interface(string key, bool result, string value)
+    {
+        IDictionary<string, string> src = Create();
+        src.Add("Null", null);
+        Assert.That(src.TryGetValue(key, out var dest), Is.EqualTo(result));
+        Assert.That(dest, Is.EqualTo(value));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TryGetValue_Interface_Value
+    ///
+    /// <summary>
+    /// Tests stored and missing default values through IDictionary.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase("Zero",   true)]
+    [TestCase("Absent", false)]
+    public void TryGetValue_Interface_Value(string key, bool result)
+    {
+        IDictionary<string, int> src = new Cube.Collections.OrderedDictionary<string, int>();
+        src.Add("Zero", 0);
+        Assert.That(src.TryGetValue(key, out var dest), Is.EqualTo(result));
+        Assert.That(dest, Is.EqualTo(0));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// GetEnumerator
     ///
     /// <summary>

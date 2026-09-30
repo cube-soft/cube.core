@@ -47,7 +47,7 @@ public class CommandBehavior<TView> : Behavior<TView> where TView : DependencyOb
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public ICommand Command
+    public ICommand? Command
     {
         get => GetValue(CommandProperty) as ICommand;
         set => SetValue(CommandProperty, value);
@@ -97,7 +97,7 @@ public class CommandBehavior<TView, TParameter> :
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public TParameter CommandParameter
+    public TParameter? CommandParameter
     {
         get => GetValue(CommandParameterProperty).TryCast<TParameter>();
         set => SetValue(CommandParameterProperty, value);

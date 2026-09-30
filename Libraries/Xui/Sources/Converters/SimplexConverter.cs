@@ -49,7 +49,7 @@ public abstract class SimplexConverter : MarkupExtension, IValueConverter
     /// <param name="func">Function to convert.</param>
     ///
     /* --------------------------------------------------------------------- */
-    protected SimplexConverter(Func<object, object> func) : this((e, _, _, _) => func(e)) { }
+    protected SimplexConverter(Func<object, object?> func) : this((e, _, _, _) => func(e)) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -63,7 +63,7 @@ public abstract class SimplexConverter : MarkupExtension, IValueConverter
     /// <param name="func">Function to convert.</param>
     ///
     /* --------------------------------------------------------------------- */
-    protected SimplexConverter(Func<object, Type, object, CultureInfo, object> func) => _func = func;
+    protected SimplexConverter(Func<object, Type, object, CultureInfo, object?> func) => _func = func;
 
     #endregion
 
@@ -78,7 +78,7 @@ public abstract class SimplexConverter : MarkupExtension, IValueConverter
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public object Convert(object value, Type target, object parameter, CultureInfo culture) =>
+    public object? Convert(object value, Type target, object parameter, CultureInfo culture) =>
         _func(value, target, parameter, culture);
 
     /* --------------------------------------------------------------------- */
@@ -107,6 +107,6 @@ public abstract class SimplexConverter : MarkupExtension, IValueConverter
     #endregion
 
     #region Fields
-    private readonly Func<object, Type, object, CultureInfo, object> _func;
+    private readonly Func<object, Type, object, CultureInfo, object?> _func;
     #endregion
 }

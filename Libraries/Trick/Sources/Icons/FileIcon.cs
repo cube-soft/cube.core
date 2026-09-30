@@ -50,7 +50,7 @@ public static class FileIcon
     /// <returns>Icon object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Icon Get(string src, IconSize size)
+    public static Icon? Get(string src, IconSize size)
     {
         var s0 = new ShFileInfo();
         var f0 = 0x4010u; // SHGFI_SYSICONINDEX | SHGFI_USEFILEATTRIBUTES
@@ -81,7 +81,7 @@ public static class FileIcon
     /// <returns>Image object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Image GetImage(string src, IconSize size)
+    public static Image? GetImage(string src, IconSize size)
     {
         using var icon = Get(src, size);
         return icon?.ToBitmap();

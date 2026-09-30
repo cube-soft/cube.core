@@ -75,7 +75,7 @@ public class VersionControl : ControlBase
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public Image Image
+    public Image? Image
     {
         get => _image.Image;
         set
@@ -85,7 +85,7 @@ public class VersionControl : ControlBase
 
             var show = value is not null;
             _panel.Panel1Collapsed  = !show;
-            _panel.SplitterDistance = show ? Math.Max(value.Width, 1) : 1;
+            _panel.SplitterDistance = show ? Math.Max(value!.Width, 1) : 1;
             _panel.SplitterWidth    = show ? 8 : 1;
         }
     }
@@ -189,7 +189,7 @@ public class VersionControl : ControlBase
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public Uri Uri { get; set; }
+    public Uri? Uri { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -347,8 +347,8 @@ public class VersionControl : ControlBase
     private readonly System.Windows.Forms.Label _platform = new();
     private readonly System.Windows.Forms.Label _others = new();
     private readonly System.Windows.Forms.LinkLabel _copyright = new();
-    private string _product;
-    private string _version;
+    private string _product = string.Empty;
+    private string _version = string.Empty;
     private bool _oneline = true;
     private const int Space = 16;
     #endregion

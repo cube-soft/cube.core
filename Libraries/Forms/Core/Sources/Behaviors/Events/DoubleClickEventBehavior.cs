@@ -45,7 +45,7 @@ public class DoubleClickEventBehavior : DisposableProxy
     ///
     /* --------------------------------------------------------------------- */
     public DoubleClickEventBehavior(Control src, Action action) : base(() => {
-        void invoke(object s, EventArgs e) => action();
+        void invoke(object? s, EventArgs e) => action();
         src.DoubleClick += invoke;
         return Disposable.Create(() => src.DoubleClick -= invoke);
     }) { }
@@ -64,7 +64,7 @@ public class DoubleClickEventBehavior : DisposableProxy
     ///
     /* --------------------------------------------------------------------- */
     public DoubleClickEventBehavior(ToolStripItem src, Action action) : base(() => {
-        void invoke(object s, EventArgs e) => action();
+        void invoke(object? s, EventArgs e) => action();
         src.DoubleClick += invoke;
         return Disposable.Create(() => src.DoubleClick -= invoke);
     }) { }

@@ -174,7 +174,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    protected virtual DialogMessage OnMessage(Exception src) =>
+    protected virtual DialogMessage? OnMessage(Exception src) =>
         src is OperationCanceledException ? null : DialogMessage.From(src);
 
     /* --------------------------------------------------------------------- */
@@ -227,10 +227,10 @@ public abstract class PresentableBase : ObservableBase, IBindable
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    protected void Send<T>(CancelMessage<T> message, Action<T> next, bool synchronous)
+    protected void Send<T>(CancelMessage<T>? message, Action<T?> next, bool synchronous)
     {
         RunCore(true, () => Send(message));
-        if (!message?.Cancel ?? false) Run(() => next(message.Value), synchronous);
+        if (message is not null && !message.Cancel) Run(() => next(message.Value), synchronous);
     }
 
     /* --------------------------------------------------------------------- */
@@ -255,7 +255,7 @@ public abstract class PresentableBase : ObservableBase, IBindable
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    protected void Send<T>(T src, Action<T> next, bool synchronous) where T : IBindable =>
+    protected void Send<T>(T src, Action<T?> next, bool synchronous) where T : IBindable =>
         Send(new CancelMessage<T> { Value = src }, next, synchronous);
 
     #endregion
