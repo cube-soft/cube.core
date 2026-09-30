@@ -142,7 +142,7 @@ public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
     /// <returns>String value.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected abstract string GetValue();
+    protected abstract string? GetValue();
 
     #endregion
 }

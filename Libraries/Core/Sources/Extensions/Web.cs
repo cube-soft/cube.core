@@ -18,6 +18,7 @@
 namespace Cube.Web.Extensions;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using Cube.Chrono.Extensions;
 using Cube.Collections.Extensions;
@@ -51,7 +52,7 @@ public static class Methods
     /// <returns>Uri object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Uri ToUri(this string src) =>
+    public static Uri? ToUri(this string? src) =>
        !src.HasValue()       ? default :
         src.Contains("://")  ? new(src) :
         src.StartsWith("//") ? new("http:" + src) :
@@ -76,7 +77,8 @@ public static class Methods
     /// <returns>Combined Uri object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Uri With(this Uri src, IDictionary<string, string> query)
+    [return: NotNullIfNotNull(nameof(src))]
+    public static Uri? With(this Uri? src, IDictionary<string, string>? query)
     {
         if (src is null || query is null || query.Count <= 0) return src;
 
@@ -103,8 +105,9 @@ public static class Methods
     /// <returns>Combined Uri object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Uri With<T>(this Uri src, string key, T value) =>
-        With(src, new Dictionary<string, string> {{ key, value.ToString() }});
+    [return: NotNullIfNotNull(nameof(src))]
+    public static Uri? With<T>(this Uri? src, string key, T value) =>
+        With(src, new Dictionary<string, string> {{ key, value!.ToString() }});
 
     /* --------------------------------------------------------------------- */
     ///
@@ -120,7 +123,8 @@ public static class Methods
     /// <returns>Combined Uri object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Uri With(this Uri src, DateTime time) =>
+    [return: NotNullIfNotNull(nameof(src))]
+    public static Uri? With(this Uri? src, DateTime time) =>
         With(src, "ts", time.ToUnixTime());
 
     /* --------------------------------------------------------------------- */
@@ -137,7 +141,8 @@ public static class Methods
     /// <returns>Combined Uri object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Uri With(this Uri src, SoftwareVersion version) =>
+    [return: NotNullIfNotNull(nameof(src))]
+    public static Uri? With(this Uri? src, SoftwareVersion version) =>
         With(src, "ver", version.ToString(3, false));
 
     /* --------------------------------------------------------------------- */
@@ -155,7 +160,8 @@ public static class Methods
     /// <returns>Combined Uri object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Uri With(this Uri src, System.Reflection.Assembly asm) =>
+    [return: NotNullIfNotNull(nameof(src))]
+    public static Uri? With(this Uri? src, System.Reflection.Assembly asm) =>
         With(src, asm.GetSoftwareVersion());
 
     /* --------------------------------------------------------------------- */
@@ -172,7 +178,8 @@ public static class Methods
     /// <returns>Combined Uri object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Uri With(this Uri src, Utm utm)
+    [return: NotNullIfNotNull(nameof(src))]
+    public static Uri? With(this Uri? src, Utm? utm)
     {
         if (utm is null) return src;
         var query = new Dictionary<string, string>();

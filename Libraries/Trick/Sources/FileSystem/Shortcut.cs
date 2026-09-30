@@ -18,6 +18,7 @@
 namespace Cube.FileSystem;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -45,6 +46,7 @@ public class Shortcut
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [MaybeNull]
     public string FullName
     {
         get => _path;
@@ -60,7 +62,7 @@ public class Shortcut
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string Target { get; set; }
+    public string? Target { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -71,7 +73,7 @@ public class Shortcut
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string Arguments { get; set; }
+    public string? Arguments { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -86,7 +88,7 @@ public class Shortcut
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public string IconLocation { get; set; }
+    public string? IconLocation { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -97,12 +99,12 @@ public class Shortcut
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string IconFileName
+    public string? IconFileName
     {
         get
         {
             var index = IconLocation?.LastIndexOf(',') ?? 0;
-            return index > 0 ? IconLocation.Substring(0, index) : IconLocation;
+            return index > 0 ? IconLocation!.Substring(0, index) : IconLocation;
         }
     }
 
@@ -120,7 +122,7 @@ public class Shortcut
         get
         {
             var index = IconLocation?.LastIndexOf(',') ?? 0;
-            if (index > 0 && index < IconLocation.Length - 1)
+            if (index > 0 && index < IconLocation!.Length - 1)
             {
                 return int.TryParse(IconLocation.Substring(index + 1), out int dest) ? dest : 0;
             }
@@ -156,7 +158,7 @@ public class Shortcut
     /// <returns>Shortcut object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Shortcut Resolve(string link)
+    public static Shortcut? Resolve(string link)
     {
         var cvt = Normalize(link);
         if (cvt.HasValue() && Io.Exists(cvt))
@@ -187,9 +189,9 @@ public class Shortcut
     /* --------------------------------------------------------------------- */
     public void Create() => Invoke(sh =>
     {
-        if (!Io.Exists(Target)) return;
+        if (!Io.Exists(Target!)) return;
 
-        sh.SetPath(Target);
+        sh.SetPath(Target!);
         sh.SetArguments(Arguments);
         sh.SetShowCmd(1); // SW_SHOWNORMAL
         sh.SetIconLocation(IconFileName, IconIndex);
@@ -208,7 +210,7 @@ public class Shortcut
     /* --------------------------------------------------------------------- */
     public void Delete()
     {
-        if (Exists) Io.Delete(FullName);
+        if (Exists) Io.Delete(FullName!);
     }
 
     #endregion
@@ -306,7 +308,7 @@ public class Shortcut
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private static IPersistFile GetPersistFile(IShellLink src) => src as IPersistFile;
+    private static IPersistFile GetPersistFile(IShellLink src) => (IPersistFile)src;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -323,6 +325,6 @@ public class Shortcut
     #endregion
 
     #region Fields
-    private string _path;
+    private string? _path;
     #endregion
 }

@@ -68,7 +68,7 @@ public static class Query
     ///
     /* --------------------------------------------------------------------- */
     public static QueryMessage<TSource, TValue> NewMessage<TSource, TValue>(TSource src) =>
-        NewMessage(src, default(TValue));
+        new(src);
 
     /* --------------------------------------------------------------------- */
     ///

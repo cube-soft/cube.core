@@ -43,7 +43,7 @@ public class TableLayoutPanel : System.Windows.Forms.TableLayoutPanel
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event QueryEventHandler<Point, Position> NcHitTest;
+    public event QueryEventHandler<Point, Position>? NcHitTest;
 
     /* --------------------------------------------------------------------- */
     ///

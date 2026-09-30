@@ -197,7 +197,7 @@ public abstract class Once<T> where T : class
     #endregion
 
     #region Fields
-    private T _value;
+    private T? _value;
     #endregion
 }
 

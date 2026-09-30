@@ -43,7 +43,7 @@ public sealed class NoticeFacade
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public Action<NoticeMessage> Notify { get; set; }
+    public Action<NoticeMessage>? Notify { get; set; }
 
     #endregion
 
@@ -118,7 +118,7 @@ public sealed class NoticeFacade
     {
         if (_queue.Empty) return;
         if (!continuous && Interlocked.Exchange(ref _busy, new()) is not null) return;
-        Notify?.Invoke(_queue.Dequeue());
+        Notify?.Invoke(_queue.Dequeue()!);
     }
 
     /* --------------------------------------------------------------------- */
@@ -146,7 +146,7 @@ public sealed class NoticeFacade
 
     #region Fields
     private readonly NoticeQueue _queue = new();
-    private object _busy;
+    private object? _busy;
     private int _count = 0;
     #endregion
 }

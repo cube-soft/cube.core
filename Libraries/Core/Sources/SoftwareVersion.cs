@@ -239,7 +239,7 @@ public class SoftwareVersion
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private bool TryParse(string src, out Version dest)
+    private bool TryParse(string src, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out Version? dest)
     {
         try
         {

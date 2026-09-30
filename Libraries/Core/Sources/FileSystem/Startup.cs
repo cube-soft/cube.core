@@ -105,7 +105,7 @@ public class Startup : ObservableBase
     /* --------------------------------------------------------------------- */
     public string Source
     {
-        get => Get(() => string.Empty);
+        get => Get(() => string.Empty)!;
         set => Set(value);
     }
 
@@ -210,7 +210,7 @@ public class Startup : ObservableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private RegistryKey Open(bool writable) => Registry.CurrentUser.OpenSubKey(
+    private RegistryKey? Open(bool writable) => Registry.CurrentUser.OpenSubKey(
         @"Software\Microsoft\Windows\CurrentVersion\Run", writable
     );
 

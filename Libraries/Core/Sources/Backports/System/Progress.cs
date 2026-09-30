@@ -112,7 +112,7 @@ public class Progress<T> : IProgress<T> where T : EventArgs
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler<T> ProgressChanged;
+    public event EventHandler<T>? ProgressChanged;
 
     #endregion
 

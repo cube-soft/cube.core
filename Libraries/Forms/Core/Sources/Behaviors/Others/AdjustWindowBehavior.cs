@@ -49,10 +49,10 @@ public sealed class AdjustWindowBehavior : ShownEventBehavior
         var x      = src.DesktopLocation.X;
         var y      = src.DesktopLocation.Y;
 
-        var left   = screen.WorkingArea.Left;
-        var top    = screen.WorkingArea.Top;
-        var right  = screen.WorkingArea.Right;
-        var bottom = screen.WorkingArea.Bottom;
+        var left   = screen!.WorkingArea.Left;
+        var top    = screen!.WorkingArea.Top;
+        var right  = screen!.WorkingArea.Right;
+        var bottom = screen!.WorkingArea.Bottom;
 
         if (x >= left && x +  src.Width <=  right &&
             y >=  top && y + src.Height <= bottom) return;

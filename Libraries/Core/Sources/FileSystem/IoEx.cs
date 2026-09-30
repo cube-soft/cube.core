@@ -266,7 +266,7 @@ public static class IoEx
     /// <returns>Entity object or null.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Entity GetOrDefault(string path)
+    public static Entity? GetOrDefault(string? path)
     {
         try { return path.HasValue() ? new Entity(path) : default; }
         catch (Exception e) { Logger.Debug(e.Message); }

@@ -139,7 +139,7 @@ public static class Methods
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public static bool Try(this int n, Action<int> action, Action<int, Exception> error)
+    public static bool Try(this int n, Action<int> action, Action<int, Exception>? error)
     {
         for (var i = 0; i < n; ++i)
         {

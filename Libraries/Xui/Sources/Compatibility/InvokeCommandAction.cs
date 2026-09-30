@@ -51,7 +51,7 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ICommand Command
+        public ICommand? Command
         {
             get => _command;
             set => _command = value;
@@ -90,7 +90,7 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public object CommandParameter
+        public object? CommandParameter
         {
             get => _commandParameter;
             set => _commandParameter = value;
@@ -143,8 +143,8 @@ namespace Cube.Xui.Behaviors
         #endregion
 
         #region Fields
-        private ICommand _command;
-        private object _commandParameter;
+        private ICommand? _command;
+        private object? _commandParameter;
         #endregion
     }
 }

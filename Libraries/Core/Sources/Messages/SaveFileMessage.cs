@@ -90,7 +90,7 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     /// <param name="src">File or directory path information.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Set(Entity src)
+    public void Set(Entity? src)
     {
         if (src is null) return;
         Value = src.IsDirectory ? string.Empty : src.Name;
@@ -108,7 +108,7 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     /// <returns>String value.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected override string GetValue() => Value;
+    protected override string? GetValue() => Value;
 
     #endregion
 }

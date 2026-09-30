@@ -219,7 +219,7 @@ public class BorderlessWindow : Window
     /* --------------------------------------------------------------------- */
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public CaptionControl Caption
+    public CaptionControl? Caption
     {
         get => _caption;
         set
@@ -317,7 +317,7 @@ public class BorderlessWindow : Window
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event QueryEventHandler<Point, Position> NcHitTest;
+    public event QueryEventHandler<Point, Position>? NcHitTest;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -574,7 +574,7 @@ public class BorderlessWindow : Window
         if (MaximumSize.Width <= 0 || MaximumSize.Height <= 0) return false;
 
         var screen = Screen.FromControl(this);
-        var info = (MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(MINMAXINFO));
+        var info = (MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(MINMAXINFO))!;
         info.ptMaxPosition.x = screen.WorkingArea.X - screen.Bounds.X;
         info.ptMaxPosition.y = screen.WorkingArea.Y - screen.Bounds.Y;
         info.ptMaxSize.x = screen.WorkingArea.Width;
@@ -598,7 +598,7 @@ public class BorderlessWindow : Window
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenMaximizeRequested(object sender, EventArgs e) => DoMaximize();
+    private void WhenMaximizeRequested(object? sender, EventArgs e) => DoMaximize();
 
     /* --------------------------------------------------------------------- */
     ///
@@ -609,7 +609,7 @@ public class BorderlessWindow : Window
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenMinimizeRequested(object sender, EventArgs e) => DoMinimize();
+    private void WhenMinimizeRequested(object? sender, EventArgs e) => DoMinimize();
 
     /* --------------------------------------------------------------------- */
     ///
@@ -620,7 +620,7 @@ public class BorderlessWindow : Window
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenCloseRequested(object sender, EventArgs e) => Close();
+    private void WhenCloseRequested(object? sender, EventArgs e) => Close();
 
     #endregion
 
@@ -737,7 +737,7 @@ public class BorderlessWindow : Window
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void Attach(CaptionControl caption)
+    private void Attach(CaptionControl? caption)
     {
         if (caption is null) return;
         if (caption.MaximizeControl is not null) caption.MaximizeControl.Enabled = MaximizeBox;
@@ -759,7 +759,7 @@ public class BorderlessWindow : Window
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void Detach(CaptionControl caption)
+    private void Detach(CaptionControl? caption)
     {
         if (caption is null) return;
 
@@ -792,6 +792,6 @@ public class BorderlessWindow : Window
     #region Fields
     private bool _sizable = true;
     private bool _fakeMode = false;
-    private CaptionControl _caption;
+    private CaptionControl? _caption;
     #endregion
 }

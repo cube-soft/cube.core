@@ -8,6 +8,7 @@
         <TargetFramework>net35</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
         <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
         <Optimize>true</Optimize>
         <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>

@@ -88,7 +88,7 @@ public abstract class ObservableCollectionBase<T> : EnumerableBase<T>, INotifyCo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event NotifyCollectionChangedEventHandler CollectionChanged;
+    public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
     /* --------------------------------------------------------------------- */
     ///

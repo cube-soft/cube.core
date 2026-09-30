@@ -64,7 +64,7 @@ public abstract class MessageBehavior<TMessage> : Behavior<FrameworkElement>
     /// <returns>Object to dispose.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected virtual IDisposable OnSubscribe(IAggregator src) =>
+    protected virtual IDisposable? OnSubscribe(IAggregator? src) =>
         src?.Subscribe<TMessage>(Invoke);
 
     /* --------------------------------------------------------------------- */
@@ -135,6 +135,6 @@ public abstract class MessageBehavior<TMessage> : Behavior<FrameworkElement>
     #endregion
 
     #region Fields
-    private IDisposable _subscriber;
+    private IDisposable? _subscriber;
     #endregion
 }

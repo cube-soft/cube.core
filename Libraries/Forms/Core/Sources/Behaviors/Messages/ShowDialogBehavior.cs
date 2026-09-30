@@ -48,7 +48,7 @@ public class ShowDialogBehavior<TView, TViewModel> :
     public ShowDialogBehavior(IBindable vm) : base(vm, e =>
     {
         using var view = new TView();
-        if (view is IBinder binder) binder.Bind(e.Value);
+        if (view is IBinder binder && e.Value is not null) binder.Bind(e.Value);
         e.Cancel = view.ShowDialog() == DialogResult.Cancel;
     }) => Assets.Add(vm.Subscribe<TViewModel>(e => Invoke(new() { Value = e })));
 }

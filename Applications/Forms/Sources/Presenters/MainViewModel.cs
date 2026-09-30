@@ -81,7 +81,7 @@ public class MainViewModel : PresentableBase<MainFacade>
     /* --------------------------------------------------------------------- */
     public void File() => Send(
         new FileViewModel(Context),
-        e => Logger.Debug(e.Value),
+        e => { if (e is not null) Logger.Debug(e.Value); },
         true
     );
 

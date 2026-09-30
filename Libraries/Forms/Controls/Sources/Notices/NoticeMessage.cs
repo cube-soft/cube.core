@@ -72,7 +72,7 @@ public class NoticeMessage : Message<object>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -127,7 +127,7 @@ public class NoticeMessage : Message<object>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public NoticeStyle Style { get; set; }
+    public NoticeStyle? Style { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -139,7 +139,7 @@ public class NoticeMessage : Message<object>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public NoticeCallback Callback { get; set; }
+    public NoticeCallback? Callback { get; set; }
 
     #endregion
 }

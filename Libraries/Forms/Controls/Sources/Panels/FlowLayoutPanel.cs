@@ -43,7 +43,7 @@ public class FlowLayoutPanel : System.Windows.Forms.FlowLayoutPanel
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event QueryEventHandler<Point, Position> NcHitTest;
+    public event QueryEventHandler<Point, Position>? NcHitTest;
 
     /* --------------------------------------------------------------------- */
     ///

@@ -104,7 +104,7 @@ public class OnpAlgorithm<T>
     /// <returns>Diff results.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public IEnumerable<Result<T>> Compare(T[] older, T[] newer, Condition mask)
+    public IEnumerable<Result<T>> Compare(T[]? older, T[]? newer, Condition mask)
     {
         if (older is null || older.Length == 0 || newer is null || newer.Length == 0)
         {
@@ -131,7 +131,7 @@ public class OnpAlgorithm<T>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private IEnumerable<Result<T>> CompareEmpty(T[] older, T[] newer,
+    private IEnumerable<Result<T>> CompareEmpty(T[]? older, T[]? newer,
         Condition mask) => new CommonSequence<T>(
         older?.Length ?? 0,
         newer?.Length ?? 0,
@@ -149,7 +149,7 @@ public class OnpAlgorithm<T>
     /* --------------------------------------------------------------------- */
     private IEnumerable<Result<T>> Compare(Condition mask)
     {
-        Debug.Assert(_older is not null && _newer is not null && _older.Length <= _newer.Length);
+        Debug.Assert(_older.Length <= _newer.Length);
 
         _fp = new Snake[_older.Length + _newer.Length + 3];
 
@@ -217,9 +217,9 @@ public class OnpAlgorithm<T>
 
     private readonly IEqualityComparer<T> _cmp;
     private bool _swap;
-    private T[] _older;
-    private T[] _newer;
-    private Snake[] _fp;
+    private T[] _older = null!;
+    private T[] _newer = null!;
+    private Snake[] _fp = null!;
 
     #endregion
 }

@@ -81,7 +81,7 @@ public class NumericStringComparer : StringComparer
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public override int Compare(string x, string y)
+    public override int Compare(string? x, string? y)
     {
         if (x is null && y is null) return 0;
         if (x is null) return -1;
@@ -106,7 +106,7 @@ public class NumericStringComparer : StringComparer
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public override bool Equals(string x, string y) => _inner.Equals(x, y);
+    public override bool Equals(string? x, string? y) => _inner.Equals(x, y);
 
     /* --------------------------------------------------------------------- */
     ///

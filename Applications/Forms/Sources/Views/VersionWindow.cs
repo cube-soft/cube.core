@@ -61,7 +61,7 @@ public class VersionWindow : Window
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public Image Image
+    public Image? Image
     {
         get => _control.Image;
         set => _control.Image = value;
@@ -147,7 +147,7 @@ public class VersionWindow : Window
     /* --------------------------------------------------------------------- */
     [Browsable(true)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public Uri Uri
+    public Uri? Uri
     {
         get => _control.Uri;
         set => _control.Uri = value;

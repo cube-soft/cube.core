@@ -66,7 +66,7 @@ public class PasswordLintBehavior : DisposableBase
     /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public PasswordLintBehavior(TextBox master, TextBox confirm, CheckBox showPassword)
+    public PasswordLintBehavior(TextBox master, TextBox confirm, CheckBox? showPassword)
     {
         _master  = master  ?? throw new ArgumentNullException();
         _confirm = confirm ?? throw new ArgumentNullException();
@@ -197,7 +197,7 @@ public class PasswordLintBehavior : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public event EventHandler Updated;
+    public event EventHandler? Updated;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -271,7 +271,7 @@ public class PasswordLintBehavior : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenPasswordChanged(object sender, EventArgs e)
+    private void WhenPasswordChanged(object? sender, EventArgs e)
     {
         if (_confirm.Text.HasValue()) _confirm.Text = string.Empty;
         else OnUpdated(EventArgs.Empty);
@@ -286,7 +286,7 @@ public class PasswordLintBehavior : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenConfirmChanged(object sender, EventArgs e) =>
+    private void WhenConfirmChanged(object? sender, EventArgs e) =>
         UpdateConfirmTextBox();
 
     /* --------------------------------------------------------------------- */
@@ -299,15 +299,15 @@ public class PasswordLintBehavior : DisposableBase
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenShowPasswordChanged(object sender, EventArgs e) =>
-       UseSystemPasswordChar = !_show.Checked;
+    private void WhenShowPasswordChanged(object? sender, EventArgs e) =>
+       UseSystemPasswordChar = !_show!.Checked;
 
     #endregion
 
     #region Fields
     private readonly TextBox _master;
     private readonly TextBox _confirm;
-    private readonly CheckBox _show;
+    private readonly CheckBox? _show;
     private Color _warning = Color.FromArgb(255, 102, 102);
     private Color _default = SystemColors.Window;
     private Color _disabled = SystemColors.Control;

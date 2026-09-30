@@ -78,7 +78,7 @@ public class ShownToCommand : CommandBehavior<Window>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private void WhenContentRendered(object s, EventArgs e)
+    private void WhenContentRendered(object? s, EventArgs e)
     {
         if (Command?.CanExecute() ?? false) Command.Execute();
     }

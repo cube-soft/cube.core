@@ -48,7 +48,7 @@ public class FlowLayoutBehavior : DisposableBase
     /* --------------------------------------------------------------------- */
     public FlowLayoutBehavior(FlowLayoutPanel src)
     {
-        void resize(object s, EventArgs e)
+        void resize(object? s, EventArgs e)
         {
             if (src.Controls.Count <= 0) return;
             src.Controls[0].Width = src.ClientSize.Width - src.Padding.Left - src.Padding.Right;

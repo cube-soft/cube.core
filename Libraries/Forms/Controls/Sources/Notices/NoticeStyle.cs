@@ -52,7 +52,7 @@ public class NoticeStyle
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public NoticeImageStyle Image { get; set; }
+    public NoticeImageStyle? Image { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -63,7 +63,7 @@ public class NoticeStyle
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public NoticeTextStyle Title { get; set; }
+    public NoticeTextStyle? Title { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -74,7 +74,7 @@ public class NoticeStyle
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public NoticeTextStyle Text { get; set; }
+    public NoticeTextStyle? Text { get; set; }
 }
 
 #endregion
@@ -112,7 +112,7 @@ public class NoticeTextStyle
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public Font Font { get; set; }
+    public Font? Font { get; set; }
 }
 
 #endregion
@@ -150,7 +150,7 @@ public class NoticeImageStyle
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public Image Value { get; set; }
+    public Image? Value { get; set; }
 }
 
 #endregion

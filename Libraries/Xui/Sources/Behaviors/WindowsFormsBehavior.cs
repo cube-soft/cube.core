@@ -44,7 +44,7 @@ public class WindowsFormsBehavior<TControl> : Behavior<WindowsFormsHost>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public TControl Source => AssociatedObject?.Child as TControl;
+    public TControl? Source => AssociatedObject?.Child as TControl;
 
     /* --------------------------------------------------------------------- */
     ///
