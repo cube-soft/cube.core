@@ -115,7 +115,8 @@ class LocaleTest
     [TestCase(Language.French,     ExpectedResult = "fr-fr")]
     [TestCase(Language.German,     ExpectedResult = "de-de")]
     [TestCase(Language.Japanese,   ExpectedResult = "ja-jp")]
-    [TestCase(Language.Portuguese, ExpectedResult = "pt-pt")]
+    [TestCase(Language.PortuguesePortugal, ExpectedResult = "pt-pt")]
+    [TestCase(Language.PortugueseBrazil, ExpectedResult = "pt-br")]
     [TestCase(Language.Russian,    ExpectedResult = "ru-ru")]
     [TestCase(Language.Spanish,    ExpectedResult = "es-es")]
     public string GetCultureInfo(Language src) => src.ToCultureInfo().Name.ToLowerInvariant();

@@ -19,6 +19,7 @@ namespace Cube.Tests.Extensions;
 
 using Cube.ByteFormat;
 using NUnit.Framework;
+using System.Globalization;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -43,16 +44,24 @@ class ByteFormatTest
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestCase(1L,                   ExpectedResult = "1 Bytes")]
-    [TestCase(1234L,                ExpectedResult = "1.21 KB")]
-    [TestCase(12345L,               ExpectedResult = "12.1 KB")]
-    [TestCase(123456L,              ExpectedResult = "121 KB")]
-    [TestCase(1234567L,             ExpectedResult = "1.18 MB")]
-    [TestCase(1234567890L,          ExpectedResult = "1.15 GB")]
-    [TestCase(1234567890123L,       ExpectedResult = "1.12 TB")]
-    [TestCase(1234567890123456L,    ExpectedResult = "1.1 PB")]
-    [TestCase(1234567890123456789L, ExpectedResult = "1.07 EB")]
-    public string ToPrettyBytes(long src) => src.ToPrettyBytes();
+    [TestCase(1L,                    "1 Bytes")]
+    [TestCase(1234L,                 "1.21 KB")]
+    [TestCase(12345L,                "12.1 KB")]
+    [TestCase(123456L,               "121 KB")]
+    [TestCase(1234567L,              "1.18 MB")]
+    [TestCase(1234567890L,           "1.15 GB")]
+    [TestCase(1234567890123L,        "1.12 TB")]
+    [TestCase(1234567890123456L,     "1.1 PB")]
+    [TestCase(1234567890123456789L,  "1.07 EB")]
+    public void ToPrettyBytes(long src, string expected)
+    {
+        var separator =
+            CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+
+        expected = expected.Replace(".", separator);
+
+        Assert.That(src.ToPrettyBytes(), Is.EqualTo(expected));
+    }
 
     /* --------------------------------------------------------------------- */
     ///

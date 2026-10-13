@@ -109,7 +109,9 @@ public enum Language
     /// <summary>Simplified Chinese (zh-CN)</summary>
     SimplifiedChinese = 0x804,
     /// <summary>Portuguese (pt-PT)</summary>
-    Portuguese = 0x0816,
+    PortuguesePortugal = 0x0816,
+    /// <summary>Portuguese (pt-BR)</summary>
+    PortugueseBrazil = 0x0416,
     /// <summary>Unknown value</summary>
     Unknown = -1,
 }
